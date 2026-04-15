@@ -1,0 +1,1 @@
+const API_URL = 'https://turismogo-backend.onrender.com/api';
