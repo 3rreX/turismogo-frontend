@@ -83,7 +83,16 @@
   <h2>Dashboard</h2>
 
   <div id="perfil"></div>
+<div id="panel-propietario" style="display:none; margin: 20px 0; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+  <h3>Publicar nuevo servicio</h3>
 
+  <input id="nuevo-nombre" placeholder="Nombre del servicio">
+  <input id="nuevo-descripcion" placeholder="Descripción">
+  <input id="nuevo-precio" type="number" placeholder="Precio">
+  <input id="nuevo-imagen" placeholder="URL de imagen">
+
+  <button onclick="crearServicio()">Publicar servicio</button>
+</div>
   <h3>Servicios disponibles</h3>
   <div id="servicios"></div>
 

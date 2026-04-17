@@ -279,6 +279,72 @@ async function reservarServicio(nombre, id) {
     console.error('Error al reservar servicio:', error);
   }
 }
+function mostrarPanelPropietario() {
+  const role = localStorage.getItem('role');
+  const panel = document.getElementById('panel-propietario');
+
+  if (!panel) return;
+
+  if (role === 'propietario' || role === 'admin') {
+    panel.style.display = 'block';
+  } else {
+    panel.style.display = 'none';
+  }
+}
+async function crearServicio() {
+  try {
+    const nombre = document.getElementById('nuevo-nombre')?.value.trim();
+    const descripcion = document.getElementById('nuevo-descripcion')?.value.trim();
+    const precio = document.getElementById('nuevo-precio')?.value.trim();
+    const imagen = document.getElementById('nuevo-imagen')?.value.trim();
+
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      alert('Debes iniciar sesión');
+      window.location.href = 'index.html';
+      return;
+    }
+
+    if (!nombre || !descripcion || !precio || !imagen) {
+      alert('Todos los campos son obligatorios');
+      return;
+    }
+
+    const res = await fetch(`${API_URL}/servicios`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      },
+      body: JSON.stringify({
+        nombre,
+        descripcion,
+        precio: Number(precio),
+        imagen
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || 'No se pudo crear el servicio');
+      return;
+    }
+
+    alert(data.message || 'Servicio creado correctamente');
+
+    document.getElementById('nuevo-nombre').value = '';
+    document.getElementById('nuevo-descripcion').value = '';
+    document.getElementById('nuevo-precio').value = '';
+    document.getElementById('nuevo-imagen').value = '';
+
+    cargarServicios();
+  } catch (error) {
+    console.error('Error al crear servicio:', error);
+    alert('Error al crear servicio');
+  }
+}
 
 window.onload = () => {
   if (document.getElementById('servicios')) {
@@ -292,4 +358,6 @@ window.onload = () => {
   if (document.getElementById('perfil')) {
     cargarPerfil();
   }
+
+  mostrarPanelPropietario();
 };
