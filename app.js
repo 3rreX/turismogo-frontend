@@ -34,11 +34,15 @@ async function login() {
     }
 
     if (data.token) {
-      localStorage.setItem('token', data.token);
-      window.location.href = 'dashboard.html';
-    } else if (errorBox) {
-      errorBox.innerText = 'No se recibió token';
-    }
+  localStorage.setItem('token', data.token);
+
+  const payload = JSON.parse(atob(data.token.split('.')[1]));
+  localStorage.setItem('role', payload.role);
+
+  window.location.href = 'dashboard.html';
+} else if (errorBox) {
+  errorBox.innerText = 'No se recibió token';
+}
   } catch (error) {
     console.error('Error en login:', error);
     const errorBox = document.getElementById('error');
