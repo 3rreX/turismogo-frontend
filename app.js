@@ -296,7 +296,7 @@ async function crearServicio() {
     const nombre = document.getElementById('nuevo-nombre')?.value.trim();
     const descripcion = document.getElementById('nuevo-descripcion')?.value.trim();
     const precio = document.getElementById('nuevo-precio')?.value.trim();
-    const imagen = document.getElementById('nuevo-imagen')?.value.trim();
+    const imagenFile = document.getElementById('nuevo-imagen')?.files[0];
 
     const token = localStorage.getItem('token');
 
@@ -306,23 +306,23 @@ async function crearServicio() {
       return;
     }
 
-    if (!nombre || !descripcion || !precio || !imagen) {
+    if (!nombre || !descripcion || !precio || !imagenFile) {
       alert('Todos los campos son obligatorios');
       return;
     }
 
+    const formData = new FormData();
+    formData.append('nombre', nombre);
+    formData.append('descripcion', descripcion);
+    formData.append('precio', precio);
+    formData.append('imagen', imagenFile);
+
     const res = await fetch(`${API_URL}/servicios`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
         'Authorization': token
       },
-      body: JSON.stringify({
-        nombre,
-        descripcion,
-        precio: Number(precio),
-        imagen
-      })
+      body: formData
     });
 
     const data = await res.json();
