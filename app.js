@@ -210,7 +210,11 @@ async function cargarServicios() {
     servicios.forEach((s) => {
       cont.innerHTML += `
         <div class="card">
-          <img src="${s.imagen}" alt="${s.nombre}" style="width:100%; border-radius:10px;">
+          <div style="display:flex; gap:6px; overflow-x:auto; margin-bottom:10px;">
+  ${(s.imagenes && s.imagenes.length ? s.imagenes : [s.imagen]).map(img => `
+    <img src="${img}" alt="${s.nombre}" style="width:120px; height:90px; object-fit:cover; border-radius:10px;">
+  `).join('')}
+</div>
           <h3>${s.nombre}</h3>
           <p>${s.descripcion}</p>
           <p><b>$${s.precio}</b></p>
@@ -298,7 +302,7 @@ async function crearServicio() {
     const nombre = document.getElementById('nuevo-nombre')?.value.trim();
     const descripcion = document.getElementById('nuevo-descripcion')?.value.trim();
     const precio = document.getElementById('nuevo-precio')?.value.trim();
-    const imagenFile = document.getElementById('nuevo-imagen')?.files[0];
+    const imagenFiles = document.getElementById('nuevo-imagen')?.files;
 
     const token = localStorage.getItem('token');
 
@@ -308,7 +312,7 @@ async function crearServicio() {
       return;
     }
 
-    if (!nombre || !descripcion || !precio || !imagenFile) {
+    if (!nombre || !descripcion || !precio || !imagenFiles || imagenFiles.length === 0) {
       alert('Todos los campos son obligatorios');
       return;
     }
@@ -317,7 +321,9 @@ async function crearServicio() {
     formData.append('nombre', nombre);
     formData.append('descripcion', descripcion);
     formData.append('precio', precio);
-    formData.append('imagen', imagenFile);
+    for (const file of imagenFiles) {
+  formData.append('imagenes', file);
+}
 
     const res = await fetch(`${API_URL}/servicios`, {
       method: 'POST',
@@ -408,7 +414,16 @@ async function cargarMisServicios() {
     servicios.forEach((s) => {
   cont.innerHTML += `
     <div class="card">
-      <img src="${s.imagen}" alt="${s.nombre}" style="width:100%; border-radius:10px;">
+      <div style="display:flex; gap:8px; overflow-x:auto; margin-bottom:10px;">
+  ${(s.imagenes && s.imagenes.length ? s.imagenes : [s.imagen]).map(img => `
+    <div style="min-width:120px;">
+      <img src="${img}" alt="${s.nombre}" style="width:120px; height:90px; object-fit:cover; border-radius:10px;">
+      <button onclick='eliminarImagenServicio(${JSON.stringify(s._id)}, ${JSON.stringify(img)})'>
+        Eliminar imagen
+      </button>
+    </div>
+  `).join('')}
+</div>
       <h3>${s.nombre}</h3>
       <p>${s.descripcion}</p>
       <p><b>$${s.precio}</b></p>
@@ -473,10 +488,24 @@ function mostrarFormularioEditar(id, nombre, descripcion, precio) {
   const nuevoPrecio = prompt('Nuevo precio:', precio);
   if (nuevoPrecio === null) return;
 
-  editarServicio(id, nuevoNombre, nuevaDescripcion, nuevoPrecio);
-}
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.multiple = true;
 
-async function editarServicio(id, nombre, descripcion, precio) {
+  input.onchange = () => {
+    editarServicio(id, nuevoNombre, nuevaDescripcion, nuevoPrecio, input.files);
+  };
+
+  const agregarImagenes = confirm('¿Deseas agregar nuevas imágenes a este servicio?');
+
+  if (agregarImagenes) {
+    input.click();
+  } else {
+    editarServicio(id, nuevoNombre, nuevaDescripcion, nuevoPrecio, null);
+  }
+}
+async function editarServicio(id, nombre, descripcion, precio, imagenFiles = null) {
   try {
     const token = localStorage.getItem('token');
 
@@ -484,6 +513,11 @@ async function editarServicio(id, nombre, descripcion, precio) {
     formData.append('nombre', nombre);
     formData.append('descripcion', descripcion);
     formData.append('precio', precio);
+    if (imagenFiles && imagenFiles.length > 0) {
+  for (const file of imagenFiles) {
+    formData.append('imagenes', file);
+  }
+}
 
     const res = await fetch(`${API_URL}/servicios/${id}`, {
       method: 'PUT',
@@ -507,5 +541,37 @@ async function editarServicio(id, nombre, descripcion, precio) {
   } catch (error) {
     console.error('Error al editar servicio:', error);
     alert('Error al editar servicio');
+  }
+}
+async function eliminarImagenServicio(servicioId, imagenUrl) {
+  try {
+    const confirmar = confirm('¿Eliminar esta imagen?');
+    if (!confirmar) return;
+
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_URL}/servicios/${servicioId}/imagenes`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      },
+      body: JSON.stringify({ imagenUrl })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || 'No se pudo eliminar la imagen');
+      return;
+    }
+
+    alert(data.message || 'Imagen eliminada correctamente');
+
+    cargarServicios();
+    cargarMisServicios();
+  } catch (error) {
+    console.error('Error al eliminar imagen:', error);
+    alert('Error al eliminar imagen');
   }
 }
