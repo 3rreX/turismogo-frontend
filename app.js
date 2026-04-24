@@ -406,21 +406,32 @@ async function cargarMisServicios() {
     }
 
     servicios.forEach((s) => {
-      cont.innerHTML += `
-        <div class="card">
-          <img src="${s.imagen}" alt="${s.nombre}" style="width:100%; border-radius:10px;">
-          <h3>${s.nombre}</h3>
-          <p>${s.descripcion}</p>
-          <p><b>$${s.precio}</b></p>
-          <button onclick="eliminarServicio('${s._id}')">Eliminar</button>
-        </div>
-      `;
-    });
-  } catch (error) {
-    console.error('Error al cargar mis servicios:', error);
-  }
-}
+  cont.innerHTML += `
+    <div class="card">
+      <img src="${s.imagen}" alt="${s.nombre}" style="width:100%; border-radius:10px;">
+      <h3>${s.nombre}</h3>
+      <p>${s.descripcion}</p>
+      <p><b>$${s.precio}</b></p>
 
+      <button onclick='mostrarFormularioEditar(
+        ${JSON.stringify(s._id)},
+        ${JSON.stringify(s.nombre)},
+        ${JSON.stringify(s.descripcion)},
+        ${JSON.stringify(s.precio)}
+      )'>
+        Editar
+      </button>
+
+      <button onclick="eliminarServicio('${s._id}')">
+        Eliminar
+      </button>
+    </div>
+  `;
+});
+} catch (error) {
+  console.error('Error al cargar mis servicios:', error);
+}
+}
 async function eliminarServicio(id) {
   try {
     const confirmar = confirm('¿Seguro que deseas eliminar este servicio?');
@@ -450,5 +461,51 @@ async function eliminarServicio(id) {
   } catch (error) {
     console.error('Error al eliminar servicio:', error);
     alert('Error al eliminar servicio');
+  }
+}
+function mostrarFormularioEditar(id, nombre, descripcion, precio) {
+  const nuevoNombre = prompt('Nuevo nombre:', nombre);
+  if (nuevoNombre === null) return;
+
+  const nuevaDescripcion = prompt('Nueva descripción:', descripcion);
+  if (nuevaDescripcion === null) return;
+
+  const nuevoPrecio = prompt('Nuevo precio:', precio);
+  if (nuevoPrecio === null) return;
+
+  editarServicio(id, nuevoNombre, nuevaDescripcion, nuevoPrecio);
+}
+
+async function editarServicio(id, nombre, descripcion, precio) {
+  try {
+    const token = localStorage.getItem('token');
+
+    const formData = new FormData();
+    formData.append('nombre', nombre);
+    formData.append('descripcion', descripcion);
+    formData.append('precio', precio);
+
+    const res = await fetch(`${API_URL}/servicios/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': token
+      },
+      body: formData
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || 'No se pudo editar el servicio');
+      return;
+    }
+
+    alert(data.message || 'Servicio actualizado');
+
+    cargarServicios();
+    cargarMisServicios();
+  } catch (error) {
+    console.error('Error al editar servicio:', error);
+    alert('Error al editar servicio');
   }
 }
