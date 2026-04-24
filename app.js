@@ -287,8 +287,10 @@ function mostrarPanelPropietario() {
 
   if (role === 'propietario' || role === 'admin') {
     panel.style.display = 'block';
+    cargarMisServicios();
   } else {
     panel.style.display = 'none';
+    
   }
 }
 async function crearServicio() {
@@ -376,3 +378,77 @@ document.getElementById('nuevo-imagen')?.addEventListener('change', function (e)
 
   reader.readAsDataURL(file);
 });
+async function cargarMisServicios() {
+  try {
+    const cont = document.getElementById('mis-servicios');
+    if (!cont) return;
+
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_URL}/mis-servicios`, {
+      headers: {
+        'Authorization': token
+      }
+    });
+
+    const servicios = await res.json();
+
+    if (!res.ok) {
+      cont.innerHTML = `<p>${servicios.error || 'No se pudieron cargar tus servicios.'}</p>`;
+      return;
+    }
+
+    cont.innerHTML = '';
+
+    if (!servicios.length) {
+      cont.innerHTML = '<p>Aún no tienes servicios publicados.</p>';
+      return;
+    }
+
+    servicios.forEach((s) => {
+      cont.innerHTML += `
+        <div class="card">
+          <img src="${s.imagen}" alt="${s.nombre}" style="width:100%; border-radius:10px;">
+          <h3>${s.nombre}</h3>
+          <p>${s.descripcion}</p>
+          <p><b>$${s.precio}</b></p>
+          <button onclick="eliminarServicio('${s._id}')">Eliminar</button>
+        </div>
+      `;
+    });
+  } catch (error) {
+    console.error('Error al cargar mis servicios:', error);
+  }
+}
+
+async function eliminarServicio(id) {
+  try {
+    const confirmar = confirm('¿Seguro que deseas eliminar este servicio?');
+
+    if (!confirmar) return;
+
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_URL}/servicios/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': token
+      }
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || 'No se pudo eliminar el servicio');
+      return;
+    }
+
+    alert(data.message || 'Servicio eliminado correctamente');
+
+    cargarServicios();
+    cargarMisServicios();
+  } catch (error) {
+    console.error('Error al eliminar servicio:', error);
+    alert('Error al eliminar servicio');
+  }
+}
