@@ -735,6 +735,8 @@ async function cargarUsuariosAdmin() {
     <div class="card">
       <p><b>Usuario:</b> ${u.username}</p>
       <p><b>Rol actual:</b> ${u.role}</p>
+      <p><b>Suscripción:</b> ${u.suscripcionActiva ? 'Activa' : 'Inactiva'}</p>
+      <p><b>Plan:</b> ${u.plan || 'ninguno'}</p>
 
       <button onclick="cambiarRolUsuario('${u._id}', 'usuario')">
         Hacer usuario
@@ -746,6 +748,21 @@ async function cargarUsuariosAdmin() {
 
       <button onclick="cambiarRolUsuario('${u._id}', 'admin')">
         Hacer admin
+      </button>
+      <button onclick="actualizarSuscripcionUsuario('${u._id}', true, 'basico')">
+      Activar básico
+      </button>
+
+      <button onclick="actualizarSuscripcionUsuario('${u._id}', true, 'pro')">
+      Activar pro
+      </button>
+
+      <button onclick="actualizarSuscripcionUsuario('${u._id}', true, 'premium')">
+      Activar premium
+      </button>
+
+      <button onclick="actualizarSuscripcionUsuario('${u._id}', false, 'ninguno')">
+      Desactivar suscripción
       </button>
     </div>
   `;
