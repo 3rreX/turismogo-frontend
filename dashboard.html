@@ -5,117 +5,301 @@
   <title>Dashboard</title>
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f2f5;
-      margin: 0;
-      padding: 20px;
-    }
+    * {
+  box-sizing: border-box;
+}
 
-    h2 {
-      text-align: center;
-    }
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f6f8;
+  margin: 0;
+  color: #1f2937;
+}
 
-    #servicios, #reservas {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
-    }
+.navbar {
+  background: #ffffff;
+  padding: 18px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
 
-    .card {
-      background: white;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
-      padding-bottom: 10px;
-    }
+.navbar h1 {
+  margin: 0;
+  color: #ff5a5f;
+  font-size: 28px;
+}
 
-    .card:hover {
-      transform: scale(1.03);
-    }
+.navbar p {
+  margin: 4px 0 0;
+  color: #6b7280;
+}
 
-    .card img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-    }
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
 
-    .card h3, .card p {
-      margin: 10px;
-    }
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 20px;
+}
 
-    input {
-      margin: 5px 10px;
-      padding: 5px;
-      width: calc(100% - 20px);
-    }
+.hero {
+  background: linear-gradient(135deg, #ff5a5f, #ff8a65);
+  color: white;
+  padding: 36px;
+  border-radius: 22px;
+  margin-bottom: 28px;
+  box-shadow: 0 10px 25px rgba(255,90,95,0.25);
+}
 
-    button {
-      margin: 10px;
-      padding: 10px;
-      width: calc(100% - 20px);
-      background: #ff5a5f;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
+.hero h2 {
+  margin: 0 0 8px;
+  font-size: 32px;
+}
 
-    button:hover {
-      background: #e04848;
-    }
+.hero p {
+  margin: 0;
+  font-size: 17px;
+}
 
-    #perfil {
-      text-align: center;
-      margin-bottom: 20px;
-      font-weight: bold;
-    }
+.panel {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 20px;
+  margin-bottom: 28px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+}
 
-    h3 {
-      margin-top: 30px;
-    }
+.admin-panel {
+  border: 2px solid #111827;
+}
+
+.section-title {
+  margin-bottom: 18px;
+}
+
+.section-title h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.section-title p {
+  margin: 6px 0 0;
+  color: #6b7280;
+}
+
+.grid,
+#servicios,
+#reservas,
+#mis-servicios,
+#reservas-propietario,
+#admin-usuarios,
+#admin-servicios,
+#admin-reservas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.09);
+  border: 1px solid #e5e7eb;
+  transition: transform 0.2s, box-shadow 0.2s;
+  padding-bottom: 12px;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+}
+
+.card img {
+  max-width: 100%;
+}
+
+.card h3,
+.card p,
+.card b {
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.card h3 {
+  font-size: 18px;
+  margin-top: 12px;
+}
+
+.card p {
+  color: #374151;
+}
+
+.form-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+
+input {
+  width: 100%;
+  margin: 8px 0;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+button {
+  margin: 8px 6px 8px 0;
+  padding: 11px 14px;
+  background: #ff5a5f;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s, transform 0.1s;
+}
+
+button:hover {
+  background: #e04848;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: #111827;
+}
+
+.btn-secondary:hover {
+  background: #374151;
+}
+
+#perfil {
+  font-weight: bold;
+  color: #111827;
+}
+
+@media (max-width: 700px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 20px;
+  }
+
+  .navbar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .hero {
+    padding: 26px;
+  }
+
+  .hero h2 {
+    font-size: 24px;
+  }
+
+  .panel {
+    padding: 18px;
+  }
+}
   </style>
 </head>
 <body>
 
-  <h2>Dashboard</h2>
+  <header class="navbar">
+    <div>
+      <h1>Turismogo</h1>
+      <p>Marketplace turístico</p>
+    </div>
 
-  <div id="perfil"></div>
-<div id="panel-propietario" style="display:none; margin: 20px 0; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-  <div id="panel-admin" style="display:none; margin: 20px 0; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-  <h3>Panel de Administración</h3>
+    <div class="navbar-actions">
+      <span id="perfil"></span>
+      <button class="btn-secondary" onclick="logout()">Cerrar sesión</button>
+    </div>
+  </header>
 
-  <h4>Usuarios registrados</h4>
-  <div id="admin-usuarios"></div>
+  <main class="container">
 
-  <h4>Servicios publicados</h4>
-  <div id="admin-servicios"></div>
+    <section class="hero">
+      <h2>Explora servicios turísticos disponibles</h2>
+      <p>Reserva alojamientos, vehículos y experiencias desde una sola plataforma.</p>
+    </section>
 
-  <h4>Reservas del sistema</h4>
-  <div id="admin-reservas"></div>
-</div>
-  <h3>Publicar nuevo servicio</h3>
+    <section id="panel-propietario" class="panel" style="display:none;">
+      <div class="section-title">
+        <h2>Panel del propietario</h2>
+        <p>Publica, edita y administra tus servicios turísticos.</p>
+      </div>
 
-  <input id="nuevo-nombre" placeholder="Nombre del servicio">
-  <input id="nuevo-descripcion" placeholder="Descripción">
-  <input id="nuevo-precio" type="number" placeholder="Precio">
-  <input id="nuevo-imagen" type="file" accept="image/*" multiple>
-  <img id="preview-imagen" style="width:100%; margin-top:10px; border-radius:10px; display:none;">
+      <div class="form-card">
+        <h3>Publicar nuevo servicio</h3>
 
-  <button onclick="crearServicio()">Publicar servicio</button>
-  <h3>Mis servicios publicados</h3>
-<div id="mis-servicios"></div>
-<h3>Reservas recibidas</h3>
-<div id="reservas-propietario"></div>
-</div>
-  <h3>Servicios disponibles</h3>
-  <div id="servicios"></div>
+        <input id="nuevo-nombre" placeholder="Nombre del servicio">
+        <input id="nuevo-descripcion" placeholder="Descripción">
+        <input id="nuevo-precio" type="number" placeholder="Precio">
+        <input id="nuevo-imagen" type="file" accept="image/*" multiple>
 
-  <h3>Mis reservas</h3>
-  <div id="reservas"></div>
+        <img id="preview-imagen" style="display:none; width:180px; border-radius:10px; margin:10px 0;">
 
+        <button onclick="crearServicio()">Publicar servicio</button>
+      </div>
+
+      <h3>Mis servicios publicados</h3>
+      <div id="mis-servicios" class="grid"></div>
+
+      <h3>Reservas recibidas</h3>
+      <div id="reservas-propietario" class="grid"></div>
+    </section>
+
+    <section id="panel-admin" class="panel admin-panel" style="display:none;">
+      <div class="section-title">
+        <h2>Panel de Administración</h2>
+        <p>Gestiona usuarios, servicios, reservas y suscripciones.</p>
+      </div>
+
+      <h3>Usuarios registrados</h3>
+      <div id="admin-usuarios" class="grid"></div>
+
+      <h3>Servicios publicados</h3>
+      <div id="admin-servicios" class="grid"></div>
+
+      <h3>Reservas del sistema</h3>
+      <div id="admin-reservas" class="grid"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">
+        <h2>Servicios disponibles</h2>
+        <p>Elige fechas y realiza tu reserva.</p>
+      </div>
+
+      <div id="servicios" class="grid"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">
+        <h2>Mis reservas</h2>
+        <p>Revisa el estado de tus reservas.</p>
+      </div>
+
+      <div id="reservas" class="grid"></div>
+    </section>
+
+  </main>
   <script src="config.js"></script>
   <script src="app.js"></script>
 </body>
