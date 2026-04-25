@@ -254,6 +254,7 @@ async function cargarServicios() {
 
     const res = await fetch(`${API_URL}/servicios`);
     const servicios = await res.json();
+    document.getElementById('stat-servicios').textContent = servicios.length;
 
     if (!res.ok) {
       cont.innerHTML = `<p>${servicios.error || 'No se pudieron cargar los servicios.'}</p>`;
@@ -671,6 +672,21 @@ async function cargarReservasPropietario() {
     });
 
     const reservas = await res.json();
+    const pendientes = reservas.filter(r => r.estado === 'pendiente').length;
+const confirmadas = reservas.filter(r => r.estado === 'confirmada').length;
+
+let ingresos = 0;
+
+reservas.forEach(r => {
+  if (r.estado === 'confirmada' && r.servicioId?.precio) {
+    ingresos += Number(r.servicioId.precio);
+  }
+});
+
+document.getElementById('stat-pendientes').textContent = pendientes;
+document.getElementById('stat-confirmadas').textContent = confirmadas;
+document.getElementById('stat-ingresos').textContent =
+  `$${ingresos.toLocaleString('es-CL')}`;
 
     if (!res.ok) {
       cont.innerHTML = `<p>${reservas.error || 'No se pudieron cargar las reservas.'}</p>`;
