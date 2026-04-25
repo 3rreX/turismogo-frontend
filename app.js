@@ -876,3 +876,38 @@ async function cambiarRolUsuario(usuarioId, nuevoRole) {
     alert('Error al cambiar rol');
   }
 }
+async function actualizarSuscripcionUsuario(usuarioId, suscripcionActiva, plan) {
+  try {
+    const confirmar = confirm(`¿Actualizar suscripción a ${plan}?`);
+
+    if (!confirmar) return;
+
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_URL}/admin/usuarios/${usuarioId}/suscripcion`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      },
+      body: JSON.stringify({
+        suscripcionActiva,
+        plan
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || 'No se pudo actualizar la suscripción');
+      return;
+    }
+
+    alert(data.message || 'Suscripción actualizada correctamente');
+
+    cargarUsuariosAdmin();
+  } catch (error) {
+    console.error('Error al actualizar suscripción:', error);
+    alert('Error al actualizar suscripción');
+  }
+}
