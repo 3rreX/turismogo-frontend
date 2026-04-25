@@ -290,12 +290,12 @@ function mostrarPanelPropietario() {
   if (!panel) return;
 
   if (role === 'propietario' || role === 'admin') {
-    panel.style.display = 'block';
-    cargarMisServicios();
-  } else {
-    panel.style.display = 'none';
-    
-  }
+  panel.style.display = 'block';
+  cargarMisServicios();
+  cargarReservasPropietario();
+} else {
+  panel.style.display = 'none';
+}
 }
 async function crearServicio() {
   try {
@@ -573,5 +573,84 @@ async function eliminarImagenServicio(servicioId, imagenUrl) {
   } catch (error) {
     console.error('Error al eliminar imagen:', error);
     alert('Error al eliminar imagen');
+  }
+}
+async function cargarReservasPropietario() {
+  try {
+    const cont = document.getElementById('reservas-propietario');
+    if (!cont) return;
+
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_URL}/reservas-propietario`, {
+      headers: {
+        'Authorization': token
+      }
+    });
+
+    const reservas = await res.json();
+
+    if (!res.ok) {
+      cont.innerHTML = `<p>${reservas.error || 'No se pudieron cargar las reservas.'}</p>`;
+      return;
+    }
+
+    cont.innerHTML = '';
+
+    if (!reservas.length) {
+      cont.innerHTML = '<p>No tienes reservas recibidas.</p>';
+      return;
+    }
+
+    reservas.forEach((r) => {
+      cont.innerHTML += `
+        <div class="card">
+          <h3>${r.servicio}</h3>
+          <p><b>Cliente:</b> ${r.usuarioId?.username || 'No disponible'}</p>
+          <p><b>Fecha inicio:</b> ${r.fechaInicio}</p>
+          <p><b>Fecha fin:</b> ${r.fechaFin}</p>
+          <p><b>Estado:</b> ${r.estado}</p>
+
+          <button onclick="cambiarEstadoReserva('${r._id}', 'confirmada')">
+            Confirmar
+          </button>
+
+          <button onclick="cambiarEstadoReserva('${r._id}', 'rechazada')">
+            Rechazar
+          </button>
+        </div>
+      `;
+    });
+
+  } catch (error) {
+    console.error('Error al cargar reservas del propietario:', error);
+  }
+}
+async function cambiarEstadoReserva(reservaId, estado) {
+  try {
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_URL}/reservas/${reservaId}/estado`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      },
+      body: JSON.stringify({ estado })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || 'No se pudo actualizar la reserva');
+      return;
+    }
+
+    alert(data.message || 'Reserva actualizada');
+
+    cargarReservasPropietario();
+  } catch (error) {
+    console.error('Error al cambiar estado de reserva:', error);
+    alert('Error al actualizar reserva');
   }
 }
