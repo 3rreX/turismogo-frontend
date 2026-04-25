@@ -86,7 +86,8 @@ async function cargarPerfil() {
 
 function logout() {
   localStorage.removeItem('token');
-  window.location.href = 'login.html';
+  localStorage.removeItem('role');
+  window.location.href = 'index.html';
 }
 
 async function crearReserva() {
