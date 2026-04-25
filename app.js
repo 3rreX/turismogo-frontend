@@ -803,39 +803,36 @@ document.getElementById('admin-stat-propietarios').textContent = propietarios;
 
     usuarios.forEach((u) => {
   cont.innerHTML += `
-    <div class="card">
-      <p><b>Usuario:</b> ${u.username}</p>
-      <p><b>Rol actual:</b> ${u.role}</p>
-      <p><b>Suscripción:</b> ${u.suscripcionActiva ? 'Activa' : 'Inactiva'}</p>
-      <p><b>Plan:</b> ${u.plan || 'ninguno'}</p>
+    <article class="admin-user-card">
+      <div class="admin-card-top">
+        <div>
+          <h3>${u.username}</h3>
+          <p>Cuenta registrada</p>
+        </div>
 
-      <button onclick="cambiarRolUsuario('${u._id}', 'usuario')">
-        Hacer usuario
-      </button>
+        <span class="role-badge role-${u.role}">
+          ${u.role}
+        </span>
+      </div>
 
-      <button onclick="cambiarRolUsuario('${u._id}', 'propietario')">
-        Hacer propietario
-      </button>
+      <div class="admin-user-info">
+        <p><b>Suscripción:</b> ${u.suscripcionActiva ? 'Activa' : 'Inactiva'}</p>
+        <p><b>Plan:</b> ${u.plan || 'ninguno'}</p>
+      </div>
 
-      <button onclick="cambiarRolUsuario('${u._id}', 'admin')">
-        Hacer admin
-      </button>
-      <button onclick="actualizarSuscripcionUsuario('${u._id}', true, 'basico')">
-      Activar básico
-      </button>
+      <div class="admin-actions">
+        <button onclick="cambiarRolUsuario('${u._id}', 'usuario')">Usuario</button>
+        <button onclick="cambiarRolUsuario('${u._id}', 'propietario')">Propietario</button>
+        <button onclick="cambiarRolUsuario('${u._id}', 'admin')">Admin</button>
+      </div>
 
-      <button onclick="actualizarSuscripcionUsuario('${u._id}', true, 'pro')">
-      Activar pro
-      </button>
-
-      <button onclick="actualizarSuscripcionUsuario('${u._id}', true, 'premium')">
-      Activar premium
-      </button>
-
-      <button onclick="actualizarSuscripcionUsuario('${u._id}', false, 'ninguno')">
-      Desactivar suscripción
-      </button>
-    </div>
+      <div class="admin-actions">
+        <button onclick="actualizarSuscripcionUsuario('${u._id}', true, 'basico')">Básico</button>
+        <button onclick="actualizarSuscripcionUsuario('${u._id}', true, 'pro')">Pro</button>
+        <button onclick="actualizarSuscripcionUsuario('${u._id}', true, 'premium')">Premium</button>
+        <button class="danger-btn" onclick="actualizarSuscripcionUsuario('${u._id}', false, 'ninguno')">Desactivar</button>
+      </div>
+    </article>
   `;
 });
 
