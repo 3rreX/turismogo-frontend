@@ -172,21 +172,42 @@ async function cargarReservas() {
     }
 
     reservas.forEach((r) => {
+  const estado = r.estado || 'pendiente';
+
   cont.innerHTML += `
-    <div class="card">
-      <h3>${r.servicio}</h3>
-      <p><b>Fecha inicio:</b> ${r.fechaInicio}</p>
-      <p><b>Fecha fin:</b> ${r.fechaFin}</p>
-      <p><b>Estado:</b> ${r.estado || 'pendiente'}</p>
+    <article class="reservation-card">
+      <div class="reservation-top">
+        <div>
+          <h3>${r.servicio}</h3>
+          <p>Reserva turística</p>
+        </div>
+
+        <span class="status-badge status-${estado}">
+          ${estado}
+        </span>
+      </div>
+
+      <div class="reservation-dates">
+        <div>
+          <span>Inicio</span>
+          <strong>${r.fechaInicio}</strong>
+        </div>
+
+        <div>
+          <span>Fin</span>
+          <strong>${r.fechaFin}</strong>
+        </div>
+      </div>
 
       ${
-        r.estado !== 'cancelada'
-          ? `<button onclick="cancelarReserva('${r._id}')">Cancelar reserva</button>`
-          : '<p><b>Reserva cancelada</b></p>'
+        estado !== 'cancelada'
+          ? `<button class="cancel-btn" onclick="cancelarReserva('${r._id}')">Cancelar reserva</button>`
+          : '<p class="cancelled-text">Reserva cancelada</p>'
       }
-    </div>
+    </article>
   `;
 });
+
   } catch (error) {
     console.error('Error al cargar reservas:', error);
     const cont = document.getElementById('reservas');
