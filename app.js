@@ -406,6 +406,7 @@ window.onload = () => {
   }
 
   mostrarPanelPropietario();
+  mostrarPanelAdmin();
 };
 document.getElementById('nuevo-imagen')?.addEventListener('change', function (e) {
   const file = e.target.files[0];
@@ -690,5 +691,127 @@ async function cambiarEstadoReserva(reservaId, estado) {
   } catch (error) {
     console.error('Error al cambiar estado de reserva:', error);
     alert('Error al actualizar reserva');
+  }
+}
+function mostrarPanelAdmin() {
+  const role = localStorage.getItem('role');
+  const panel = document.getElementById('panel-admin');
+
+  if (!panel) return;
+
+  if (role === 'admin') {
+    panel.style.display = 'block';
+    cargarUsuariosAdmin();
+    cargarServiciosAdmin();
+    cargarReservasAdmin();
+  } else {
+    panel.style.display = 'none';
+  }
+}
+async function cargarUsuariosAdmin() {
+  try {
+    const cont = document.getElementById('admin-usuarios');
+    if (!cont) return;
+
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_URL}/admin/usuarios`, {
+      headers: {
+        'Authorization': token
+      }
+    });
+
+    const usuarios = await res.json();
+
+    if (!res.ok) {
+      cont.innerHTML = `<p>${usuarios.error || 'No se pudieron cargar usuarios.'}</p>`;
+      return;
+    }
+
+    cont.innerHTML = '';
+
+    usuarios.forEach((u) => {
+      cont.innerHTML += `
+        <div class="card">
+          <p><b>Usuario:</b> ${u.username}</p>
+          <p><b>Rol:</b> ${u.role}</p>
+        </div>
+      `;
+    });
+
+  } catch (error) {
+    console.error('Error admin usuarios:', error);
+  }
+}
+async function cargarServiciosAdmin() {
+  try {
+    const cont = document.getElementById('admin-servicios');
+    if (!cont) return;
+
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_URL}/admin/servicios`, {
+      headers: {
+        'Authorization': token
+      }
+    });
+
+    const servicios = await res.json();
+
+    if (!res.ok) {
+      cont.innerHTML = `<p>${servicios.error || 'No se pudieron cargar servicios.'}</p>`;
+      return;
+    }
+
+    cont.innerHTML = '';
+
+    servicios.forEach((s) => {
+      cont.innerHTML += `
+        <div class="card">
+          <p><b>Servicio:</b> ${s.nombre}</p>
+          <p><b>Precio:</b> $${s.precio}</p>
+          <p><b>Propietario:</b> ${s.propietarioId?.username || 'Sin propietario'}</p>
+        </div>
+      `;
+    });
+
+  } catch (error) {
+    console.error('Error admin servicios:', error);
+  }
+}
+async function cargarReservasAdmin() {
+  try {
+    const cont = document.getElementById('admin-reservas');
+    if (!cont) return;
+
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_URL}/admin/reservas`, {
+      headers: {
+        'Authorization': token
+      }
+    });
+
+    const reservas = await res.json();
+
+    if (!res.ok) {
+      cont.innerHTML = `<p>${reservas.error || 'No se pudieron cargar reservas.'}</p>`;
+      return;
+    }
+
+    cont.innerHTML = '';
+
+    reservas.forEach((r) => {
+      cont.innerHTML += `
+        <div class="card">
+          <p><b>Cliente:</b> ${r.usuarioId?.username || 'No disponible'}</p>
+          <p><b>Servicio:</b> ${r.servicio}</p>
+          <p><b>Estado:</b> ${r.estado}</p>
+        </div>
+      `;
+    });
+
+  } catch (error) {
+    console.error('Error admin reservas:', error);
   }
 }
