@@ -177,6 +177,12 @@ async function cargarReservas() {
       <p><b>Fecha inicio:</b> ${r.fechaInicio}</p>
       <p><b>Fecha fin:</b> ${r.fechaFin}</p>
       <p><b>Estado:</b> ${r.estado || 'pendiente'}</p>
+
+      ${
+        r.estado !== 'cancelada'
+          ? `<button onclick="cancelarReserva('${r._id}')">Cancelar reserva</button>`
+          : '<p><b>Reserva cancelada</b></p>'
+      }
     </div>
   `;
 });
@@ -188,7 +194,37 @@ async function cargarReservas() {
     }
   }
 }
+async function cancelarReserva(reservaId) {
+  try {
+    const confirmar = confirm('¿Seguro que deseas cancelar esta reserva?');
 
+    if (!confirmar) return;
+
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_URL}/reservas/${reservaId}/cancelar`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      }
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || 'No se pudo cancelar la reserva');
+      return;
+    }
+
+    alert(data.message || 'Reserva cancelada correctamente');
+
+    cargarReservas();
+  } catch (error) {
+    console.error('Error al cancelar reserva:', error);
+    alert('Error al cancelar reserva');
+  }
+}
 async function cargarServicios() {
   try {
     const cont = document.getElementById('servicios');
