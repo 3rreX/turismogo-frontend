@@ -247,22 +247,43 @@ async function cargarServicios() {
     }
 
     servicios.forEach((s) => {
-      cont.innerHTML += `
-        <div class="card">
-          <div style="display:flex; gap:6px; overflow-x:auto; margin-bottom:10px;">
-  ${(s.imagenes && s.imagenes.length ? s.imagenes : [s.imagen]).map(img => `
-    <img src="${img}" alt="${s.nombre}" style="width:120px; height:90px; object-fit:cover; border-radius:10px;">
-  `).join('')}
-</div>
+  const imagenes = s.imagenes && s.imagenes.length ? s.imagenes : [s.imagen];
+
+  cont.innerHTML += `
+    <article class="service-card">
+      <div class="service-gallery">
+        ${imagenes.map(img => `
+          <img src="${img}" alt="${s.nombre}">
+        `).join('')}
+      </div>
+
+      <div class="service-content">
+        <div class="service-header">
           <h3>${s.nombre}</h3>
-          <p>${s.descripcion}</p>
-          <p><b>$${s.precio}</b></p>
-          <input type="date" id="inicio-${s._id}">
-          <input type="date" id="fin-${s._id}">
-          <button onclick="reservarServicio('${s.nombre}', '${s._id}')">Reservar</button>
+          <span class="service-price">$${Number(s.precio).toLocaleString('es-CL')}</span>
         </div>
-      `;
-    });
+
+        <p class="service-description">${s.descripcion}</p>
+
+        <div class="date-row">
+          <div>
+            <label>Inicio</label>
+            <input type="date" id="inicio-${s._id}">
+          </div>
+
+          <div>
+            <label>Fin</label>
+            <input type="date" id="fin-${s._id}">
+          </div>
+        </div>
+
+        <button class="reserve-btn" onclick="reservarServicio('${s.nombre}', '${s._id}')">
+          Reservar ahora
+        </button>
+      </div>
+    </article>
+  `;
+});
   } catch (error) {
     console.error('Error al cargar servicios:', error);
     const cont = document.getElementById('servicios');
