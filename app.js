@@ -495,35 +495,44 @@ async function cargarMisServicios() {
     }
 
     servicios.forEach((s) => {
+  const imagenes = s.imagenes && s.imagenes.length ? s.imagenes : [s.imagen];
+
   cont.innerHTML += `
-    <div class="card">
-      <div style="display:flex; gap:8px; overflow-x:auto; margin-bottom:10px;">
-  ${(s.imagenes && s.imagenes.length ? s.imagenes : [s.imagen]).map(img => `
-    <div style="min-width:120px;">
-      <img src="${img}" alt="${s.nombre}" style="width:120px; height:90px; object-fit:cover; border-radius:10px;">
-      <button onclick='eliminarImagenServicio(${JSON.stringify(s._id)}, ${JSON.stringify(img)})'>
-        Eliminar imagen
-      </button>
-    </div>
-  `).join('')}
-</div>
-      <h3>${s.nombre}</h3>
-      <p>${s.descripcion}</p>
-      <p><b>$${s.precio}</b></p>
+    <article class="owner-service-card">
+      <div class="owner-service-gallery">
+        ${imagenes.map(img => `
+          <div class="owner-image-box">
+            <img src="${img}" alt="${s.nombre}">
+            <button onclick='eliminarImagenServicio(${JSON.stringify(s._id)}, ${JSON.stringify(img)})'>
+              Eliminar imagen
+            </button>
+          </div>
+        `).join('')}
+      </div>
 
-      <button onclick='mostrarFormularioEditar(
-        ${JSON.stringify(s._id)},
-        ${JSON.stringify(s.nombre)},
-        ${JSON.stringify(s.descripcion)},
-        ${JSON.stringify(s.precio)}
-      )'>
-        Editar
-      </button>
+      <div class="owner-service-content">
+        <div>
+          <h3>${s.nombre}</h3>
+          <p>${s.descripcion}</p>
+          <strong>$${Number(s.precio).toLocaleString('es-CL')}</strong>
+        </div>
 
-      <button onclick="eliminarServicio('${s._id}')">
-        Eliminar
-      </button>
-    </div>
+        <div class="owner-actions">
+          <button onclick='mostrarFormularioEditar(
+            ${JSON.stringify(s._id)},
+            ${JSON.stringify(s.nombre)},
+            ${JSON.stringify(s.descripcion)},
+            ${JSON.stringify(s.precio)}
+          )'>
+            Editar
+          </button>
+
+          <button class="danger-btn" onclick="eliminarServicio('${s._id}')">
+            Eliminar servicio
+          </button>
+        </div>
+      </div>
+    </article>
   `;
 });
 } catch (error) {
