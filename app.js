@@ -731,13 +731,25 @@ async function cargarUsuariosAdmin() {
     cont.innerHTML = '';
 
     usuarios.forEach((u) => {
-      cont.innerHTML += `
-        <div class="card">
-          <p><b>Usuario:</b> ${u.username}</p>
-          <p><b>Rol:</b> ${u.role}</p>
-        </div>
-      `;
-    });
+  cont.innerHTML += `
+    <div class="card">
+      <p><b>Usuario:</b> ${u.username}</p>
+      <p><b>Rol actual:</b> ${u.role}</p>
+
+      <button onclick="cambiarRolUsuario('${u._id}', 'usuario')">
+        Hacer usuario
+      </button>
+
+      <button onclick="cambiarRolUsuario('${u._id}', 'propietario')">
+        Hacer propietario
+      </button>
+
+      <button onclick="cambiarRolUsuario('${u._id}', 'admin')">
+        Hacer admin
+      </button>
+    </div>
+  `;
+});
 
   } catch (error) {
     console.error('Error admin usuarios:', error);
@@ -813,5 +825,37 @@ async function cargarReservasAdmin() {
 
   } catch (error) {
     console.error('Error admin reservas:', error);
+  }
+}
+async function cambiarRolUsuario(usuarioId, nuevoRole) {
+  try {
+    const confirmar = confirm(`¿Seguro que deseas cambiar este usuario a ${nuevoRole}?`);
+
+    if (!confirmar) return;
+
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_URL}/admin/usuarios/${usuarioId}/role`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      },
+      body: JSON.stringify({ role: nuevoRole })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || 'No se pudo cambiar el rol');
+      return;
+    }
+
+    alert(data.message || 'Rol actualizado correctamente');
+
+    cargarUsuariosAdmin();
+  } catch (error) {
+    console.error('Error al cambiar rol:', error);
+    alert('Error al cambiar rol');
   }
 }
