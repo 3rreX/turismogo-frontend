@@ -795,7 +795,10 @@ async function cargarUsuariosAdmin() {
       cont.innerHTML = `<p>${usuarios.error || 'No se pudieron cargar usuarios.'}</p>`;
       return;
     }
+document.getElementById('admin-stat-usuarios').textContent = usuarios.length;
 
+const propietarios = usuarios.filter(u => u.role === 'propietario').length;
+document.getElementById('admin-stat-propietarios').textContent = propietarios;
     cont.innerHTML = '';
 
     usuarios.forEach((u) => {
@@ -896,6 +899,18 @@ async function cargarReservasAdmin() {
       return;
     }
 
+document.getElementById('admin-stat-reservas').textContent = reservas.length;
+
+let ingresos = 0;
+
+reservas.forEach(r => {
+  if (r.estado === 'confirmada' && r.servicioId?.precio) {
+    ingresos += Number(r.servicioId.precio);
+  }
+});
+
+document.getElementById('admin-stat-ingresos').textContent =
+  `$${ingresos.toLocaleString('es-CL')}`;
     cont.innerHTML = '';
 
     reservas.forEach((r) => {

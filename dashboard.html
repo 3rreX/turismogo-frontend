@@ -512,6 +512,12 @@ button:hover {
 .danger-btn:hover {
   background: #b91c1c;
 }
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin: 24px 0 30px;
+}
   </style>
 </head>
 <body>
@@ -587,6 +593,27 @@ button:hover {
         <h2>Panel de Administración</h2>
         <p>Gestiona usuarios, servicios, reservas y suscripciones.</p>
       </div>
+      <div class="admin-stats">
+  <div class="stat-card">
+    <h4>Total usuarios</h4>
+    <p id="admin-stat-usuarios">0</p>
+  </div>
+
+  <div class="stat-card">
+    <h4>Propietarios</h4>
+    <p id="admin-stat-propietarios">0</p>
+  </div>
+
+  <div class="stat-card">
+    <h4>Total reservas</h4>
+    <p id="admin-stat-reservas">0</p>
+  </div>
+
+  <div class="stat-card">
+    <h4>Ingresos estimados</h4>
+    <p id="admin-stat-ingresos">$0</p>
+  </div>
+</div>
 
       <h3>Usuarios registrados</h3>
       <div id="admin-usuarios" class="grid"></div>
