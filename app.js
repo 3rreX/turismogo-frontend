@@ -1024,3 +1024,35 @@ async function actualizarSuscripcionUsuario(usuarioId, suscripcionActiva, plan) 
     alert('Error al actualizar suscripción');
   }
 }
+async function simularPagoPlan(plan) {
+  try {
+    const confirmar = confirm(`¿Deseas activar el plan ${plan.toUpperCase()}?`);
+
+    if (!confirmar) return;
+
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_URL}/mi-suscripcion`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      },
+      body: JSON.stringify({ plan })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || 'No se pudo activar el plan');
+      return;
+    }
+
+    alert(`Plan ${plan.toUpperCase()} activado correctamente`);
+
+    location.reload();
+  } catch (error) {
+    console.error('Error al activar plan:', error);
+    alert('Error al activar plan');
+  }
+}

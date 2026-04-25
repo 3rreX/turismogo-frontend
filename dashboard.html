@@ -629,6 +629,57 @@ button:hover {
   gap: 16px;
   height: 100%;
 }
+.subscription-plans {
+  margin: 10px 0 32px;
+}
+
+.subscription-plans h3 {
+  margin-bottom: 18px;
+  color: #08256f;
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.plan-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.plan-card:hover {
+  transform: translateY(-4px);
+}
+
+.featured-plan {
+  border: 2px solid #ff6236;
+  transform: scale(1.02);
+}
+
+.plan-card h4 {
+  margin: 0 0 12px;
+  font-size: 24px;
+  color: #08256f;
+}
+
+.plan-price {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ff6236;
+  margin-bottom: 14px;
+}
+
+.plan-card p {
+  color: #4b5563;
+  line-height: 1.4;
+}
   </style>
 </head>
 <body>
@@ -676,6 +727,40 @@ button:hover {
   <div class="stat-card">
     <h4>Ingresos estimados</h4>
     <p id="stat-ingresos">$0</p>
+  </div>
+</div>
+<div class="subscription-plans">
+  <h3>Planes de Suscripción</h3>
+
+  <div class="plans-grid">
+
+    <div class="plan-card">
+      <h4>Básico</h4>
+      <p class="plan-price">$9.990 / mes</p>
+      <p>Publicación de servicios + gestión básica.</p>
+      <button onclick="simularPagoPlan('basico')">
+        Elegir Básico
+      </button>
+    </div>
+
+    <div class="plan-card featured-plan">
+      <h4>Pro</h4>
+      <p class="plan-price">$19.990 / mes</p>
+      <p>Mayor visibilidad + prioridad en reservas.</p>
+      <button onclick="simularPagoPlan('pro')">
+        Elegir Pro
+      </button>
+    </div>
+
+    <div class="plan-card">
+      <h4>Premium</h4>
+      <p class="plan-price">$39.990 / mes</p>
+      <p>Máxima exposición + beneficios exclusivos.</p>
+      <button onclick="simularPagoPlan('premium')">
+        Elegir Premium
+      </button>
+    </div>
+
   </div>
 </div>
 
