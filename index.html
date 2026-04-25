@@ -2,18 +2,163 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
+  <title>Turismogo | Login</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      background: #f5f6f8;
+      color: #1f2937;
+    }
+
+    .login-page {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    .login-hero {
+      background: linear-gradient(135deg, rgba(255,90,95,0.92), rgba(255,138,101,0.92)),
+        url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee') center/cover;
+      color: white;
+      padding: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .login-hero h1 {
+      font-size: 48px;
+      margin: 0 0 14px;
+    }
+
+    .login-hero p {
+      font-size: 19px;
+      max-width: 560px;
+      line-height: 1.5;
+    }
+
+    .login-card-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .login-card {
+      background: white;
+      width: 100%;
+      max-width: 420px;
+      padding: 34px;
+      border-radius: 22px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+    }
+
+    .login-card h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .login-card p {
+      margin: 0 0 24px;
+      color: #6b7280;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      background: #ff5a5f;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 15px;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    button:hover {
+      background: #e04848;
+      transform: translateY(-1px);
+    }
+
+    #error {
+      color: #dc2626;
+      font-weight: bold;
+      margin-top: 14px;
+      min-height: 20px;
+    }
+
+    .hint {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 16px;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 800px) {
+      .login-page {
+        grid-template-columns: 1fr;
+      }
+
+      .login-hero {
+        padding: 36px 24px;
+        min-height: 280px;
+      }
+
+      .login-hero h1 {
+        font-size: 36px;
+      }
+
+      .login-card-wrapper {
+        padding: 24px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-  <h2>Iniciar sesión</h2>
+  <div class="login-page">
+    <section class="login-hero">
+      <h1>Turismogo</h1>
+      <p>Reserva experiencias, alojamientos y servicios turísticos desde una plataforma simple, moderna y segura.</p>
+    </section>
 
-  <input id="user" placeholder="Usuario">
-  <input id="pass" type="password" placeholder="Contraseña">
+    <section class="login-card-wrapper">
+      <div class="login-card">
+        <h2>Iniciar sesión</h2>
+        <p>Accede a tu cuenta para reservar o gestionar tus servicios.</p>
 
-  <button onclick="login()">Ingresar</button>
+        <input id="user" placeholder="Usuario">
+        <input id="pass" type="password" placeholder="Contraseña">
 
-  <p id="error"></p>
+        <button onclick="login()">Ingresar</button>
+
+        <p id="error"></p>
+
+        <div class="hint">
+          Demo: usa tu cuenta de usuario, propietario o administrador.
+        </div>
+      </div>
+    </section>
+  </div>
 
   <script src="config.js"></script>
   <script src="app.js"></script>
