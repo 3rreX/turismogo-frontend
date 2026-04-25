@@ -863,14 +863,32 @@ async function cargarServiciosAdmin() {
     cont.innerHTML = '';
 
     servicios.forEach((s) => {
-      cont.innerHTML += `
-        <div class="card">
-          <p><b>Servicio:</b> ${s.nombre}</p>
-          <p><b>Precio:</b> $${s.precio}</p>
-          <p><b>Propietario:</b> ${s.propietarioId?.username || 'Sin propietario'}</p>
+  const imagenes = s.imagenes && s.imagenes.length ? s.imagenes : [s.imagen];
+
+  cont.innerHTML += `
+    <article class="admin-service-card">
+      <div class="admin-service-gallery">
+        ${imagenes.map(img => `
+          <img src="${img}" alt="${s.nombre}">
+        `).join('')}
+      </div>
+
+      <div class="admin-service-content">
+        <div class="admin-card-top">
+          <div>
+            <h3>${s.nombre}</h3>
+            <p>Servicio publicado</p>
+          </div>
+
+          <span class="service-price">$${Number(s.precio).toLocaleString('es-CL')}</span>
         </div>
-      `;
-    });
+
+        <p><b>Propietario:</b> ${s.propietarioId?.username || 'Sin propietario'}</p>
+        <p><b>Rol:</b> ${s.propietarioId?.role || 'No disponible'}</p>
+      </div>
+    </article>
+  `;
+});
 
   } catch (error) {
     console.error('Error admin servicios:', error);
@@ -911,14 +929,29 @@ document.getElementById('admin-stat-ingresos').textContent =
     cont.innerHTML = '';
 
     reservas.forEach((r) => {
-      cont.innerHTML += `
-        <div class="card">
-          <p><b>Cliente:</b> ${r.usuarioId?.username || 'No disponible'}</p>
-          <p><b>Servicio:</b> ${r.servicio}</p>
-          <p><b>Estado:</b> ${r.estado}</p>
+  const estado = r.estado || 'pendiente';
+
+  cont.innerHTML += `
+    <article class="admin-reservation-card">
+      <div class="admin-card-top">
+        <div>
+          <h3>${r.servicio}</h3>
+          <p>Reserva del sistema</p>
         </div>
-      `;
-    });
+
+        <span class="status-badge status-${estado}">
+          ${estado}
+        </span>
+      </div>
+
+      <div class="admin-user-info">
+        <p><b>Cliente:</b> ${r.usuarioId?.username || 'No disponible'}</p>
+        <p><b>Fecha inicio:</b> ${r.fechaInicio}</p>
+        <p><b>Fecha fin:</b> ${r.fechaFin}</p>
+      </div>
+    </article>
+  `;
+});
 
   } catch (error) {
     console.error('Error admin reservas:', error);
