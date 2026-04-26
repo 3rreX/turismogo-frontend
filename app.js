@@ -1038,6 +1038,27 @@ async function cargarReservasAdmin() {
     }
 
     const reservas = Array.isArray(data) ? data : [];
+    const alertasAdmin = document.getElementById('admin-alertas');
+
+if (alertasAdmin) {
+  const pendientesRevision = reservas.filter(
+    r => (r.estado || '').toLowerCase() === 'pendiente'
+  ).length;
+
+  if (pendientesRevision > 0) {
+    alertasAdmin.innerHTML = `
+      <div class="admin-alert warning">
+        ⚠️ Tienes ${pendientesRevision} reserva${pendientesRevision > 1 ? 's' : ''} pendiente${pendientesRevision > 1 ? 's' : ''} por revisar.
+      </div>
+    `;
+  } else {
+    alertasAdmin.innerHTML = `
+      <div class="admin-alert success">
+        ✅ No existen reservas pendientes por revisar.
+      </div>
+    `;
+  }
+}
     const tablaRecientes = document.getElementById('tabla-reservas-recientes');
 
 if (tablaRecientes) {

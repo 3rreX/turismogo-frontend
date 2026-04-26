@@ -929,6 +929,25 @@ button:hover {
   border-radius: 999px;
   font-weight: bold;
 }
+.admin-alert {
+  padding: 18px 22px;
+  border-radius: 16px;
+  font-weight: 600;
+  margin: 20px 0;
+  font-size: 15px;
+}
+
+.admin-alert.warning {
+  background: #fff7ed;
+  color: #9a3412;
+  border: 1px solid #fdba74;
+}
+
+.admin-alert.success {
+  background: #ecfdf5;
+  color: #166534;
+  border: 1px solid #86efac;
+}
   </style>
 </head>
 <body>
@@ -1035,6 +1054,7 @@ button:hover {
 
     <section id="panel-admin" class="panel admin-panel" style="display:none;">
       <div class="section-title">
+        <div id="admin-alertas"></div>
         <h2>Panel de Administración</h2>
         <p>Gestiona usuarios, servicios, reservas y suscripciones.</p>
       </div>
