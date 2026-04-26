@@ -1250,6 +1250,7 @@ if (canvasIngresos && typeof Chart !== 'undefined') {
     let ingresos = 0;
     let confirmadas = 0;
     let pendientes = 0;
+    let ticketPromedio = 0;
 
     reservas.forEach((r) => {
   const estado = (r.estado || '').toLowerCase();
@@ -1265,6 +1266,9 @@ if (canvasIngresos && typeof Chart !== 'undefined') {
     confirmadas++;
     ingresos += precio;
   }
+  if (confirmadas > 0) {
+  ticketPromedio = ingresos / confirmadas;
+}
 
   if (estado === 'pendiente') {
     pendientes++;
@@ -1276,6 +1280,7 @@ if (canvasIngresos && typeof Chart !== 'undefined') {
     }
     const statConfirmadas = document.getElementById('admin-stat-confirmadas');
 const statPendientes = document.getElementById('admin-stat-pendientes');
+const statTicket = document.getElementById('admin-stat-ticket');
 
 if (statConfirmadas) {
   statConfirmadas.textContent = confirmadas;
@@ -1283,6 +1288,10 @@ if (statConfirmadas) {
 
 if (statPendientes) {
   statPendientes.textContent = pendientes;
+}
+if (statTicket) {
+  statTicket.textContent =
+    `$${Math.round(ticketPromedio).toLocaleString('es-CL')}`;
 }
 
     if (reservas.length === 0) {
