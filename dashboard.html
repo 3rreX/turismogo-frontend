@@ -948,6 +948,23 @@ button:hover {
   color: #166534;
   border: 1px solid #86efac;
 }
+.admin-filtros {
+  display: flex;
+  gap: 16px;
+  margin: 24px 0;
+  flex-wrap: wrap;
+}
+
+.admin-filtros input,
+.admin-filtros select {
+  flex: 1;
+  min-width: 260px;
+  padding: 14px;
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  background: white;
+  font-size: 14px;
+}
   </style>
 </head>
 <body>
@@ -1095,6 +1112,21 @@ button:hover {
 
       <h3>Servicios publicados</h3>
       <div id="admin-servicios" class="grid"></div>
+      <div class="admin-filtros">
+  <input
+    type="text"
+    id="filtroReservaTexto"
+    placeholder="Buscar por cliente o servicio..."
+  />
+
+  <select id="filtroReservaEstado">
+    <option value="">Todos los estados</option>
+    <option value="pendiente">Pendiente</option>
+    <option value="confirmada">Confirmada</option>
+    <option value="rechazada">Rechazada</option>
+    <option value="cancelada">Cancelada</option>
+  </select>
+</div>
 
       <h3>Reservas del sistema</h3>
       <div id="admin-reservas-recientes" class="panel" style="margin-bottom: 20px;">

@@ -1038,6 +1038,50 @@ async function cargarReservasAdmin() {
     }
 
     const reservas = Array.isArray(data) ? data : [];
+    const filtroTexto = document.getElementById('filtroReservaTexto');
+const filtroEstado = document.getElementById('filtroReservaEstado');
+
+let reservasFiltradas = [...reservas];
+
+const aplicarFiltros = () => {
+  const texto = (filtroTexto?.value || '').toLowerCase();
+  const estadoFiltro = (filtroEstado?.value || '').toLowerCase();
+
+  reservasFiltradas = reservas.filter((r) => {
+    const cliente = (
+      r.nombreCliente ||
+      r.usuarioId?.username ||
+      ''
+    ).toLowerCase();
+
+    const servicio = (
+      r.servicio ||
+      r.servicioId?.nombre ||
+      ''
+    ).toLowerCase();
+
+    const estado = (r.estado || '').toLowerCase();
+
+    const coincideTexto =
+      cliente.includes(texto) ||
+      servicio.includes(texto);
+
+    const coincideEstado =
+      !estadoFiltro || estado === estadoFiltro;
+
+    return coincideTexto && coincideEstado;
+  });
+
+  renderReservasAdmin(reservasFiltradas);
+};
+
+if (filtroTexto) {
+  filtroTexto.oninput = aplicarFiltros;
+}
+
+if (filtroEstado) {
+  filtroEstado.onchange = aplicarFiltros;
+}
     const alertasAdmin = document.getElementById('admin-alertas');
 
 if (alertasAdmin) {
@@ -1242,7 +1286,7 @@ if (statPendientes) {
 }
 
     if (reservas.length === 0) {
-      cont.innerHTML = '<p>No existen reservas registradas.</p>';
+      renderReservasAdmin(reservasFiltradas);
       return;
     }
 
@@ -1725,4 +1769,17 @@ async function actualizarEstadoReservaAdmin(idReserva, nuevoEstado) {
     console.error('Error al actualizar reserva:', error);
     alert('Error al actualizar la reserva.');
   }
+}
+function renderReservasAdmin(reservas) {
+  const cont = document.getElementById('admin-reservas');
+  if (!cont) return;
+
+  if (reservas.length === 0) {
+    cont.innerHTML = '<p>No se encontraron reservas.</p>';
+    return;
+  }
+
+  cont.innerHTML = reservas.map((r) => {
+    // aquí pegas el return actual completo
+  }).join('');
 }
