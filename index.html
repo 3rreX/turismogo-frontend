@@ -459,16 +459,16 @@
     </div>
 
     <nav class="nav-links">
-      <a href="#">Inicio</a>
-      <a href="#">Mis suscripciones</a>
-      <a href="#">Blog</a>
-      <a href="#">Notificaciones</a>
-      <a href="#">Reserva online</a>
-    </nav>
+  <a href="#inicio">Inicio</a>
+  <a href="#servicios">Servicios</a>
+  <a href="#propietarios">Propietarios</a>
+  <a href="#contacto">Contacto</a>
+  <a href="#login">Iniciar sesión</a>
+</nav>
   </header>
 
   <main>
-    <section class="hero">
+    <section class="hero" id="inicio">
       <div class="hero-grid">
         <div>
           <h1 class="hero-title">
@@ -482,7 +482,7 @@
           </div>
         </div>
 
-        <aside class="login-card">
+        <aside class="login-card" id="login">
           <h2>Iniciar sesión</h2>
           <p>Accede para reservar servicios turísticos o administrar tus publicaciones.</p>
 
@@ -491,7 +491,7 @@
 
           <button class="primary-btn" onclick="login()">Ingresar</button>
           <button class="secondary-register-btn" onclick="mostrarRegistroPropietario()">
-          Registrarse como propietario
+          Publicar mi servicio
           </button>
 
           <p id="error"></p>
@@ -522,7 +522,7 @@
 </div>
 </div>
 
-    <section class="featured">
+    <section class="featured" id="servicios">
   <h2>Destacados en Magallanes</h2>
   <p>Explora servicios turísticos publicados por propietarios verificados.</p>
 
@@ -561,7 +561,54 @@
         </div>
       </div>
     </section>
+<section class="owner-public-section" id="propietarios">
+  <div>
+    <span class="section-label">Para propietarios</span>
+    <h2>Publica tus servicios turísticos en TurismoGO</h2>
+    <p>
+      Si tienes alojamientos, vehículos, tours o experiencias en la Patagonia,
+      puedes incorporarlos a nuestra plataforma y recibir reservas directamente.
+    </p>
+  </div>
 
+  <div class="owner-public-card">
+    <h3>Beneficios para propietarios</h3>
+    <ul>
+      <li>Publicación de servicios turísticos.</li>
+      <li>Gestión de reservas desde un panel privado.</li>
+      <li>Pagos online mediante Webpay.</li>
+      <li>Mayor visibilidad para viajeros que visitan Magallanes.</li>
+    </ul>
+
+    <button onclick="mostrarRegistroPropietario()" class="primary-btn">
+      Solicitar publicación
+    </button>
+  </div>
+</section>
+
+<section class="contact-section" id="contacto">
+  <div>
+    <span class="section-label">Contacto</span>
+    <h2>¿Necesitas ayuda?</h2>
+    <p>
+      Escríbenos para consultas sobre reservas, publicación de servicios turísticos,
+      soporte para propietarios o información general de TurismoGO.
+    </p>
+  </div>
+
+  <div class="contact-card">
+    <p><strong>Correo electrónico</strong></p>
+    <a href="mailto:reservas@turismogochile.com">
+      reservas@turismogochile.com
+    </a>
+
+    <p><strong>Teléfono</strong></p>
+    <a href="tel:+56946768993">+56 9 48005552</a>
+
+    <p><strong>Ubicación</strong></p>
+    <span>Región de Magallanes, Chile</span>
+  </div>
+</section>
     <section class="cta">
       <h2>Tu aventura comienza aquí</h2>
       <p>Descubre la Región de Magallanes con el vehículo, alojamiento o experiencia perfecta para tu estadía.</p>
