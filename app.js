@@ -1155,17 +1155,18 @@ async function solicitarReservaPublica() {
     const fechaInicio = document.getElementById('detalle-inicio').value;
     const fechaFin = document.getElementById('detalle-fin').value;
     const personas = document.getElementById('detalle-personas').value;
+
     const nombreCliente = document.getElementById('detalle-nombre-cliente').value.trim();
     const emailCliente = document.getElementById('detalle-email-cliente').value.trim();
     const telefonoCliente = document.getElementById('detalle-telefono-cliente').value.trim();
     const mensajeCliente = document.getElementById('detalle-mensaje-cliente').value.trim();
 
     if (!fechaInicio || !fechaFin || !nombreCliente || !emailCliente) {
-  alert('Debe ingresar nombre, correo electrónico y fechas de reserva.');
-  return;
-}
+      alert('Debe completar nombre, correo electrónico y fechas de reserva.');
+      return;
+    }
 
-    const res = await fetch(`${API_URL}/reserva-publica`, {
+    const res = await fetch(`${API_URL}/reserva-publica/pagar`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -1185,19 +1186,26 @@ async function solicitarReservaPublica() {
     const data = await res.json();
 
     if (!res.ok) {
-      alert(data.error || 'No fue posible registrar la reserva.');
+      alert(data.error || 'No fue posible iniciar el proceso de pago.');
       return;
     }
 
-    alert('¡Reserva confirmada con éxito! Tu solicitud fue registrada correctamente en TurismoGO.');
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = data.url;
 
-    document.getElementById('detalle-inicio').value = '';
-    document.getElementById('detalle-fin').value = '';
-    document.getElementById('detalle-personas').selectedIndex = 0;
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'token_ws';
+    input.value = data.token;
+
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
 
   } catch (error) {
-    console.error('Error en reserva pública:', error);
-    alert('Ocurrió un error al procesar la reserva.');
+    console.error('Error en pago de reserva pública:', error);
+    alert('Ocurrió un error al iniciar el pago.');
   }
 }
 async function cargarServiciosPublicos() {
