@@ -697,57 +697,68 @@ const confirmadas = reservas.filter(r => r.estado === 'confirmada').length;
 
 let ingresos = 0;
 
-reservas.forEach(r => {
-  if (r.estado === 'confirmada' && r.servicioId?.precio) {
-    ingresos += Number(r.servicioId.precio);
-  }
-});
+reservas.forEach((r) => {
 
-document.getElementById('stat-pendientes').textContent = pendientes;
-document.getElementById('stat-confirmadas').textContent = confirmadas;
-document.getElementById('stat-ingresos').textContent =
-  `$${ingresos.toLocaleString('es-CL')}`;
+  const nombreCliente =
+    r.usuarioId?.username ||
+    r.nombreCliente ||
+    'Cliente externo';
 
-    if (!res.ok) {
-      cont.innerHTML = `<p>${reservas.error || 'No se pudieron cargar las reservas.'}</p>`;
-      return;
-    }
+  const emailCliente =
+    r.emailCliente || 'No informado';
 
-    cont.innerHTML = '';
+  const telefonoCliente =
+    r.telefonoCliente || 'No informado';
 
-    if (!reservas.length) {
-      cont.innerHTML = '<p>No tienes reservas recibidas.</p>';
-      return;
-    }
+  const personasReserva =
+    r.personas || 'No informado';
 
-    reservas.forEach((r) => {
-  const nombreCliente = r.usuarioId?.username || r.nombreCliente || 'Cliente externo';
-  const emailCliente = r.emailCliente || 'No informado';
-  const telefonoCliente = r.telefonoCliente || 'No informado';
-  const personasReserva = r.personas || 'No informado';
-  const mensajeCliente = r.mensajeCliente || 'Sin mensaje adicional';
+  const mensajeCliente =
+    r.mensajeCliente || 'Sin mensaje adicional';
 
   cont.innerHTML += `
-    <div class="card">
-      <h3>${r.servicio}</h3>
+    <div class="reservation-card">
 
-      <p><b>Cliente:</b> ${nombreCliente}</p>
-      <p><b>Correo:</b> ${emailCliente}</p>
-      <p><b>Teléfono:</b> ${telefonoCliente}</p>
-      <p><b>Personas:</b> ${personasReserva}</p>
-      <p><b>Mensaje:</b> ${mensajeCliente}</p>
+      <div class="reservation-top">
+        <div>
+          <h3>${r.servicio}</h3>
+          <p>Reserva recibida desde TurismoGO</p>
+        </div>
 
-      <p><b>Fecha inicio:</b> ${r.fechaInicio}</p>
-      <p><b>Fecha fin:</b> ${r.fechaFin}</p>
-      <p><b>Estado:</b> ${r.estado}</p>
+        <span class="status-badge status-${r.estado}">
+          ${r.estado}
+        </span>
+      </div>
+
+      <p><strong>Cliente:</strong> ${nombreCliente}</p>
+      <p><strong>Correo:</strong> ${emailCliente}</p>
+      <p><strong>Teléfono:</strong> ${telefonoCliente}</p>
+      <p><strong>Personas:</strong> ${personasReserva}</p>
+      <p><strong>Mensaje:</strong> ${mensajeCliente}</p>
+
+      <div class="reservation-dates">
+        <div>
+          <span>Fecha inicio</span>
+          <strong>${r.fechaInicio}</strong>
+        </div>
+
+        <div>
+          <span>Fecha fin</span>
+          <strong>${r.fechaFin}</strong>
+        </div>
+      </div>
 
       <button onclick="cambiarEstadoReserva('${r._id}', 'confirmada')">
-        Confirmar
+        Confirmar reserva
       </button>
 
-      <button onclick="cambiarEstadoReserva('${r._id}', 'rechazada')">
-        Rechazar
+      <button
+        class="cancel-btn"
+        onclick="cambiarEstadoReserva('${r._id}', 'rechazada')"
+      >
+        Rechazar reserva
       </button>
+
     </div>
   `;
 });
