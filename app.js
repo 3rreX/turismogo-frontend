@@ -1011,66 +1011,131 @@ async function cargarServiciosAdmin() {
   }
 }
 async function cargarReservasAdmin() {
+  const cont = document.getElementById('admin-reservas');
+  if (!cont) return;
+
   try {
-    const cont = document.getElementById('admin-reservas');
-    if (!cont) return;
+    cont.innerHTML = '<p>Cargando reservas...</p>';
 
     const token = localStorage.getItem('token');
 
-    const res = await fetch(`${API_URL}/admin/reservas`, {
-      headers: {
-        'Authorization': token
-      }
-    });
-
-    const reservas = await res.json();
-
-    if (!res.ok) {
-      cont.innerHTML = `<p>${reservas.error || 'No se pudieron cargar reservas.'}</p>`;
+    if (!token) {
+      cont.innerHTML = '<p>No hay sesión activa. Inicia sesión nuevamente.</p>';
       return;
     }
 
-document.getElementById('admin-stat-reservas').textContent = reservas.length;
+    const res = await fetch(`${API_URL}/admin/reservas`, {
+      headers: {
+        Authorization: token
+      }
+    });
 
-let ingresos = 0;
+    const data = await res.json();
 
-reservas.forEach(r => {
-  if (r.estado === 'confirmada' && r.servicioId?.precio) {
-    ingresos += Number(r.servicioId.precio);
-  }
-});
+    if (!res.ok) {
+      cont.innerHTML = `<p>${data.error || 'No se pudieron cargar las reservas.'}</p>`;
+      return;
+    }
 
-document.getElementById('admin-stat-ingresos').textContent =
-  `$${ingresos.toLocaleString('es-CL')}`;
-    cont.innerHTML = '';
+    const reservas = Array.isArray(data) ? data : [];
+
+    const statReservas = document.getElementById('admin-stat-reservas');
+    const statIngresos = document.getElementById('admin-stat-ingresos');
+
+    if (statReservas) {
+      statReservas.textContent = reservas.length;
+    }
+
+    let ingresos = 0;
 
     reservas.forEach((r) => {
-  const estado = r.estado || 'pendiente';
+      const estado = (r.estado || '').toLowerCase();
 
-  cont.innerHTML += `
-    <article class="admin-reservation-card">
-      <div class="admin-card-top">
-        <div>
-          <h3>${r.servicio}</h3>
-          <p>Reserva del sistema</p>
-        </div>
+      const precio =
+        Number(r.montoTotal) ||
+        Number(r.precio) ||
+        Number(r.servicioId?.precio) ||
+        0;
 
-        <span class="status-badge status-${estado}">
-          ${estado}
-        </span>
-      </div>
+      if (estado === 'confirmada' || estado === 'pagada') {
+        ingresos += precio;
+      }
+    });
 
-      <div class="admin-user-info">
-        <p><b>Cliente:</b> ${r.usuarioId?.username || 'No disponible'}</p>
-        <p><b>Fecha inicio:</b> ${r.fechaInicio}</p>
-        <p><b>Fecha fin:</b> ${r.fechaFin}</p>
-      </div>
-    </article>
-  `;
-});
+    if (statIngresos) {
+      statIngresos.textContent = `$${ingresos.toLocaleString('es-CL')}`;
+    }
+
+    if (reservas.length === 0) {
+      cont.innerHTML = '<p>No existen reservas registradas.</p>';
+      return;
+    }
+
+    cont.innerHTML = reservas.map((r) => {
+      const estado = r.estado || 'pendiente';
+
+      const servicio =
+        r.servicio ||
+        r.servicioId?.nombre ||
+        'Servicio no disponible';
+
+      const cliente =
+        r.nombreCliente ||
+        r.usuarioId?.username ||
+        'Cliente no disponible';
+
+      const email =
+        r.emailCliente ||
+        r.usuarioId?.email ||
+        'Correo no disponible';
+
+      const telefono =
+        r.telefonoCliente ||
+        'Teléfono no disponible';
+
+      const fechaInicio = r.fechaInicio
+        ? new Date(r.fechaInicio).toLocaleDateString('es-CL')
+        : 'No disponible';
+
+      const fechaFin = r.fechaFin
+        ? new Date(r.fechaFin).toLocaleDateString('es-CL')
+        : 'No disponible';
+
+      const precio =
+        Number(r.montoTotal) ||
+        Number(r.precio) ||
+        Number(r.servicioId?.precio) ||
+        0;
+
+      return `
+        <article class="admin-reservation-card">
+          <div class="admin-card-top">
+            <div>
+              <h3>${servicio}</h3>
+              <p>Reserva generada desde TurismoGO</p>
+            </div>
+
+            <span class="status-badge status-${estado}">
+              ${estado}
+            </span>
+          </div>
+
+          <div class="admin-user-info">
+            <p><b>Cliente:</b> ${cliente}</p>
+            <p><b>Correo:</b> ${email}</p>
+            <p><b>Teléfono:</b> ${telefono}</p>
+            <p><b>Fecha inicio:</b> ${fechaInicio}</p>
+            <p><b>Fecha fin:</b> ${fechaFin}</p>
+            <p><b>Personas:</b> ${r.personas || 1}</p>
+            <p><b>Monto:</b> $${precio.toLocaleString('es-CL')}</p>
+          </div>
+        </article>
+      `;
+    }).join('');
 
   } catch (error) {
     console.error('Error admin reservas:', error);
+    cont.innerHTML = '<p>Error al cargar las reservas del administrador.</p>';
   }
 }
 async function cambiarRolUsuario(usuarioId, nuevoRole) {
