@@ -1251,6 +1251,7 @@ if (canvasIngresos && typeof Chart !== 'undefined') {
     let confirmadas = 0;
     let pendientes = 0;
     let ticketPromedio = 0;
+    let pagosFallidos = 0;
 
     reservas.forEach((r) => {
   const estado = (r.estado || '').toLowerCase();
@@ -1273,6 +1274,9 @@ if (canvasIngresos && typeof Chart !== 'undefined') {
   if (estado === 'pendiente') {
     pendientes++;
   }
+  if ((r.pagoEstado || '').toLowerCase() === 'fallido') {
+  pagosFallidos++;
+}
 });
 
     if (statIngresos) {
@@ -1281,6 +1285,7 @@ if (canvasIngresos && typeof Chart !== 'undefined') {
     const statConfirmadas = document.getElementById('admin-stat-confirmadas');
 const statPendientes = document.getElementById('admin-stat-pendientes');
 const statTicket = document.getElementById('admin-stat-ticket');
+const statPagosFallidos = document.getElementById('admin-stat-pagos-fallidos');
 
 if (statConfirmadas) {
   statConfirmadas.textContent = confirmadas;
@@ -1298,6 +1303,9 @@ if (statTicket) {
       renderReservasAdmin(reservasFiltradas);
       return;
     }
+    if (statPagosFallidos) {
+  statPagosFallidos.textContent = pagosFallidos;
+}
 
     cont.innerHTML = reservas.map((r) => {
       const estado = r.estado || 'pendiente';
