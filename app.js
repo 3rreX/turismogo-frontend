@@ -721,15 +721,33 @@ document.getElementById('stat-ingresos').textContent =
     }
 
     reservas.forEach((r) => {
-  const nombreCliente = r.usuarioId?.username || 'Cliente externo';
+  const nombreCliente = r.usuarioId?.username || r.nombreCliente || 'Cliente externo';
+  const emailCliente = r.emailCliente || 'No informado';
+  const telefonoCliente = r.telefonoCliente || 'No informado';
+  const personasReserva = r.personas || 'No informado';
+  const mensajeCliente = r.mensajeCliente || 'Sin mensaje adicional';
 
   cont.innerHTML += `
     <div class="card">
       <h3>${r.servicio}</h3>
+
       <p><b>Cliente:</b> ${nombreCliente}</p>
+      <p><b>Correo:</b> ${emailCliente}</p>
+      <p><b>Teléfono:</b> ${telefonoCliente}</p>
+      <p><b>Personas:</b> ${personasReserva}</p>
+      <p><b>Mensaje:</b> ${mensajeCliente}</p>
+
       <p><b>Fecha inicio:</b> ${r.fechaInicio}</p>
       <p><b>Fecha fin:</b> ${r.fechaFin}</p>
       <p><b>Estado:</b> ${r.estado}</p>
+
+      <button onclick="cambiarEstadoReserva('${r._id}', 'confirmada')">
+        Confirmar
+      </button>
+
+      <button onclick="cambiarEstadoReserva('${r._id}', 'rechazada')">
+        Rechazar
+      </button>
     </div>
   `;
 });
@@ -1126,11 +1144,15 @@ async function solicitarReservaPublica() {
     const fechaInicio = document.getElementById('detalle-inicio').value;
     const fechaFin = document.getElementById('detalle-fin').value;
     const personas = document.getElementById('detalle-personas').value;
+    const nombreCliente = document.getElementById('detalle-nombre-cliente').value.trim();
+    const emailCliente = document.getElementById('detalle-email-cliente').value.trim();
+    const telefonoCliente = document.getElementById('detalle-telefono-cliente').value.trim();
+    const mensajeCliente = document.getElementById('detalle-mensaje-cliente').value.trim();
 
-    if (!fechaInicio || !fechaFin) {
-      alert('Debe seleccionar las fechas de llegada y salida.');
-      return;
-    }
+    if (!fechaInicio || !fechaFin || !nombreCliente || !emailCliente) {
+  alert('Debe ingresar nombre, correo electrónico y fechas de reserva.');
+  return;
+}
 
     const res = await fetch(`${API_URL}/reserva-publica`, {
       method: 'POST',
@@ -1141,7 +1163,11 @@ async function solicitarReservaPublica() {
         servicioId: servicioActualId,
         fechaInicio,
         fechaFin,
-        personas
+        personas,
+        nombreCliente,
+        emailCliente,
+        telefonoCliente,
+        mensajeCliente
       })
     });
 
