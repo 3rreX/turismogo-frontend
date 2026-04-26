@@ -1047,24 +1047,42 @@ async function cargarReservasAdmin() {
     }
 
     let ingresos = 0;
+    let confirmadas = 0;
+    let pendientes = 0;
 
     reservas.forEach((r) => {
-      const estado = (r.estado || '').toLowerCase();
+  const estado = (r.estado || '').toLowerCase();
 
-      const precio =
-        Number(r.montoTotal) ||
-        Number(r.precio) ||
-        Number(r.servicioId?.precio) ||
-        0;
+  const precio =
+    Number(r.montoPagado) ||
+    Number(r.montoTotal) ||
+    Number(r.precio) ||
+    Number(r.servicioId?.precio) ||
+    0;
 
-      if (estado === 'confirmada' || estado === 'pagada') {
-        ingresos += precio;
-      }
-    });
+  if (estado === 'confirmada') {
+    confirmadas++;
+    ingresos += precio;
+  }
+
+  if (estado === 'pendiente') {
+    pendientes++;
+  }
+});
 
     if (statIngresos) {
       statIngresos.textContent = `$${ingresos.toLocaleString('es-CL')}`;
     }
+    const statConfirmadas = document.getElementById('admin-stat-confirmadas');
+const statPendientes = document.getElementById('admin-stat-pendientes');
+
+if (statConfirmadas) {
+  statConfirmadas.textContent = confirmadas;
+}
+
+if (statPendientes) {
+  statPendientes.textContent = pendientes;
+}
 
     if (reservas.length === 0) {
       cont.innerHTML = '<p>No existen reservas registradas.</p>';
