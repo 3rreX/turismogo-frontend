@@ -1235,11 +1235,10 @@ async function cargarServiciosPublicos() {
   }
 }
 function mostrarRegistroPropietario() {
-  const registro = document.getElementById('registro-propietario');
+  const modal = document.getElementById('registro-propietario');
+  if (!modal) return;
 
-  if (!registro) return;
-
-  registro.style.display = registro.style.display === 'none' ? 'block' : 'none';
+  modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
 }
 async function registrarPropietarioConPago() {
   try {
