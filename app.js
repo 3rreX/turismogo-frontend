@@ -1026,14 +1026,10 @@ async function actualizarSuscripcionUsuario(usuarioId, suscripcionActiva, plan) 
 }
 async function simularPagoPlan(plan) {
   try {
-    const confirmar = confirm(`¿Deseas activar el plan ${plan.toUpperCase()}?`);
-
-    if (!confirmar) return;
-
     const token = localStorage.getItem('token');
 
-    const res = await fetch(`${API_URL}/mi-suscripcion`, {
-      method: 'PUT',
+    const res = await fetch(`${API_URL}/webpay/crear`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': token
@@ -1044,15 +1040,25 @@ async function simularPagoPlan(plan) {
     const data = await res.json();
 
     if (!res.ok) {
-      alert(data.error || 'No se pudo activar el plan');
+      alert(data.error || 'No se pudo iniciar el pago');
       return;
     }
 
-    alert(`Plan ${plan.toUpperCase()} activado correctamente`);
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = data.url;
 
-    location.reload();
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'token_ws';
+    input.value = data.token;
+
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+
   } catch (error) {
-    console.error('Error al activar plan:', error);
-    alert('Error al activar plan');
+    console.error('Error Webpay:', error);
+    alert('Error iniciando pago');
   }
 }
