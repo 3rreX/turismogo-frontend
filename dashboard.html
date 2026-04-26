@@ -901,6 +901,34 @@ button:hover {
 .recent-row small {
   color: #6b7280;
 }
+.top-service-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.top-service-row:last-child {
+  border-bottom: none;
+}
+
+.top-service-row strong {
+  color: #08256f;
+}
+
+.top-service-row p {
+  margin: 4px 0 0;
+  color: #64748b;
+}
+
+.top-service-row span {
+  background: #0b6fa4;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: bold;
+}
   </style>
 </head>
 <body>
@@ -1052,6 +1080,10 @@ button:hover {
       <div id="admin-reservas-recientes" class="panel" style="margin-bottom: 20px;">
   <h3>Últimas reservas recientes</h3>
   <div id="tabla-reservas-recientes"></div>
+</div>
+<div id="admin-top-servicios" class="panel" style="margin-bottom: 20px;">
+  <h3>Top servicios más reservados</h3>
+  <div id="lista-top-servicios"></div>
 </div>
       <div id="admin-reservas" class="grid"></div>
     </section>

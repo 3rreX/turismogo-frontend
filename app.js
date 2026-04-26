@@ -1074,6 +1074,39 @@ if (tablaRecientes) {
     `;
   }).join('');
 }
+const listaTopServicios = document.getElementById('lista-top-servicios');
+
+if (listaTopServicios) {
+  const conteoServicios = {};
+
+  reservas.forEach((r) => {
+    const servicio =
+      r.servicio ||
+      r.servicioId?.nombre ||
+      'Servicio no disponible';
+
+    conteoServicios[servicio] = (conteoServicios[servicio] || 0) + 1;
+  });
+
+  const topServicios = Object.entries(conteoServicios)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
+
+  if (topServicios.length === 0) {
+    listaTopServicios.innerHTML = '<p>No hay datos suficientes.</p>';
+  } else {
+    listaTopServicios.innerHTML = topServicios.map(([servicio, total], index) => `
+      <div class="top-service-row">
+        <div>
+          <strong>${index + 1}. ${servicio}</strong>
+          <p>${total} reserva${total !== 1 ? 's' : ''}</p>
+        </div>
+
+        <span>${total}</span>
+      </div>
+    `).join('');
+  }
+}
 
     const statReservas = document.getElementById('admin-stat-reservas');
     const statIngresos = document.getElementById('admin-stat-ingresos');
