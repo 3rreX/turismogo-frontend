@@ -1129,6 +1129,19 @@ async function cargarReservasAdmin() {
             <p><b>Personas:</b> ${r.personas || 1}</p>
             <p><b>Monto:</b> $${precio.toLocaleString('es-CL')}</p>
           </div>
+          <div class="admin-card-actions">
+  <button onclick="actualizarEstadoReservaAdmin('${r._id}', 'confirmada')" class="btn-admin-confirmar">
+    Confirmar
+  </button>
+
+  <button onclick="actualizarEstadoReservaAdmin('${r._id}', 'rechazada')" class="btn-admin-rechazar">
+    Rechazar
+  </button>
+
+  <button onclick="actualizarEstadoReservaAdmin('${r._id}', 'cancelada')" class="btn-admin-cancelar">
+    Cancelar
+  </button>
+</div>
         </article>
       `;
     }).join('');
@@ -1497,5 +1510,44 @@ async function registrarPropietarioConPago() {
   } catch (error) {
     console.error('Error en registro de propietario:', error);
     alert('Ocurrió un error al registrar la cuenta de propietario.');
+  }
+}
+async function actualizarEstadoReservaAdmin(idReserva, nuevoEstado) {
+  try {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      alert('Sesión expirada. Inicia sesión nuevamente.');
+      return;
+    }
+
+    const confirmar = confirm(`¿Deseas cambiar esta reserva a "${nuevoEstado}"?`);
+
+    if (!confirmar) return;
+
+    const res = await fetch(`${API_URL}/reservas/${idReserva}/estado`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token
+      },
+      body: JSON.stringify({
+        estado: nuevoEstado
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || 'No se pudo actualizar la reserva.');
+      return;
+    }
+
+    alert('Reserva actualizada correctamente.');
+    cargarReservasAdmin();
+
+  } catch (error) {
+    console.error('Error al actualizar reserva:', error);
+    alert('Error al actualizar la reserva.');
   }
 }
