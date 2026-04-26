@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Resultado de reserva - TurismoGO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #1f2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .card {
+      background: #ffffff;
+      max-width: 460px;
+      width: 90%;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 12px;
+      font-size: 28px;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #4b5563;
+    }
+
+    .success { color: #15803d; }
+    .error { color: #b91c1c; }
+    .warning { color: #b45309; }
+
+    .btn {
+      display: inline-block;
+      margin-top: 24px;
+      padding: 12px 20px;
+      background: #2563eb;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1 id="titulo">Procesando resultado...</h1>
+    <p id="mensaje">Estamos verificando el estado de tu reserva.</p>
+
+    <a class="btn" href="index.html">Volver al inicio</a>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const pago = params.get('pago');
+
+    const titulo = document.getElementById('titulo');
+    const mensaje = document.getElementById('mensaje');
+
+    if (pago === 'exitoso') {
+      titulo.textContent = 'Reserva confirmada';
+      titulo.className = 'success';
+      mensaje.textContent = 'Tu pago fue aprobado correctamente. La reserva quedó registrada y confirmada.';
+    } else if (pago === 'fallido') {
+      titulo.textContent = 'Pago fallido';
+      titulo.className = 'error';
+      mensaje.textContent = 'El pago no pudo ser aprobado. Puedes intentar realizar la reserva nuevamente.';
+    } else if (pago === 'cancelado') {
+      titulo.textContent = 'Pago cancelado';
+      titulo.className = 'warning';
+      mensaje.textContent = 'La operación fue cancelada antes de finalizar el pago.';
+    } else {
+      titulo.textContent = 'No fue posible confirmar la reserva';
+      titulo.className = 'error';
+      mensaje.textContent = 'Ocurrió un problema al validar el pago. Si realizaste el cobro, contacta al soporte.';
+    }
+  </script>
+
+</body>
+</html>
