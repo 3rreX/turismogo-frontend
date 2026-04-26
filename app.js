@@ -255,7 +255,11 @@ async function cargarServicios() {
 
     const res = await fetch(`${API_URL}/servicios`);
     const servicios = await res.json();
-    document.getElementById('stat-servicios').textContent = servicios.length;
+    const statServicios = document.getElementById('stat-servicios');
+
+if (statServicios) {
+  statServicios.textContent = servicios.length;
+}
 
     if (!res.ok) {
       cont.innerHTML = `<p>${servicios.error || 'No se pudieron cargar los servicios.'}</p>`;
