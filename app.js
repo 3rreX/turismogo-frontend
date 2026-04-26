@@ -1504,6 +1504,76 @@ async function exportarReservasAdmin() {
     alert('Error al exportar reservas.');
   }
 }
+async function exportarReservasPDFAdmin() {
+  try {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      alert('Sesión expirada. Inicia sesión nuevamente.');
+      return;
+    }
+
+    const res = await fetch(`${API_URL}/admin/reservas`, {
+      headers: {
+        Authorization: token
+      }
+    });
+
+    const reservas = await res.json();
+
+    if (!res.ok) {
+      alert(reservas.error || 'No se pudieron exportar las reservas.');
+      return;
+    }
+
+    if (!Array.isArray(reservas) || reservas.length === 0) {
+      alert('No hay reservas para exportar.');
+      return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.text('TurismoGO - Reporte de Reservas', 14, 20);
+
+    doc.setFontSize(10);
+    doc.text(`Fecha de emisión: ${new Date().toLocaleDateString('es-CL')}`, 14, 28);
+
+    let y = 40;
+
+    reservas.forEach((r, index) => {
+      const cliente = r.nombreCliente || r.usuarioId?.username || 'No disponible';
+      const servicio = r.servicio || r.servicioId?.nombre || 'No disponible';
+      const estado = r.estado || 'pendiente';
+      const pago = r.pagoEstado || 'pendiente';
+      const monto = Number(r.montoPagado || r.servicioId?.precio || 0);
+
+      if (y > 260) {
+        doc.addPage();
+        y = 20;
+      }
+
+      doc.setFontSize(12);
+      doc.text(`${index + 1}. ${servicio}`, 14, y);
+
+      doc.setFontSize(10);
+      doc.text(`Cliente: ${cliente}`, 14, y + 7);
+      doc.text(`Estado reserva: ${estado}`, 14, y + 14);
+      doc.text(`Estado pago: ${pago}`, 14, y + 21);
+      doc.text(`Monto: $${monto.toLocaleString('es-CL')}`, 14, y + 28);
+      doc.text(`Fechas: ${r.fechaInicio || 'N/D'} al ${r.fechaFin || 'N/D'}`, 14, y + 35);
+
+      y += 48;
+    });
+
+    doc.save(`reservas-turismogo-${new Date().toISOString().slice(0, 10)}.pdf`);
+
+  } catch (error) {
+    console.error('Error exportando PDF:', error);
+    alert('Error al exportar PDF.');
+  }
+}
 async function simularPagoPlan(plan) {
   try {
     const token = localStorage.getItem('token');

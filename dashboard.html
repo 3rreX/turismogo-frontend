@@ -1130,6 +1130,9 @@ button:hover {
 <button onclick="exportarReservasAdmin()" class="btn-secondary">
   Exportar reservas
 </button>
+<button onclick="exportarReservasPDFAdmin()" class="btn-secondary">
+  Exportar PDF
+</button>
 
       <h3>Reservas del sistema</h3>
       <div id="admin-reservas-recientes" class="panel" style="margin-bottom: 20px;">
@@ -1149,6 +1152,7 @@ button:hover {
 
   </main>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="config.js"></script>
   <script src="app.js"></script>
   <div id="modalEditarServicio" class="modal-editar" style="display:none;">
