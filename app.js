@@ -1437,6 +1437,73 @@ async function actualizarSuscripcionUsuario(usuarioId, suscripcionActiva, plan) 
     alert('Error al actualizar suscripción');
   }
 }
+async function exportarReservasAdmin() {
+  try {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      alert('Sesión expirada. Inicia sesión nuevamente.');
+      return;
+    }
+
+    const res = await fetch(`${API_URL}/admin/reservas`, {
+      headers: {
+        Authorization: token
+      }
+    });
+
+    const reservas = await res.json();
+
+    if (!res.ok) {
+      alert(reservas.error || 'No se pudieron exportar las reservas.');
+      return;
+    }
+
+    if (!Array.isArray(reservas) || reservas.length === 0) {
+      alert('No hay reservas para exportar.');
+      return;
+    }
+
+    const filas = reservas.map((r) => ({
+      Cliente: r.nombreCliente || r.usuarioId?.username || 'No disponible',
+      Email: r.emailCliente || r.usuarioId?.email || 'No disponible',
+      Telefono: r.telefonoCliente || 'No disponible',
+      Servicio: r.servicio || r.servicioId?.nombre || 'No disponible',
+      FechaInicio: r.fechaInicio || 'No disponible',
+      FechaFin: r.fechaFin || 'No disponible',
+      Personas: r.personas || 'No informado',
+      EstadoReserva: r.estado || 'pendiente',
+      EstadoPago: r.pagoEstado || 'pendiente',
+      Monto: r.montoPagado || r.servicioId?.precio || 0
+    }));
+
+    const encabezados = Object.keys(filas[0]);
+
+    const csv = [
+      encabezados.join(';'),
+      ...filas.map(fila =>
+        encabezados.map(campo => `"${String(fila[campo]).replace(/"/g, '""')}"`).join(';')
+      )
+    ].join('\n');
+
+    const blob = new Blob([`\uFEFF${csv}`], {
+      type: 'text/csv;charset=utf-8;'
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = `reservas-turismogo-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+
+    URL.revokeObjectURL(url);
+
+  } catch (error) {
+    console.error('Error exportando reservas:', error);
+    alert('Error al exportar reservas.');
+  }
+}
 async function simularPagoPlan(plan) {
   try {
     const token = localStorage.getItem('token');
