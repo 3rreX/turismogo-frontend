@@ -721,25 +721,18 @@ document.getElementById('stat-ingresos').textContent =
     }
 
     reservas.forEach((r) => {
-      cont.innerHTML += `
-        <div class="card">
-          <h3>${r.servicio}</h3>
-          <p><b>Cliente:</b> ${r.usuarioId?.username || 'No disponible'}</p>
-          <p><b>Fecha inicio:</b> ${r.fechaInicio}</p>
-          <p><b>Fecha fin:</b> ${r.fechaFin}</p>
-          <p><b>Estado:</b> ${r.estado}</p>
+  const nombreCliente = r.usuarioId?.username || 'Cliente externo';
 
-          <button onclick="cambiarEstadoReserva('${r._id}', 'confirmada')">
-            Confirmar
-          </button>
-
-          <button onclick="cambiarEstadoReserva('${r._id}', 'rechazada')">
-            Rechazar
-          </button>
-        </div>
-      `;
-    });
-
+  cont.innerHTML += `
+    <div class="card">
+      <h3>${r.servicio}</h3>
+      <p><b>Cliente:</b> ${nombreCliente}</p>
+      <p><b>Fecha inicio:</b> ${r.fechaInicio}</p>
+      <p><b>Fecha fin:</b> ${r.fechaFin}</p>
+      <p><b>Estado:</b> ${r.estado}</p>
+    </div>
+  `;
+});
   } catch (error) {
     console.error('Error al cargar reservas del propietario:', error);
   }
