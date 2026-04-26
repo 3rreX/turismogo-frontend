@@ -1107,6 +1107,73 @@ if (listaTopServicios) {
     `).join('');
   }
 }
+const canvasIngresos = document.getElementById('graficoIngresosAdmin');
+
+if (canvasIngresos && typeof Chart !== 'undefined') {
+  const ingresosPorMes = {};
+
+  reservas.forEach((r) => {
+    const estado = (r.estado || '').toLowerCase();
+
+    if (estado !== 'confirmada') return;
+
+    const fechaBase = r.fechaInicio || r.createdAt;
+    if (!fechaBase) return;
+
+    const fecha = new Date(fechaBase);
+
+    if (isNaN(fecha.getTime())) return;
+
+    const mes = fecha.toLocaleDateString('es-CL', {
+      month: 'short',
+      year: 'numeric'
+    });
+
+    const monto =
+      Number(r.montoPagado) ||
+      Number(r.montoTotal) ||
+      Number(r.precio) ||
+      Number(r.servicioId?.precio) ||
+      0;
+
+    ingresosPorMes[mes] = (ingresosPorMes[mes] || 0) + monto;
+  });
+
+  const labels = Object.keys(ingresosPorMes);
+  const valores = Object.values(ingresosPorMes);
+
+  if (window.graficoIngresosAdminInstance) {
+    window.graficoIngresosAdminInstance.destroy();
+  }
+
+  window.graficoIngresosAdminInstance = new Chart(canvasIngresos, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Ingresos confirmados',
+        data: valores
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true
+        }
+      },
+      scales: {
+        y: {
+          ticks: {
+            callback: function(value) {
+              return '$' + value.toLocaleString('es-CL');
+            }
+          }
+        }
+      }
+    }
+  });
+}
 
     const statReservas = document.getElementById('admin-stat-reservas');
     const statIngresos = document.getElementById('admin-stat-ingresos');
