@@ -1750,8 +1750,10 @@ async function cargarServiciosPublicos() {
     const res = await fetch(`${API_URL}/servicios`);
     const servicios = await res.json();
 
-    if (!res.ok) {
-      cont.innerHTML = `<p>No se pudieron cargar los servicios.</p>`;
+    console.log('Servicios públicos:', servicios);
+
+    if (!res.ok || !Array.isArray(servicios)) {
+      cont.innerHTML = `<p>Error al cargar servicios.</p>`;
       return;
     }
 
@@ -1759,9 +1761,9 @@ async function cargarServiciosPublicos() {
 
     servicios.forEach((s) => {
       const imagenPrincipal =
-        s.imagenes && s.imagenes.length
+        s.imagenes && s.imagenes.length && s.imagenes[0]
           ? s.imagenes[0]
-          : s.imagen || 'https://via.placeholder.com/400x300';
+          : s.imagen || 'https://placehold.co/400x300?text=TurismoGO';
 
       cont.innerHTML += `
         <article class="public-service-card">
