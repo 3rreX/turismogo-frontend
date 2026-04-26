@@ -437,8 +437,13 @@ async function crearServicio() {
 }
 
 window.onload = () => {
+
   if (document.getElementById('servicios')) {
     cargarServicios();
+  }
+
+  if (document.getElementById('servicios-publicos')) {
+    cargarServiciosPublicos();
   }
 
   if (document.getElementById('reservas')) {
@@ -449,9 +454,14 @@ window.onload = () => {
     cargarPerfil();
   }
 
+  if (document.getElementById('detalle-galeria')) {
+    cargarDetalleServicio();
+  }
+
   mostrarPanelPropietario();
   mostrarPanelAdmin();
 };
+
 document.getElementById('nuevo-imagen')?.addEventListener('change', function (e) {
   const file = e.target.files[0];
   const preview = document.getElementById('preview-imagen');
@@ -1060,5 +1070,107 @@ async function simularPagoPlan(plan) {
   } catch (error) {
     console.error('Error Webpay:', error);
     alert('Error iniciando pago');
+  }
+}
+async function cargarDetalleServicio() {
+  try {
+    const contGaleria = document.getElementById('detalle-galeria');
+    if (!contGaleria) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    if (!id) {
+      document.getElementById('detalle-nombre').textContent = 'Servicio no encontrado';
+      return;
+    }
+
+    const res = await fetch(`${API_URL}/servicios/${id}/publico`);
+    const servicio = await res.json();
+
+    if (!res.ok) {
+      document.getElementById('detalle-nombre').textContent =
+        servicio.error || 'Servicio no disponible';
+      return;
+    }
+
+    const imagenes = servicio.imagenes && servicio.imagenes.length
+      ? servicio.imagenes
+      : [servicio.imagen];
+
+    document.getElementById('detalle-nombre').textContent = servicio.nombre;
+    document.getElementById('detalle-subtitulo').textContent = servicio.nombre;
+    document.getElementById('detalle-descripcion').textContent = servicio.descripcion;
+    document.getElementById('detalle-precio').textContent =
+      `$${Number(servicio.precio).toLocaleString('es-CL')}`;
+
+    const propietario = servicio.propietarioId?.username || 'Anfitrión TurismoGO';
+
+    document.getElementById('detalle-propietario').textContent =
+      `Anfitrión: ${propietario}`;
+
+    document.getElementById('owner-avatar').textContent =
+      propietario.charAt(0).toUpperCase();
+
+    contGaleria.innerHTML = `
+      <img class="main-img" src="${imagenes[0]}" alt="${servicio.nombre}">
+
+      <div class="gallery-small">
+        ${(imagenes.slice(1, 5).map(img => `
+          <img class="small-img" src="${img}" alt="${servicio.nombre}">
+        `).join(''))}
+      </div>
+    `;
+
+  } catch (error) {
+    console.error('Error detalle servicio:', error);
+  }
+}
+function solicitarReservaPublica() {
+  alert('Tu solicitud fue enviada. El propietario se pondrá en contacto contigo.');
+}
+async function cargarServiciosPublicos() {
+  try {
+    const cont = document.getElementById('servicios-publicos');
+    if (!cont) return;
+
+    const res = await fetch(`${API_URL}/servicios`);
+    const servicios = await res.json();
+
+    if (!res.ok) {
+      cont.innerHTML = `<p>No se pudieron cargar los servicios.</p>`;
+      return;
+    }
+
+    cont.innerHTML = '';
+
+    servicios.forEach((s) => {
+      const imagenPrincipal =
+        s.imagenes && s.imagenes.length
+          ? s.imagenes[0]
+          : s.imagen || 'https://via.placeholder.com/400x300';
+
+      cont.innerHTML += `
+        <article class="public-service-card">
+          <img src="${imagenPrincipal}" alt="${s.nombre}">
+
+          <div class="public-service-content">
+            <h3>${s.nombre}</h3>
+            <p>${s.descripcion}</p>
+
+            <p class="public-price">
+              $${Number(s.precio).toLocaleString('es-CL')}
+            </p>
+
+            <button onclick="window.location.href='servicio.html?id=${s._id}'">
+              Ver aviso
+            </button>
+          </div>
+        </article>
+      `;
+    });
+
+  } catch (error) {
+    console.error('Error al cargar servicios públicos:', error);
   }
 }
