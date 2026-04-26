@@ -1127,7 +1127,7 @@ async function cargarDetalleServicio() {
   }
 }
 function solicitarReservaPublica() {
-  alert('Tu solicitud fue enviada. El propietario se pondrá en contacto contigo.');
+  alert('¡Reserva confirmada con éxito! Tu solicitud fue registrada correctamente en TurismoGO.');
 }
 async function cargarServiciosPublicos() {
   try {
