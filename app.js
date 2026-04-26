@@ -3,6 +3,7 @@ async function login() {
     const userInput = document.getElementById('user');
     const passInput = document.getElementById('pass');
     const errorBox = document.getElementById('error');
+    
 
     if (!userInput || !passInput) return;
 
@@ -51,7 +52,7 @@ async function login() {
     }
   }
 }
-
+let servicioActualId = null;
 async function cargarPerfil() {
   try {
     const token = localStorage.getItem('token');
@@ -1079,6 +1080,7 @@ async function cargarDetalleServicio() {
 
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
+    servicioActualId = id;
 
     if (!id) {
       document.getElementById('detalle-nombre').textContent = 'Servicio no encontrado';
@@ -1126,8 +1128,47 @@ async function cargarDetalleServicio() {
     console.error('Error detalle servicio:', error);
   }
 }
-function solicitarReservaPublica() {
-  alert('¡Reserva confirmada con éxito! Tu solicitud fue registrada correctamente en TurismoGO.');
+async function solicitarReservaPublica() {
+  try {
+    const fechaInicio = document.getElementById('detalle-inicio').value;
+    const fechaFin = document.getElementById('detalle-fin').value;
+    const personas = document.getElementById('detalle-personas').value;
+
+    if (!fechaInicio || !fechaFin) {
+      alert('Debe seleccionar las fechas de llegada y salida.');
+      return;
+    }
+
+    const res = await fetch(`${API_URL}/reserva-publica`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        servicioId: servicioActualId,
+        fechaInicio,
+        fechaFin,
+        personas
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || 'No fue posible registrar la reserva.');
+      return;
+    }
+
+    alert('¡Reserva confirmada con éxito! Tu solicitud fue registrada correctamente en TurismoGO.');
+
+    document.getElementById('detalle-inicio').value = '';
+    document.getElementById('detalle-fin').value = '';
+    document.getElementById('detalle-personas').selectedIndex = 0;
+
+  } catch (error) {
+    console.error('Error en reserva pública:', error);
+    alert('Ocurrió un error al procesar la reserva.');
+  }
 }
 async function cargarServiciosPublicos() {
   try {
