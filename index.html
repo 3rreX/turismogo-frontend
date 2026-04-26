@@ -384,6 +384,37 @@
   font-weight: bold;
   margin-top: 12px;
 }
+.secondary-register-btn {
+  width: 100%;
+  padding: 13px;
+  background: #08256f;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+  margin-top: 12px;
+}
+
+.secondary-register-btn:hover {
+  background: #061b52;
+}
+
+.register-card {
+  margin-top: 24px;
+  border-top: 1px solid #c9d4f2;
+  padding-top: 24px;
+}
+
+.register-card select {
+  width: 100%;
+  padding: 13px;
+  margin-bottom: 14px;
+  border: 1px solid #c9d4f2;
+  background: #ffffff;
+  color: #08256f;
+  font-size: 15px;
+}
   </style>
 </head>
 <body>
@@ -426,11 +457,34 @@
           <input id="pass" type="password" placeholder="Contraseña">
 
           <button class="primary-btn" onclick="login()">Ingresar</button>
+          <button class="secondary-register-btn" onclick="mostrarRegistroPropietario()">
+          Registrarse como propietario
+          </button>
 
           <p id="error"></p>
         </aside>
       </div>
     </section>
+    <div id="registro-propietario" class="register-card" style="display:none;">
+  <h2>Registro de propietario</h2>
+  <p>Crea tu cuenta, selecciona un plan y activa tu suscripción para publicar servicios.</p>
+
+  <input id="reg-nombre" placeholder="Nombre completo">
+  <input id="reg-telefono" placeholder="Teléfono">
+  <input id="reg-email" type="email" placeholder="Correo electrónico">
+  <input id="reg-usuario" placeholder="Nombre de usuario">
+  <input id="reg-password" type="password" placeholder="Contraseña">
+
+  <select id="reg-plan">
+    <option value="basico">Plan Básico - $9.990 / mes</option>
+    <option value="pro">Plan Pro - $19.990 / mes</option>
+    <option value="premium">Plan Premium - $39.990 / mes</option>
+  </select>
+
+  <button class="primary-btn" onclick="registrarPropietarioConPago()">
+    Crear cuenta y pagar suscripción
+  </button>
+</div>
 
     <section class="featured">
   <h2>Destacados en Magallanes</h2>

@@ -1234,3 +1234,102 @@ async function cargarServiciosPublicos() {
     console.error('Error al cargar servicios públicos:', error);
   }
 }
+function mostrarRegistroPropietario() {
+  const registro = document.getElementById('registro-propietario');
+
+  if (!registro) return;
+
+  registro.style.display = registro.style.display === 'none' ? 'block' : 'none';
+}
+async function registrarPropietarioConPago() {
+  try {
+    const nombreCompleto = document.getElementById('reg-nombre').value.trim();
+    const telefono = document.getElementById('reg-telefono').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const username = document.getElementById('reg-usuario').value.trim();
+    const password = document.getElementById('reg-password').value.trim();
+    const plan = document.getElementById('reg-plan').value;
+
+    if (!nombreCompleto || !telefono || !email || !username || !password || !plan) {
+      alert('Debe completar todos los campos para registrar la cuenta de propietario.');
+      return;
+    }
+
+    const resRegistro = await fetch(`${API_URL}/register-propietario`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        nombreCompleto,
+        telefono,
+        email,
+        username,
+        password
+      })
+    });
+
+    const dataRegistro = await resRegistro.json();
+
+    if (!resRegistro.ok) {
+      alert(dataRegistro.error || 'No fue posible registrar la cuenta.');
+      return;
+    }
+
+    const resLogin = await fetch(`${API_URL}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username,
+        password
+      })
+    });
+
+    const dataLogin = await resLogin.json();
+
+    if (!resLogin.ok || !dataLogin.token) {
+      alert('Cuenta creada, pero no fue posible iniciar sesión automáticamente.');
+      return;
+    }
+
+    localStorage.setItem('token', dataLogin.token);
+
+    const payload = JSON.parse(atob(dataLogin.token.split('.')[1]));
+    localStorage.setItem('role', payload.role);
+
+    const resPago = await fetch(`${API_URL}/webpay/crear`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': dataLogin.token
+      },
+      body: JSON.stringify({ plan })
+    });
+
+    const dataPago = await resPago.json();
+
+    if (!resPago.ok) {
+      alert(dataPago.error || 'Cuenta creada, pero no fue posible iniciar el pago.');
+      return;
+    }
+
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = dataPago.url;
+
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'token_ws';
+    input.value = dataPago.token;
+
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+
+  } catch (error) {
+    console.error('Error en registro de propietario:', error);
+    alert('Ocurrió un error al registrar la cuenta de propietario.');
+  }
+}
