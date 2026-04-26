@@ -529,13 +529,8 @@ async function cargarMisServicios() {
         </div>
 
         <div class="owner-actions">
-          <button onclick='mostrarFormularioEditar(
-            ${JSON.stringify(s._id)},
-            ${JSON.stringify(s.nombre)},
-            ${JSON.stringify(s.descripcion)},
-            ${JSON.stringify(s.precio)}
-          )'>
-            Editar
+          <button onclick='abrirModalEditarServicio(${JSON.stringify(s)})'>
+          Editar
           </button>
 
           <button class="danger-btn" onclick="eliminarServicio('${s._id}')">
@@ -549,6 +544,94 @@ async function cargarMisServicios() {
 } catch (error) {
   console.error('Error al cargar mis servicios:', error);
 }
+}
+let servicioEditandoId = null;
+
+function abrirModalEditarServicio(servicio) {
+  servicioEditandoId = servicio._id;
+
+  document.getElementById('editarNombre').value = servicio.nombre || '';
+  document.getElementById('editarDescripcion').value = servicio.descripcion || '';
+  document.getElementById('editarPrecio').value = servicio.precio || '';
+  document.getElementById('editarImagenes').value = '';
+
+  const imagenesActuales = document.getElementById('imagenesActuales');
+  const imagenes = servicio.imagenes && servicio.imagenes.length
+    ? servicio.imagenes
+    : servicio.imagen
+      ? [servicio.imagen]
+      : [];
+
+  imagenesActuales.innerHTML = `
+    <h3>Imágenes actuales</h3>
+    <div class="owner-service-gallery">
+      ${
+        imagenes.length
+          ? imagenes.map(img => `
+              <div class="owner-image-box">
+                <img src="${img}" alt="${servicio.nombre}">
+                <button type="button" onclick='eliminarImagenDesdeModal(${JSON.stringify(servicio._id)}, ${JSON.stringify(img)})'>
+                  Eliminar imagen
+                </button>
+              </div>
+            `).join('')
+          : '<p>Este servicio no tiene imágenes cargadas.</p>'
+      }
+    </div>
+  `;
+
+  document.getElementById('modalEditarServicio').style.display = 'flex';
+}
+
+function cerrarModalEditarServicio() {
+  servicioEditandoId = null;
+  document.getElementById('modalEditarServicio').style.display = 'none';
+}
+
+async function guardarCambiosServicio() {
+  const nombre = document.getElementById('editarNombre').value.trim();
+  const descripcion = document.getElementById('editarDescripcion').value.trim();
+  const precio = document.getElementById('editarPrecio').value.trim();
+  const imagenFiles = document.getElementById('editarImagenes').files;
+
+  if (!servicioEditandoId) {
+    alert('No se encontró el servicio a editar.');
+    return;
+  }
+
+  if (!nombre || !descripcion || !precio) {
+    alert('Nombre, descripción y precio son obligatorios.');
+    return;
+  }
+
+  await editarServicio(
+    servicioEditandoId,
+    nombre,
+    descripcion,
+    precio,
+    imagenFiles
+  );
+
+  cerrarModalEditarServicio();
+}
+
+async function eliminarImagenDesdeModal(servicioId, imagenUrl) {
+  await eliminarImagenServicio(servicioId, imagenUrl);
+
+  const token = localStorage.getItem('token');
+
+  const res = await fetch(`${API_URL}/mis-servicios`, {
+    headers: {
+      'Authorization': token
+    }
+  });
+
+  const servicios = await res.json();
+  const servicioActualizado = servicios.find(s => s._id === servicioId);
+
+  if (servicioActualizado) {
+    abrirModalEditarServicio(servicioActualizado);
+  }
 }
 async function eliminarServicio(id) {
   try {

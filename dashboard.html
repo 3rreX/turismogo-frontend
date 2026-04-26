@@ -680,6 +680,42 @@ button:hover {
   color: #4b5563;
   line-height: 1.4;
 }
+.modal-editar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-contenido {
+  background: white;
+  width: 700px;
+  max-width: 95%;
+  padding: 30px;
+  border-radius: 14px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-contenido input,
+.modal-contenido textarea {
+  width: 100%;
+  margin-top: 8px;
+  margin-bottom: 18px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.modal-contenido textarea {
+  min-height: 120px;
+}
   </style>
 </head>
 <body>
@@ -824,5 +860,29 @@ button:hover {
   </main>
   <script src="config.js"></script>
   <script src="app.js"></script>
+  <div id="modalEditarServicio" class="modal-editar" style="display:none;">
+  <div class="modal-contenido">
+    <h2>Editar Servicio</h2>
+
+    <div id="imagenesActuales"></div>
+
+    <label>Agregar nuevas imágenes</label>
+    <input type="file" id="editarImagenes" multiple accept="image/*">
+
+    <label>Nombre</label>
+    <input type="text" id="editarNombre">
+
+    <label>Descripción</label>
+    <textarea id="editarDescripcion"></textarea>
+
+    <label>Precio</label>
+    <input type="number" id="editarPrecio">
+
+    <div style="margin-top:20px;">
+      <button onclick="guardarCambiosServicio()">Guardar cambios</button>
+      <button onclick="cerrarModalEditarServicio()">Cancelar</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
