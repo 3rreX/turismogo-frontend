@@ -882,6 +882,25 @@ button:hover {
     grid-template-columns: 1fr;
   }
 }
+.recent-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.recent-row:last-child {
+  border-bottom: none;
+}
+
+.recent-row strong {
+  color: #08256f;
+}
+
+.recent-row small {
+  color: #6b7280;
+}
   </style>
 </head>
 <body>
@@ -1030,6 +1049,10 @@ button:hover {
       <div id="admin-servicios" class="grid"></div>
 
       <h3>Reservas del sistema</h3>
+      <div id="admin-reservas-recientes" class="panel" style="margin-bottom: 20px;">
+  <h3>Últimas reservas recientes</h3>
+  <div id="tabla-reservas-recientes"></div>
+</div>
       <div id="admin-reservas" class="grid"></div>
     </section>
 

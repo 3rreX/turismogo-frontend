@@ -1038,6 +1038,42 @@ async function cargarReservasAdmin() {
     }
 
     const reservas = Array.isArray(data) ? data : [];
+    const tablaRecientes = document.getElementById('tabla-reservas-recientes');
+
+if (tablaRecientes) {
+  const recientes = [...reservas]
+    .reverse()
+    .slice(0, 5);
+
+  tablaRecientes.innerHTML = recientes.map(r => {
+    const cliente =
+      r.nombreCliente ||
+      r.usuarioId?.username ||
+      'Cliente no disponible';
+
+    const servicio =
+      r.servicio ||
+      r.servicioId?.nombre ||
+      'Servicio';
+
+    const estado = r.estado || 'pendiente';
+
+    return `
+      <div class="recent-row">
+        <div>
+          <strong>${cliente}</strong><br>
+          <small>${servicio}</small>
+        </div>
+
+        <div>
+          <span class="status-badge status-${estado}">
+            ${estado}
+          </span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
 
     const statReservas = document.getElementById('admin-stat-reservas');
     const statIngresos = document.getElementById('admin-stat-ingresos');
