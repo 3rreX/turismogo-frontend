@@ -1296,6 +1296,112 @@ footer {
 .public-price {
   font-size: 17px;
 }
+.owner-public-section,
+.contact-section {
+  max-width: 1080px;
+  margin: 70px auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 40px;
+  align-items: start;
+}
+
+.owner-public-card,
+.contact-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  padding: 28px;
+  box-shadow: 0 10px 28px rgba(8,37,111,0.07);
+}
+
+.owner-public-card ul {
+  margin: 0 0 22px;
+  padding-left: 20px;
+  color: #4966a3;
+  line-height: 1.7;
+}
+
+.contact-card a,
+.contact-card span {
+  display: block;
+  margin-bottom: 18px;
+  color: #4966a3;
+  text-decoration: none;
+}
+
+.social-strip {
+  max-width: 1080px;
+  margin: 70px auto;
+  padding: 0 32px;
+}
+
+.social-strip-inner {
+  border-top: 1px solid #08256f;
+  border-bottom: 1px solid #08256f;
+  padding: 34px 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 30px;
+  align-items: center;
+}
+
+.social-strip h2 {
+  margin: 0 0 8px;
+  font-size: 34px;
+  font-weight: 400;
+  color: #08256f;
+}
+
+.social-strip p {
+  margin: 0;
+  color: #4966a3;
+}
+
+.social-icons {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.social-icons a {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.social-icons .whatsapp {
+  background: #25D366;
+}
+
+.social-icons .instagram {
+  background: #E1306C;
+}
+
+.social-icons .facebook {
+  background: #1877F2;
+}
+
+@media (max-width: 900px) {
+  .owner-public-section,
+  .contact-section,
+  .social-strip-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .social-icons {
+    justify-content: flex-start;
+  }
+}
   </style>
 </head>
 <body>
