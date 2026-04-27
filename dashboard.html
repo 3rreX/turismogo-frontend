@@ -1145,9 +1145,21 @@ footer p {
   font-size: 15px;
 }
 .brand-logo {
-  width: 52px;
-  height: 52px;
+  width: 42px !important;
+  height: 42px !important;
+  max-width: 42px !important;
+  max-height: 42px !important;
   object-fit: contain;
+  display: block;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand img {
+  flex-shrink: 0;
 }
   </style>
 </head>
