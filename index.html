@@ -802,6 +802,76 @@
     flex-direction: column;
   }
 }
+.hero-main {
+  min-height: 430px;
+  background:
+    linear-gradient(rgba(8, 37, 111, 0.35), rgba(8, 37, 111, 0.35)),
+    url("./assets/hero-glaciar.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 0;
+}
+
+.hero-overlay h1 {
+  color: white;
+  font-size: clamp(38px, 5vw, 68px);
+  line-height: 1.08;
+  text-transform: uppercase;
+  margin: 0 0 26px;
+  text-shadow: 0 4px 18px rgba(0,0,0,0.35);
+}
+
+.hero-main-btn {
+  display: inline-block;
+  background: #ff6236;
+  color: white;
+  padding: 16px 38px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 800;
+  text-transform: uppercase;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.22);
+}
+
+.featured-layout {
+  max-width: 1080px;
+  display: grid;
+  grid-template-columns: 1fr 330px;
+  gap: 42px;
+  align-items: start;
+}
+
+.featured-content h2 {
+  text-align: center;
+}
+
+.featured-content > p {
+  text-align: center;
+}
+
+.featured-layout .login-card {
+  margin-top: 0;
+  position: sticky;
+  top: 90px;
+}
+
+@media (max-width: 900px) {
+  .featured-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-layout .login-card {
+    position: static;
+  }
+
+  .hero-main {
+    min-height: 360px;
+  }
+}
   </style>
 </head>
 <body>
@@ -828,36 +898,14 @@
   </header>
 
   <main>
-    <section class="hero" id="inicio">
-      <div class="hero-grid">
-        <div>
-          <h1 class="hero-title">
-            Explora la Patagonia,<br>
-            reserva con confianza
-          </h1>
-
-          <div class="hero-images">
-            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" alt="Patagonia">
-            <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70" alt="Vehículo turístico">
-          </div>
-        </div>
-
-        <aside class="login-card" id="login">
-          <h2>Iniciar sesión</h2>
-          <p>Accede para reservar servicios turísticos o administrar tus publicaciones.</p>
-
-          <input id="user" placeholder="Usuario">
-          <input id="pass" type="password" placeholder="Contraseña">
-
-          <button class="primary-btn" onclick="login()">Ingresar</button>
-          <button class="secondary-register-btn" onclick="mostrarRegistroPropietario()">
-          Publicar mi servicio
-          </button>
-
-          <p id="error"></p>
-        </aside>
-      </div>
-    </section>
+    <section class="hero-main" id="inicio">
+  <div class="hero-overlay">
+    <h1>Explora la Patagonia,<br>reserva con confianza</h1>
+    <a href="#servicios-publicos-section" class="hero-main-btn">
+      Encuentra tu aventura
+    </a>
+  </div>
+</section>
     <div id="registro-propietario" class="modal-overlay" style="display:none;">
     <div class="modal-card">
     <button class="modal-close" onclick="mostrarRegistroPropietario()">×</button>
@@ -882,12 +930,29 @@
 </div>
 </div>
 
-    <section class="featured" id="servicios-publicos-section">
-  <h2>Destacados en Magallanes</h2>
-  <p>Explora servicios turísticos publicados por propietarios verificados.</p>
+    <section class="featured featured-layout" id="servicios-publicos-section">
+  <div class="featured-content">
+    <h2>Destacados en Magallanes</h2>
+    <p>Explora servicios turísticos publicados por propietarios verificados.</p>
 
-  <div id="servicios-publicos" class="public-services-grid"></div>
-  </section>
+    <div id="servicios-publicos" class="public-services-grid"></div>
+  </div>
+
+  <aside class="login-card" id="login">
+    <h2>Iniciar sesión</h2>
+    <p>Accede para reservar servicios turísticos o administrar tus publicaciones.</p>
+
+    <input id="user" placeholder="Usuario">
+    <input id="pass" type="password" placeholder="Contraseña">
+
+    <button class="primary-btn" onclick="login()">Ingresar</button>
+    <button class="secondary-register-btn" onclick="mostrarRegistroPropietario()">
+      Publicar mi servicio
+    </button>
+
+    <p id="error"></p>
+  </aside>
+</section>
 
     <section class="features">
       <h2>Por qué<br>elegirnos</h2>
