@@ -888,6 +888,36 @@
     min-height: 360px;
   }
 }
+.support-card {
+  max-width: 780px;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+}
+
+.support-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-left: 24px;
+}
+
+.support-highlight {
+  max-width: 280px;
+}
+
+.support-highlight p {
+  color: #4966a3;
+  line-height: 1.5;
+  margin: 0 0 20px;
+}
+
+.small-btn {
+  background: #08256f;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 10px;
+}
   </style>
 </head>
 <body>
@@ -1065,12 +1095,23 @@
 </div>
 
     <div class="support-social">
-      <div class="chat-icon">💬</div>
-      <h3>Conecta con TurismoGO</h3>
-      <p>en nuestros canales oficiales.</p>
-      <a href="#redes" class="small-btn">Síguenos</a>
-    </div>
+  <div class="support-highlight">
+    <div class="chat-icon">💬</div>
+    <h3>Atención directa</h3>
+    <p>
+      Comunícate con TurismoGO para resolver dudas sobre reservas,
+      servicios turísticos o publicación de anuncios.
+    </p>
+
+    <a
+      href="https://wa.me/56946768993?text=Hola,%20quiero%20información%20sobre%20TurismoGO"
+      target="_blank"
+      class="small-btn"
+    >
+      Contactar por WhatsApp
+    </a>
   </div>
+</div>
 </section>
 
 <section class="cta-premium">
