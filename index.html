@@ -633,25 +633,36 @@
   text-decoration: none;
 }
 
-.mini-socials,
-.footer-socials {
+.social-buttons {
   display: flex;
-  gap: 10px;
+  gap: 14px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
-.mini-socials a,
-.footer-socials a {
-  width: 34px;
-  height: 34px;
-  background: #0f9fa8;
-  color: white;
-  border-radius: 999px;
+.social-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  font-weight: 800;
+  transition: 0.25s ease;
+  background: white;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+  border: 1px solid rgba(8,37,111,0.08);
+}
+
+.social-btn img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.social-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 30px rgba(0,0,0,0.12);
 }
 
 .support-social {
@@ -1038,12 +1049,19 @@
       </p>
 
       <p><strong>Redes oficiales</strong></p>
-      <div class="mini-socials">
-        <a href="https://facebook.com/turismogochile" target="_blank">f</a>
-        <a href="https://instagram.com/turismogochile" target="_blank">◎</a>
-        <a href="https://wa.me/56946768993" target="_blank">W</a>
-      </div>
-    </div>
+     <div class="mini-socials social-buttons">
+  <a href="https://facebook.com/turismogochile" target="_blank" class="social-btn facebook">
+    <img src="/assets/icons/facebook.svg" alt="Facebook">
+  </a>
+
+  <a href="https://instagram.com/turismogochile" target="_blank" class="social-btn instagram">
+    <img src="/assets/icons/instagram.svg" alt="Instagram">
+  </a>
+
+  <a href="https://wa.me/56946768993" target="_blank" class="social-btn whatsapp">
+    <img src="/assets/icons/whatsapp.svg" alt="WhatsApp">
+  </a>
+</div>
 
     <div class="support-social">
       <div class="chat-icon">💬</div>
@@ -1095,15 +1113,19 @@
       <a href="#redes">Redes sociales</a>
     </div>
 
-    <div id="redes">
-      <h3>Síguenos</h3>
-      <div class="footer-socials">
-        <a href="https://facebook.com/turismogochile" target="_blank">f</a>
-        <a href="https://instagram.com/turismogochile" target="_blank">◎</a>
-        <a href="https://wa.me/56946768993" target="_blank">W</a>
-      </div>
-    </div>
-  </div>
+    <div class="footer-socials social-buttons">
+  <a href="https://facebook.com/turismogochile" target="_blank" class="social-btn facebook">
+    <img src="/assets/icons/facebook.svg" alt="Facebook">
+  </a>
+
+  <a href="https://instagram.com/turismogochile" target="_blank" class="social-btn instagram">
+    <img src="/assets/icons/instagram.svg" alt="Instagram">
+  </a>
+
+  <a href="https://wa.me/56946768993" target="_blank" class="social-btn whatsapp">
+    <img src="/assets/icons/whatsapp.svg" alt="WhatsApp">
+  </a>
+</div>
 
   <div class="footer-bottom-premium">
     <span>© 2026 TurismoGO. Todos los derechos reservados.</span>
