@@ -888,28 +888,60 @@
     min-height: 360px;
   }
 }
-.support-card {
-  max-width: 780px;
+.single-card {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  padding: 50px;
+  display: grid;
   grid-template-columns: 1fr 1fr;
-  align-items: stretch;
+  gap: 50px;
+  align-items: center;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+  border: 1px solid rgba(8,37,111,0.06);
 }
 
-.support-social {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding-left: 24px;
+.support-info p {
+  margin-bottom: 22px;
+  color: #2f4b85;
+  line-height: 1.6;
 }
 
 .support-highlight {
-  max-width: 280px;
+  text-align: center;
+}
+
+.chat-icon {
+  font-size: 42px;
+  margin-bottom: 18px;
+}
+
+.support-highlight h3 {
+  font-size: 30px;
+  margin-bottom: 16px;
+  color: #08256f;
 }
 
 .support-highlight p {
   color: #4966a3;
-  line-height: 1.5;
-  margin: 0 0 20px;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.small-btn {
+  display: inline-block;
+  background: #08256f;
+  color: white;
+  padding: 14px 28px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: 0.3s;
+}
+
+.small-btn:hover {
+  transform: translateY(-2px);
 }
 
 .small-btn {
@@ -1065,39 +1097,40 @@
     soporte para propietarios o información general de TurismoGO.
   </p>
 
-  <div class="support-card">
-    <div class="support-info">
-      <p>✉️ <strong>Correo electrónico</strong><br>
-        <a href="mailto:reservas@turismogochile.com">reservas@turismogochile.com</a>
-      </p>
+  <div class="support-card single-card">
 
-      <p>📞 <strong>Teléfono</strong><br>
-        <a href="tel:+56946768993">+56 9 46768993</a>
-      </p>
+  <div class="support-info">
+    <p><strong>✉ Correo electrónico</strong><br>
+    reservas@turismogochile.com</p>
 
-      <p>📍 <strong>Ubicación</strong><br>
-        Región de Magallanes, Chile
-      </p>
+    <p><strong>📞 Teléfono</strong><br>
+    +56 9 46768993</p>
 
-      <p><strong>Redes oficiales</strong></p>
-     <div class="mini-socials social-buttons">
-  <a href="https://facebook.com/turismogochile" target="_blank" class="social-btn facebook">
-    <img src="/assets/icons/facebook.svg" alt="Facebook">
-  </a>
+    <p><strong>📍 Ubicación</strong><br>
+    Región de Magallanes, Chile</p>
 
-  <a href="https://instagram.com/turismogochile" target="_blank" class="social-btn instagram">
-    <img src="/assets/icons/instagram.svg" alt="Instagram">
-  </a>
+    <p><strong>Redes oficiales</strong></p>
 
-  <a href="https://wa.me/56946768993" target="_blank" class="social-btn whatsapp">
-    <img src="/assets/icons/whatsapp.svg" alt="WhatsApp">
-  </a>
-</div>
+    <div class="mini-socials social-buttons">
+      <a href="https://facebook.com/turismogochile" target="_blank" class="social-btn">
+        <img src="/assets/icons/facebook.svg" alt="Facebook">
+      </a>
 
-    <div class="support-social">
+      <a href="https://instagram.com/turismogochile" target="_blank" class="social-btn">
+        <img src="/assets/icons/instagram.svg" alt="Instagram">
+      </a>
+
+      <a href="https://wa.me/56946768993" target="_blank" class="social-btn">
+        <img src="/assets/icons/whatsapp.svg" alt="WhatsApp">
+      </a>
+    </div>
+  </div>
+
   <div class="support-highlight">
     <div class="chat-icon">💬</div>
+
     <h3>Atención directa</h3>
+
     <p>
       Comunícate con TurismoGO para resolver dudas sobre reservas,
       servicios turísticos o publicación de anuncios.
@@ -1111,7 +1144,9 @@
       Contactar por WhatsApp
     </a>
   </div>
+
 </div>
+
 </section>
 
 <section class="cta-premium">
@@ -1154,7 +1189,7 @@
       <a href="#contacto">Soporte y contacto</a>
       <a href="#redes">Redes sociales</a>
     </div>
-
+</div>
 
   <div class="footer-bottom-premium">
     <span>© 2026 TurismoGO. Todos los derechos reservados.</span>
