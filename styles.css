@@ -26,6 +26,15 @@
     color: #08256f;
   }
 
+  .brand-logo {
+  width: 52px;
+  height: 52px;
+  max-width: 52px;
+  max-height: 52px;
+  object-fit: contain;
+  display: block;
+}
+
   .brand-mark {
     width: 34px;
     height: 34px;
