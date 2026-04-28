@@ -73,15 +73,65 @@
       padding: 34px 26px 70px;
     }
 
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: #0b63ce;
-      text-decoration: none;
-      font-weight: 800;
-      margin-bottom: 24px;
-    }
+    .breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 18px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.breadcrumb a {
+  color: #0b63ce;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb strong {
+  color: #08256f;
+}
+
+.service-intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 26px;
+}
+
+.service-badge {
+  display: inline-block;
+  background: #e8f8f5;
+  color: #0f8f90;
+  border: 1px solid #c8f0eb;
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+}
+
+.service-location {
+  margin: 12px 0 0;
+  color: #4966a3;
+  font-weight: 600;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #0b63ce;
+  text-decoration: none;
+  font-weight: 800;
+  white-space: nowrap;
+}
 
     .service-layout {
       display: grid;
@@ -456,6 +506,14 @@
     }
 
     @media (max-width: 600px) {
+      .service-intro {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.breadcrumb {
+  flex-wrap: wrap;
+}
       .container {
         padding: 24px 16px 50px;
       }
@@ -505,7 +563,24 @@
   </header>
 
   <main class="container">
-    <a href="index.html#servicios-publicos-section" class="back-link">← Volver a resultados</a>
+  <nav class="breadcrumb">
+    <a href="index.html">Inicio</a>
+    <span>/</span>
+    <a href="index.html#servicios-publicos-section">Servicios</a>
+    <span>/</span>
+    <strong>Detalle del servicio</strong>
+  </nav>
+
+  <div class="service-intro">
+    <div>
+      <span class="service-badge">Servicio destacado</span>
+      <p class="service-location">📍 Región de Magallanes, Patagonia chilena</p>
+    </div>
+
+    <a href="index.html#servicios-publicos-section" class="back-link">
+      ← Volver a resultados
+    </a>
+  </div>
 
     <section class="service-layout">
       <div>
@@ -513,7 +588,7 @@
 
         <section class="info-header">
           <h1 id="detalle-nombre">Cargando servicio...</h1>
-          <p class="location">📍 Región de Magallanes, Chile</p>
+          <p class="location">Experiencia turística verificada por TurismoGO</p>
 
           <div class="highlight-box">
             <div>
