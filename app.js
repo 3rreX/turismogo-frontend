@@ -77,8 +77,24 @@ async function cargarPerfil() {
     }
 
     if (data.username && perfil) {
-      perfil.innerText = `Usuario: ${data.username}`;
-    }
+  perfil.innerHTML = `
+    <p><strong>Usuario:</strong> ${data.username}</p>
+
+    <p>
+      <strong>Plan:</strong>
+      ${data.plan ? data.plan : 'Sin plan activo'}
+    </p>
+
+    <p>
+      <strong>Estado de suscripción:</strong>
+      ${
+        data.suscripcionActiva
+          ? '<span style="color: green; font-weight: bold;">Activa</span>'
+          : '<span style="color: #ff6236; font-weight: bold;">Pendiente de pago</span>'
+      }
+    </p>
+  `;
+}
   } catch (error) {
     console.error('Error al cargar perfil:', error);
     window.location.href = 'login.html';

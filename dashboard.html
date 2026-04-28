@@ -1948,8 +1948,10 @@ footer {
   }
 
   if (estadoPago === 'fallido') {
-    alert('El pago fue rechazado o no pudo ser autorizado. Tu suscripción no fue activada.');
-  }
+  alert(
+    'Cuenta creada correctamente, pero el pago fue rechazado. Tu suscripción no fue activada y no podrás publicar servicios hasta completar el pago.'
+  );
+}
 
   if (estadoPago === 'cancelado') {
     alert('El pago fue cancelado antes de finalizar.');
