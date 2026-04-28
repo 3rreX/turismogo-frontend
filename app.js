@@ -77,23 +77,32 @@ async function cargarPerfil() {
     }
 
     if (data.username && perfil) {
-  perfil.innerHTML = `
-    <p><strong>Usuario:</strong> ${data.username}</p>
+  const role = localStorage.getItem('role');
 
-    <p>
-      <strong>Plan:</strong>
-      ${data.plan ? data.plan : 'Sin plan activo'}
-    </p>
+  if (role === 'admin') {
+    perfil.innerHTML = `
+      <p><strong>Usuario:</strong> ${data.username}</p>
+      <p><strong>Rol:</strong> Administrador</p>
+    `;
+  } else {
+    perfil.innerHTML = `
+      <p><strong>Usuario:</strong> ${data.username}</p>
 
-    <p>
-      <strong>Estado de suscripción:</strong>
-      ${
-        data.suscripcionActiva
-          ? '<span style="color: green; font-weight: bold;">Activa</span>'
-          : '<span style="color: #ff6236; font-weight: bold;">Pendiente de pago</span>'
-      }
-    </p>
-  `;
+      <p>
+        <strong>Plan:</strong>
+        ${data.plan ? data.plan : 'Sin plan activo'}
+      </p>
+
+      <p>
+        <strong>Estado de suscripción:</strong>
+        ${
+          data.suscripcionActiva
+            ? '<span style="color: green; font-weight: bold;">Activa</span>'
+            : '<span style="color: #ff6236; font-weight: bold;">Pendiente de pago</span>'
+        }
+      </p>
+    `;
+  }
 }
   } catch (error) {
     console.error('Error al cargar perfil:', error);
@@ -392,13 +401,13 @@ function mostrarPanelPropietario() {
 
   if (!panel) return;
 
-  if (role === 'propietario' || role === 'admin') {
-  panel.style.display = 'block';
-  cargarMisServicios();
-  cargarReservasPropietario();
-} else {
-  panel.style.display = 'none';
-}
+  if (role === 'propietario') {
+    panel.style.display = 'block';
+    cargarMisServicios();
+    cargarReservasPropietario();
+  } else {
+    panel.style.display = 'none';
+  }
 }
 async function crearServicio() {
   try {
