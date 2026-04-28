@@ -1657,12 +1657,18 @@ async function cargarDetalleServicio() {
     }
 
     const imagenes = servicio.imagenes && servicio.imagenes.length
-      ? servicio.imagenes
-      : [servicio.imagen];
+      ? servicio.imagenes.filter(Boolean)
+      : servicio.imagen
+        ? [servicio.imagen]
+        : ['https://placehold.co/900x600?text=TurismoGO'];
 
     document.getElementById('detalle-nombre').textContent = servicio.nombre;
-    document.getElementById('detalle-subtitulo').textContent = servicio.nombre;
-    document.getElementById('detalle-descripcion').textContent = servicio.descripcion;
+
+    const descripcion = document.getElementById('detalle-descripcion');
+    if (descripcion) {
+      descripcion.textContent = servicio.descripcion || 'Servicio turístico disponible en TurismoGO.';
+    }
+
     document.getElementById('detalle-precio').textContent =
       `$${Number(servicio.precio).toLocaleString('es-CL')}`;
 
@@ -1671,16 +1677,26 @@ async function cargarDetalleServicio() {
     document.getElementById('detalle-propietario').textContent =
       `Anfitrión: ${propietario}`;
 
-    document.getElementById('owner-avatar').textContent =
-      propietario.charAt(0).toUpperCase();
+    const ownerAvatar = document.getElementById('owner-avatar');
+    if (ownerAvatar) {
+      ownerAvatar.textContent = propietario.charAt(0).toUpperCase();
+    }
+
+    const imagenPrincipal = imagenes[0];
+
+    const miniaturas = imagenes.slice(1, 4);
+
+    while (miniaturas.length < 3) {
+      miniaturas.push(imagenPrincipal);
+    }
 
     contGaleria.innerHTML = `
-      <img class="main-img" src="${imagenes[0]}" alt="${servicio.nombre}">
+      <img class="main-img" src="${imagenPrincipal}" alt="${servicio.nombre}">
 
       <div class="gallery-small">
-        ${(imagenes.slice(1, 5).map(img => `
+        ${miniaturas.map(img => `
           <img class="small-img" src="${img}" alt="${servicio.nombre}">
-        `).join(''))}
+        `).join('')}
       </div>
     `;
 
