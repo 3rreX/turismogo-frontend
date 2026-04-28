@@ -379,6 +379,26 @@
       margin-top: 16px;
     }
 
+    .booking-trust {
+  margin-top: 22px;
+  background: #f8fbff;
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.trust-line {
+  font-size: 14px;
+  color: #2f4b85;
+  font-weight: 600;
+  padding: 8px 0;
+  border-bottom: 1px solid #e6eefb;
+}
+
+.trust-line:last-child {
+  border-bottom: none;
+}
+
     @media (max-width: 950px) {
       .topbar {
         padding: 0 20px;
@@ -606,12 +626,26 @@
         </div>
 
         <button class="reserve-btn" onclick="solicitarReservaPublica()">
-          Solicitar reserva
-        </button>
+  Reservar ahora
+</button>
 
-        <p class="reserve-note">
-          🔒 No se hará ningún cargo por el momento.
-        </p>
+<div class="booking-trust">
+  <div class="trust-line">
+    ✅ Confirmación rápida
+  </div>
+
+  <div class="trust-line">
+    🔒 Pago seguro con Webpay
+  </div>
+
+  <div class="trust-line">
+    🎧 Soporte local durante tu viaje
+  </div>
+</div>
+
+<p class="reserve-note">
+  No se realizará ningún cobro inmediato. La confirmación se procesa de forma segura.
+</p>
       </aside>
     </section>
 
