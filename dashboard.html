@@ -1801,6 +1801,135 @@ footer {
   border-radius: 999px;
   margin-right: 10px;
 }
+
+.admin-panel {
+  background:
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.10), transparent 32%),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border: 1px solid #dbeafe;
+}
+
+.admin-heading {
+  background: linear-gradient(135deg, #061b3a 0%, #063b73 55%, #0b6fa4 100%);
+  color: #ffffff;
+  border-radius: 26px;
+  padding: 34px;
+  margin-bottom: 28px;
+  box-shadow: 0 18px 40px rgba(6, 59, 115, 0.22);
+}
+
+.admin-heading h2 {
+  margin: 8px 0 10px;
+  font-size: 34px;
+  letter-spacing: -0.8px;
+}
+
+.admin-heading p {
+  margin: 0;
+  max-width: 720px;
+  color: #dbeafe;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.admin-kicker {
+  display: inline-block;
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.20);
+  color: #ffffff;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.admin-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 22px;
+  margin: 38px 0 20px;
+  padding: 20px 22px;
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  border-left: 6px solid #ff6236;
+  border-radius: 18px;
+  box-shadow: 0 10px 24px rgba(6, 59, 115, 0.06);
+}
+
+.admin-section-header span {
+  color: #ff6236;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+}
+
+.admin-section-header h3 {
+  margin: 6px 0 0;
+  color: #061b3a;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.admin-section-header p {
+  margin: 0;
+  max-width: 430px;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.admin-stats .stat-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #dbeafe;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+}
+
+.admin-stats .stat-card::after {
+  content: "";
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  right: -28px;
+  top: -28px;
+  background: rgba(11, 111, 164, 0.08);
+  border-radius: 999px;
+}
+
+.admin-stats .stat-card h4 {
+  color: #64748b;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+}
+
+.admin-stats .stat-card p {
+  color: #061b3a;
+  font-size: 34px;
+}
+
+@media (max-width: 760px) {
+  .admin-heading {
+    padding: 26px 22px;
+  }
+
+  .admin-heading h2 {
+    font-size: 28px;
+  }
+
+  .admin-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-section-header p {
+    max-width: none;
+  }
+}
   </style>
 </head>
 <body>
@@ -1908,12 +2037,16 @@ footer {
       <div id="reservas-propietario" class="grid"></div>
     </section>
 
-    <section id="panel-admin" class="panel admin-panel" style="display:none;">
-      <div class="section-title">
-        <div id="admin-alertas"></div>
-        <h2>Panel de Administración</h2>
-        <p>Gestiona usuarios, servicios, reservas y suscripciones.</p>
-      </div>
+   <section id="panel-admin" class="panel admin-panel" style="display:none;">
+  <div class="admin-heading">
+    <div>
+      <span class="admin-kicker">Centro de control</span>
+      <h2>Panel de Administración</h2>
+      <p>Gestiona usuarios, servicios, reservas, pagos y rendimiento general de TurismoGO.</p>
+    </div>
+  </div>
+
+  <div id="admin-alertas"></div>
       <div class="admin-stats">
   <div class="stat-card">
     <h4>Total usuarios</h4>
@@ -1955,10 +2088,22 @@ footer {
 </div>
 </div>
 
-      <h3>Usuarios registrados</h3>
+      <div class="admin-section-header">
+  <div>
+    <span>Usuarios</span>
+    <h3>Usuarios registrados</h3>
+  </div>
+  <p>Administra roles, planes, suscripciones y cuentas de la plataforma.</p>
+</div>
       <div id="admin-usuarios" class="grid"></div>
 
-      <h3>Servicios publicados</h3>
+      <div class="admin-section-header">
+  <div>
+    <span>Servicios</span>
+    <h3>Servicios publicados</h3>
+  </div>
+  <p>Revisa los servicios cargados por propietarios turísticos.</p>
+</div>
       <div id="admin-servicios" class="grid"></div>
       <div class="admin-filtros">
   <input
@@ -1982,7 +2127,13 @@ footer {
   Exportar PDF
 </button>
 
-      <h3>Reservas del sistema</h3>
+      <div class="admin-section-header">
+  <div>
+    <span>Reservas</span>
+    <h3>Reservas del sistema</h3>
+  </div>
+  <p>Controla solicitudes, pagos, estados y seguimiento operativo.</p>
+</div>
       <div id="admin-reservas-recientes" class="panel" style="margin-bottom: 20px;">
   <h3>Últimas reservas recientes</h3>
   <div id="tabla-reservas-recientes"></div>
