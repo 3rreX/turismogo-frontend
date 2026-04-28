@@ -341,16 +341,49 @@
     }
 
     .booking-price {
-      font-size: 20px;
-      margin-bottom: 10px;
-      color: #08256f;
-    }
+  margin-bottom: 12px;
+  color: #08256f;
+}
 
-    .booking-price strong {
-      color: #08256f;
-      font-size: 38px;
-      letter-spacing: -1px;
-    }
+.price-label {
+  display: block;
+  color: #4966a3;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 4px;
+}
+
+.booking-price strong {
+  display: block;
+  color: #08256f;
+  font-size: 42px;
+  line-height: 1;
+  letter-spacing: -1.4px;
+}
+
+.price-detail {
+  display: block;
+  color: #4966a3;
+  font-size: 15px;
+  margin-top: 8px;
+}
+
+.price-includes {
+  background: #f8fbff;
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.price-includes p {
+  margin: 0;
+  color: #2f4b85;
+  font-size: 14px;
+  line-height: 1.45;
+}
 
     .rating-row {
       display: flex;
@@ -631,8 +664,14 @@
 
       <aside class="booking-card">
         <div class="booking-price">
-          <strong id="detalle-precio">$0</strong> por servicio
-        </div>
+  <span class="price-label">Desde</span>
+  <strong id="detalle-precio">$0</strong>
+  <span class="price-detail">por experiencia turística</span>
+</div>
+
+<div class="price-includes">
+  <p>Incluye gestión segura de reserva, soporte local y atención TurismoGO.</p>
+</div>
 
         <div class="rating-row">
           <strong>★ Excelente</strong>
