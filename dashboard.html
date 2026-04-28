@@ -1939,5 +1939,25 @@ footer {
     </div>
   </div>
 </div>
+<script>
+  const paramsPago = new URLSearchParams(window.location.search);
+  const estadoPago = paramsPago.get('pago');
+
+  if (estadoPago === 'exitoso') {
+    alert('Pago aprobado correctamente. Tu suscripción fue activada.');
+  }
+
+  if (estadoPago === 'fallido') {
+    alert('El pago fue rechazado o no pudo ser autorizado. Tu suscripción no fue activada.');
+  }
+
+  if (estadoPago === 'cancelado') {
+    alert('El pago fue cancelado antes de finalizar.');
+  }
+
+  if (estadoPago === 'error') {
+    alert('No fue posible validar el pago. Intenta nuevamente o contacta soporte.');
+  }
+</script>
 </body>
 </html>
