@@ -17,32 +17,61 @@ body {
 }
 
 .navbar {
-  background: linear-gradient(90deg, #063b73, #0b6fa4);
-  padding: 18px 32px;
+  background: linear-gradient(90deg, #062f5f 0%, #075f8f 55%, #0b84ad 100%);
+  padding: 18px 38px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 28px rgba(6, 59, 115, 0.18);
   position: sticky;
   top: 0;
   z-index: 10;
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.dashboard-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 14px;
+  padding: 6px;
 }
 
 .navbar h1 {
   margin: 0;
   color: #ffffff;
-  font-size: 28px;
+  font-size: 30px;
+  letter-spacing: -0.5px;
 }
 
 .navbar p {
   margin: 4px 0 0;
   color: #dbeafe;
+  font-size: 14px;
 }
 
 .navbar-actions {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 18px;
+}
+
+#perfil {
+  color: #ffffff;
+  font-weight: 700;
+  line-height: 1.45;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.16);
+  padding: 10px 14px;
+  border-radius: 14px;
 }
 
 .container {
@@ -189,11 +218,14 @@ button:hover {
 }
 
 .btn-secondary {
-  background: #111827;
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 12px 18px;
 }
 
 .btn-secondary:hover {
-  background: #374151;
+  background: #1e293b;
 }
 
 #perfil {
@@ -210,9 +242,18 @@ button:hover {
   }
 
   .navbar-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
+  width: 100%;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.navbar-brand {
+  align-items: center;
+}
+
+#perfil {
+  width: 100%;
+}
 
   .hero {
     padding: 26px;
@@ -1721,16 +1762,19 @@ footer {
 <body>
 
   <header class="navbar">
+  <div class="navbar-brand">
+    <img src="favicon.png" alt="Logo TurismoGO" class="dashboard-logo">
     <div>
       <h1>TurismoGO</h1>
       <p>Marketplace turístico</p>
     </div>
+  </div>
 
-    <div class="navbar-actions">
-      <span id="perfil"></span>
-      <button class="btn-secondary" onclick="logout()">Cerrar sesión</button>
-    </div>
-  </header>
+  <div class="navbar-actions">
+    <span id="perfil"></span>
+    <button class="btn-secondary" onclick="logout()">Cerrar sesión</button>
+  </div>
+</header>
 
   <main class="container">
 
