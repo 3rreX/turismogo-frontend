@@ -1933,7 +1933,7 @@ async function registrarPropietarioConPago() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': dataLogin.token
+        'Authorization': `Bearer ${dataLogin.token}`
       },
       body: JSON.stringify({ plan })
     });
