@@ -338,28 +338,40 @@
 
   .feature-item {
   display: grid;
-  grid-template-columns: 60px 1fr;
-  gap: 28px;
+  grid-template-columns: 80px 1fr;
+  gap: 34px;
   align-items: center;
-  padding: 26px 0;
-  border-bottom: 1px solid #08256f;
+  padding: 38px 0;
+  border-bottom: 1px solid rgba(8, 37, 111, 0.18);
 }
 
   .feature-icon {
-    font-size: 28px;
-  }
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: #f4f8ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  box-shadow: 0 10px 24px rgba(8,37,111,0.06);
+}
 
   .feature-item h3 {
-    margin: 0 0 8px;
-    font-size: 30px;
-    font-weight: 400;
-  }
+  margin: 0 0 10px;
+  font-size: 34px;
+  font-weight: 700;
+  color: #08256f;
+  line-height: 1.1;
+}
 
   .feature-item p {
-    margin: 0;
-    color: #4966a3;
-    line-height: 1.45;
-  }
+  margin: 0;
+  color: #4966a3;
+  line-height: 1.7;
+  font-size: 17px;
+  max-width: 720px;
+}
 
   .business-section {
     background: linear-gradient(180deg, #f7fcff 0%, #ffffff 100%);
