@@ -124,7 +124,7 @@ async function crearReserva() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({ servicio, fechaInicio, fechaFin })
     });
@@ -154,7 +154,7 @@ async function cargarReservas() {
 
     const res = await fetch(`${API_URL}/reservas`, {
       headers: {
-        'Authorization': token
+        'Authorization': `Bearer ${token}`
       }
     });
 
@@ -229,7 +229,7 @@ async function cancelarReserva(reservaId) {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token
+        'Authorization': `Bearer ${token}`
       }
     });
 
@@ -351,7 +351,7 @@ async function reservarServicio(nombre, id) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
         servicio: nombre,
@@ -415,7 +415,7 @@ async function crearServicio() {
     const res = await fetch(`${API_URL}/servicios`, {
       method: 'POST',
       headers: {
-        'Authorization': token
+        'Authorization': `Bearer ${token}`
       },
       body: formData
     });
@@ -490,9 +490,9 @@ async function cargarMisServicios() {
     const token = localStorage.getItem('token');
 
     const res = await fetch(`${API_URL}/mis-servicios`, {
-      headers: {
-        'Authorization': token
-      }
+     headers: {
+  'Authorization': `Bearer ${token}`
+}
     });
 
     const servicios = await res.json();
@@ -626,7 +626,7 @@ async function eliminarImagenDesdeModal(servicioId, imagenUrl) {
 
   const res = await fetch(`${API_URL}/mis-servicios`, {
     headers: {
-      'Authorization': token
+      'Authorization': `Bearer ${token}`
     }
   });
 
@@ -648,7 +648,7 @@ async function eliminarServicio(id) {
     const res = await fetch(`${API_URL}/servicios/${id}`, {
       method: 'DELETE',
       headers: {
-        'Authorization': token
+        'Authorization': `Bearer ${token}`
       }
     });
 
@@ -712,7 +712,7 @@ async function editarServicio(id, nombre, descripcion, precio, imagenFiles = nul
     const res = await fetch(`${API_URL}/servicios/${id}`, {
       method: 'PUT',
       headers: {
-        'Authorization': token
+        'Authorization': `Bearer ${token}`
       },
       body: formData
     });
@@ -744,7 +744,7 @@ async function eliminarImagenServicio(servicioId, imagenUrl) {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({ imagenUrl })
     });
@@ -774,8 +774,8 @@ async function cargarReservasPropietario() {
 
     const res = await fetch(`${API_URL}/reservas-propietario`, {
       headers: {
-        'Authorization': token
-      }
+  'Authorization': `Bearer ${token}`
+}
     });
 
     const reservas = await res.json();
@@ -861,7 +861,7 @@ async function cambiarEstadoReserva(reservaId, estado) {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({ estado })
     });
@@ -905,7 +905,7 @@ async function cargarUsuariosAdmin() {
 
     const res = await fetch(`${API_URL}/admin/usuarios`, {
       headers: {
-        'Authorization': token
+        'Authorization': `Bearer ${token}`
       }
     });
 
@@ -969,7 +969,7 @@ async function cargarServiciosAdmin() {
 
     const res = await fetch(`${API_URL}/admin/servicios`, {
       headers: {
-        'Authorization': token
+        'Authorization': `Bearer ${token}`
       }
     });
 
@@ -1403,7 +1403,7 @@ async function cambiarRolUsuario(usuarioId, nuevoRole) {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({ role: nuevoRole })
     });
@@ -1435,7 +1435,7 @@ async function actualizarSuscripcionUsuario(usuarioId, suscripcionActiva, plan) 
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
         suscripcionActiva,
@@ -1603,7 +1603,7 @@ async function simularPagoPlan(plan) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({ plan })
     });
