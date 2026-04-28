@@ -65,7 +65,7 @@ async function cargarPerfil() {
 
     const res = await fetch(`${API_URL}/profile`, {
       headers: {
-        'Authorization': token
+        'Authorization': `Bearer ${token}`
       }
     });
 
@@ -1030,7 +1030,7 @@ async function cargarReservasAdmin() {
 
     const res = await fetch(`${API_URL}/admin/reservas`, {
       headers: {
-        Authorization: token
+        'Authorization': `Bearer ${token}`
       }
     });
 
@@ -1469,7 +1469,7 @@ async function exportarReservasAdmin() {
 
     const res = await fetch(`${API_URL}/admin/reservas`, {
       headers: {
-        Authorization: token
+        'Authorization': `Bearer ${token}`
       }
     });
 
@@ -1536,7 +1536,7 @@ async function exportarReservasPDFAdmin() {
 
     const res = await fetch(`${API_URL}/admin/reservas`, {
       headers: {
-        Authorization: token
+        'Authorization': `Bearer ${token}`
       }
     });
 
@@ -1980,7 +1980,7 @@ async function actualizarEstadoReservaAdmin(idReserva, nuevoEstado) {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: token
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
         estado: nuevoEstado
