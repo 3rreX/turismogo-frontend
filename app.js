@@ -1765,6 +1765,8 @@ async function solicitarReservaPublica() {
 async function cargarServiciosPublicos() {
   try {
     const cont = document.getElementById('servicios-publicos');
+    const buscador = document.getElementById('buscador-servicios');
+
     if (!cont) return;
 
     const res = await fetch(`${API_URL}/servicios`);
@@ -1777,33 +1779,61 @@ async function cargarServiciosPublicos() {
       return;
     }
 
-    cont.innerHTML = '';
+    function renderizarServicios(lista) {
+      cont.innerHTML = '';
 
-    servicios.forEach((s) => {
-      const imagenPrincipal =
-        s.imagenes && s.imagenes.length && s.imagenes[0]
-          ? s.imagenes[0]
-          : s.imagen || 'https://placehold.co/400x300?text=TurismoGO';
+      if (lista.length === 0) {
+        cont.innerHTML = `
+          <p class="empty-services">
+            No encontramos servicios que coincidan con tu búsqueda.
+          </p>
+        `;
+        return;
+      }
 
-      cont.innerHTML += `
-        <article class="public-service-card">
-          <img src="${imagenPrincipal}" alt="${s.nombre}">
+      lista.forEach((s) => {
+        const imagenPrincipal =
+          s.imagenes && s.imagenes.length && s.imagenes[0]
+            ? s.imagenes[0]
+            : s.imagen || 'https://placehold.co/400x300?text=TurismoGO';
 
-          <div class="public-service-content">
-            <h3>${s.nombre}</h3>
-            <p>${s.descripcion}</p>
+        cont.innerHTML += `
+          <article class="public-service-card">
+            <img src="${imagenPrincipal}" alt="${s.nombre}">
 
-            <p class="public-price">
-              $${Number(s.precio).toLocaleString('es-CL')}
-            </p>
+            <div class="public-service-content">
+              <h3>${s.nombre}</h3>
+              <p>${s.descripcion}</p>
 
-            <button onclick="window.location.href='servicio.html?id=${s._id}'">
-              Ver aviso
-            </button>
-          </div>
-        </article>
-      `;
-    });
+              <p class="public-price">
+                $${Number(s.precio).toLocaleString('es-CL')}
+              </p>
+
+              <button onclick="window.location.href='servicio.html?id=${s._id}'">
+                Ver aviso
+              </button>
+            </div>
+          </article>
+        `;
+      });
+    }
+
+    renderizarServicios(servicios);
+
+    if (buscador) {
+      buscador.addEventListener('input', () => {
+        const texto = buscador.value.trim().toLowerCase();
+
+        const serviciosFiltrados = servicios.filter((s) => {
+          const nombre = (s.nombre || '').toLowerCase();
+          const descripcion = (s.descripcion || '').toLowerCase();
+
+          return nombre.includes(texto) || descripcion.includes(texto);
+        });
+
+        renderizarServicios(serviciosFiltrados);
+      });
+    }
 
   } catch (error) {
     console.error('Error al cargar servicios públicos:', error);

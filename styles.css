@@ -776,3 +776,32 @@
       flex-direction: column;
     }
   }
+  .search-box {
+  max-width: 620px;
+  margin: 0 auto 36px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 16px 20px;
+  border: 1px solid #dbe6f7;
+  border-radius: 999px;
+  font-size: 16px;
+  color: #08256f;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(8,37,111,0.08);
+  outline: none;
+}
+
+.search-box input:focus {
+  border-color: #ff6236;
+  box-shadow: 0 0 0 4px rgba(255,98,54,0.12);
+}
+
+.empty-services {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #4966a3;
+  font-weight: 700;
+  padding: 36px;
+}
