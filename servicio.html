@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>TurismoGO | Servicio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="icon" type="image/png" href="favicon.png">
 
   <style>
     * {
@@ -12,141 +15,144 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #ffffff;
-      color: #111827;
+      background: #f6f9ff;
+      color: #08256f;
     }
 
     .topbar {
-      height: 76px;
+      height: 82px;
       padding: 0 42px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid #e5e7eb;
-      background: #fff;
+      border-bottom: 1px solid #e5ecf7;
+      background: #ffffff;
       position: sticky;
       top: 0;
       z-index: 20;
+      box-shadow: 0 4px 20px rgba(8,37,111,0.06);
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-weight: bold;
-      color: #08256f;
-    }
-
-    .brand-mark {
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #08256f, #ff6236);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
-    }
-
-    .topbar a {
+      gap: 14px;
+      font-weight: 800;
       color: #08256f;
       text-decoration: none;
-      font-weight: bold;
+      font-size: 24px;
+    }
+
+    .brand img {
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .top-actions a {
+      color: #08256f;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .top-actions a:hover {
+      text-decoration: underline;
     }
 
     .container {
-      max-width: 1180px;
+      max-width: 1240px;
       margin: 0 auto;
-      padding: 34px 24px 70px;
+      padding: 34px 26px 70px;
     }
 
-    .title-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 20px;
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #0b63ce;
+      text-decoration: none;
+      font-weight: 800;
       margin-bottom: 24px;
     }
 
-    .title-row h1 {
-      margin: 0;
-      font-size: 30px;
-      color: #111827;
-    }
-
-    .title-actions {
-      display: flex;
-      gap: 18px;
-      color: #374151;
-      font-size: 14px;
+    .service-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 390px;
+      gap: 54px;
+      align-items: start;
     }
 
     .gallery {
       display: grid;
-      grid-template-columns: 1.15fr 1fr;
-      gap: 8px;
-      height: 470px;
-      margin-bottom: 34px;
+      grid-template-columns: minmax(0, 1fr) 210px;
+      gap: 18px;
+      margin-bottom: 28px;
     }
 
     .main-img,
     .small-img {
       width: 100%;
-      height: 100%;
       object-fit: cover;
-      background: #f3f4f6;
+      background: #eef2f7;
+      box-shadow: 0 14px 30px rgba(8,37,111,0.08);
     }
 
     .main-img {
-      border-radius: 16px 0 0 16px;
+      height: 440px;
+      border-radius: 22px;
     }
 
     .gallery-small {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .small-img {
+      height: 134px;
+      border-radius: 16px;
+    }
+
+    .info-header h1 {
+      margin: 0 0 10px;
+      font-size: clamp(32px, 4vw, 44px);
+      line-height: 1.05;
+      color: #08256f;
+    }
+
+    .location {
+      display: flex;
+      align-items: center;
       gap: 8px;
-    }
-
-    .gallery-small img:nth-child(2) {
-      border-radius: 0 16px 0 0;
-    }
-
-    .gallery-small img:nth-child(4) {
-      border-radius: 0 0 16px 0;
-    }
-
-    .content-layout {
-      display: grid;
-      grid-template-columns: 1fr 340px;
-      gap: 48px;
-      align-items: start;
-    }
-
-    .info h2 {
-      font-size: 24px;
-      margin: 0 0 8px;
-      color: #111827;
-    }
-
-    .muted {
-      color: #6b7280;
-      margin: 0 0 24px;
+      margin: 0 0 22px;
+      color: #4966a3;
+      font-size: 16px;
     }
 
     .highlight-box {
-      border: 1px solid #e5e7eb;
-      border-radius: 16px;
-      padding: 18px;
+      background: #ffffff;
+      border: 1px solid #dbe6f7;
+      border-radius: 18px;
+      padding: 20px;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 16px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
       margin: 24px 0;
+      box-shadow: 0 12px 28px rgba(8,37,111,0.07);
     }
 
     .highlight-box div {
       text-align: center;
-      border-right: 1px solid #e5e7eb;
+      border-right: 1px solid #dbe6f7;
+      padding: 0 14px;
     }
 
     .highlight-box div:last-child {
@@ -157,29 +163,64 @@
       display: block;
       color: #08256f;
       font-size: 20px;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
+    }
+
+    .highlight-box span {
+      color: #4966a3;
+      font-size: 14px;
+    }
+
+    .description-card {
+      background: linear-gradient(90deg, #eaf4ff, #f5fbff);
+      border: 1px solid #dbeafe;
+      border-radius: 16px;
+      padding: 22px;
+      margin: 22px 0;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .description-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: #dff7f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
     }
 
     .description {
-      border-top: 1px solid #e5e7eb;
-      padding-top: 24px;
-      line-height: 1.7;
-      color: #374151;
+      margin: 0;
+      line-height: 1.65;
+      color: #2f4b85;
       font-size: 16px;
     }
 
     .owner-box {
-      margin-top: 26px;
-      border-top: 1px solid #e5e7eb;
+      margin-top: 22px;
+      background: #ffffff;
+      border-top: 1px solid #dbe6f7;
       padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .owner-data {
       display: flex;
       align-items: center;
       gap: 14px;
     }
 
     .avatar {
-      width: 54px;
-      height: 54px;
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
       background: #08256f;
       color: white;
@@ -188,59 +229,118 @@
       justify-content: center;
       font-weight: bold;
       font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .owner-box strong {
+      color: #08256f;
+    }
+
+    .owner-box p {
+      margin: 4px 0 0;
+      color: #4966a3;
+    }
+
+    .trust-strip {
+      max-width: 1240px;
+      margin: 34px auto 0;
+      background: #ffffff;
+      border: 1px solid #dbe6f7;
+      border-radius: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      box-shadow: 0 12px 28px rgba(8,37,111,0.06);
+      overflow: hidden;
+    }
+
+    .trust-item {
+      padding: 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-right: 1px solid #dbe6f7;
+    }
+
+    .trust-item:last-child {
+      border-right: none;
+    }
+
+    .trust-icon {
+      font-size: 28px;
+    }
+
+    .trust-item strong {
+      display: block;
+      color: #08256f;
+      margin-bottom: 4px;
+    }
+
+    .trust-item span {
+      color: #4966a3;
+      font-size: 14px;
     }
 
     .booking-card {
-      border: 1px solid #e5e7eb;
-      border-radius: 18px;
-      padding: 22px;
-      box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+      border: 1px solid #dbe6f7;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 20px 45px rgba(8,37,111,0.12);
       position: sticky;
-      top: 100px;
-      background: white;
+      top: 110px;
+      background: #ffffff;
     }
 
     .booking-price {
-      font-size: 23px;
-      margin-bottom: 18px;
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #08256f;
     }
 
     .booking-price strong {
-      color: #111827;
+      color: #08256f;
+      font-size: 38px;
+      letter-spacing: -1px;
+    }
+
+    .rating-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #4966a3;
+      font-size: 14px;
+      margin-bottom: 22px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid #dbe6f7;
+    }
+
+    .rating-row strong {
+      color: #059669;
     }
 
     .booking-fields {
-      border: 1px solid #d1d5db;
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 14px;
+      display: grid;
+      gap: 12px;
     }
 
     .field-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
+      gap: 12px;
     }
 
     .field {
-      padding: 12px;
-      border-right: 1px solid #d1d5db;
-    }
-
-    .field:last-child {
-      border-right: none;
-    }
-
-    .field.full {
-      border-top: 1px solid #d1d5db;
-      grid-column: 1 / -1;
+      border: 1px solid #d1d9e8;
+      border-radius: 12px;
+      padding: 13px 14px;
+      background: #ffffff;
     }
 
     .field label {
       display: block;
       font-size: 11px;
-      font-weight: bold;
-      color: #374151;
-      margin-bottom: 6px;
+      font-weight: 800;
+      color: #53627d;
+      margin-bottom: 7px;
       text-transform: uppercase;
     }
 
@@ -249,73 +349,123 @@
       width: 100%;
       border: none;
       outline: none;
-      font-size: 14px;
+      font-size: 15px;
       background: transparent;
+      color: #08256f;
     }
 
     .reserve-btn {
       width: 100%;
-      padding: 14px;
+      padding: 16px;
+      margin-top: 18px;
       background: linear-gradient(90deg, #ff6236, #e91e63);
       color: white;
       border: none;
       border-radius: 999px;
-      font-weight: bold;
+      font-weight: 800;
       cursor: pointer;
-      font-size: 15px;
+      font-size: 17px;
+      box-shadow: 0 12px 24px rgba(233,30,99,0.2);
+    }
+
+    .reserve-btn:hover {
+      transform: translateY(-1px);
     }
 
     .reserve-note {
       text-align: center;
-      color: #6b7280;
+      color: #64748b;
       font-size: 13px;
-      margin-top: 14px;
+      margin-top: 16px;
     }
 
-    @media (max-width: 850px) {
+    @media (max-width: 950px) {
       .topbar {
-        padding: 0 22px;
+        padding: 0 20px;
+      }
+
+      .brand {
+        font-size: 20px;
+      }
+
+      .brand img {
+        width: 48px;
+        height: 48px;
+      }
+
+      .service-layout {
+        grid-template-columns: 1fr;
       }
 
       .gallery {
         grid-template-columns: 1fr;
-        height: auto;
       }
 
       .main-img {
-        height: 310px;
-        border-radius: 16px;
+        height: 320px;
       }
 
       .gallery-small {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(3, 1fr);
       }
 
       .small-img {
-        height: 150px;
-        border-radius: 12px !important;
-      }
-
-      .content-layout {
-        grid-template-columns: 1fr;
+        height: 120px;
       }
 
       .booking-card {
         position: static;
       }
 
-      .highlight-box {
+      .highlight-box,
+      .trust-strip {
         grid-template-columns: 1fr;
       }
 
-      .highlight-box div {
+      .highlight-box div,
+      .trust-item {
         border-right: none;
-        border-bottom: 1px solid #e5e7eb;
-        padding-bottom: 12px;
+        border-bottom: 1px solid #dbe6f7;
+        padding-bottom: 16px;
       }
 
-      .highlight-box div:last-child {
+      .highlight-box div:last-child,
+      .trust-item:last-child {
         border-bottom: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 24px 16px 50px;
+      }
+
+      .top-actions {
+        gap: 12px;
+      }
+
+      .top-actions a {
+        font-size: 13px;
+      }
+
+      .main-img {
+        height: 260px;
+      }
+
+      .gallery-small {
+        grid-template-columns: 1fr;
+      }
+
+      .small-img {
+        height: 150px;
+      }
+
+      .field-row {
+        grid-template-columns: 1fr;
+      }
+
+      .booking-card {
+        padding: 22px;
       }
     }
   </style>
@@ -323,62 +473,75 @@
 <body>
 
   <header class="topbar">
-    <div class="brand">
-      <div class="brand-mark">T</div>
+    <a href="index.html" class="brand">
+      <img src="favicon.png" alt="TurismoGO">
       <span>TurismoGO</span>
-    </div>
+    </a>
 
-    <a href="index.html">Volver al inicio</a>
+    <div class="top-actions">
+      <a href="index.html#servicios-publicos-section">← Volver a resultados</a>
+      <a href="index.html">Inicio</a>
+    </div>
   </header>
 
   <main class="container">
-    <div class="title-row">
-      <h1 id="detalle-nombre">Cargando servicio...</h1>
+    <a href="index.html#servicios-publicos-section" class="back-link">← Volver a resultados</a>
 
-      <div class="title-actions">
-        <span>Compartir</span>
-        <span>Guardar</span>
-      </div>
-    </div>
+    <section class="service-layout">
+      <div>
+        <section class="gallery" id="detalle-galeria"></section>
 
-    <section class="gallery" id="detalle-galeria"></section>
+        <section class="info-header">
+          <h1 id="detalle-nombre">Cargando servicio...</h1>
+          <p class="location">📍 Región de Magallanes, Chile</p>
 
-    <section class="content-layout">
-      <div class="info">
-        <h2 id="detalle-subtitulo">Servicio turístico en Patagonia</h2>
-        <p class="muted">Región de Magallanes, Chile</p>
+          <div class="highlight-box">
+            <div>
+              <strong>⭐ 5.0</strong>
+              <span>Valoración</span>
+            </div>
 
-        <div class="highlight-box">
-          <div>
-            <strong>5.0</strong>
-            <span>Valoración</span>
+            <div>
+              <strong>🛡️ TurismoGO</strong>
+              <span>Servicio verificado</span>
+            </div>
+
+            <div>
+              <strong>🏔️ Patagonia</strong>
+              <span>Destino destacado</span>
+            </div>
+
+            <div>
+              <strong>🎧 Soporte</strong>
+              <span>Durante tu viaje</span>
+            </div>
           </div>
 
-          <div>
-            <strong>TurismoGO</strong>
-            <span>Servicio verificado</span>
+          <div class="description-card">
+            <div class="description-icon">🚙</div>
+            <p class="description" id="detalle-descripcion"></p>
           </div>
 
-          <div>
-            <strong>Patagonia</strong>
-            <span>Destino destacado</span>
+          <div class="owner-box">
+            <div class="owner-data">
+              <div class="avatar" id="owner-avatar">T</div>
+              <div>
+                <strong id="detalle-propietario">Anfitrión TurismoGO</strong>
+                <p>Propietario verificado en la plataforma.</p>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <p class="description" id="detalle-descripcion"></p>
-
-        <div class="owner-box">
-          <div class="avatar" id="owner-avatar">T</div>
-          <div>
-            <strong id="detalle-propietario">Anfitrión TurismoGO</strong>
-            <p class="muted">Propietario verificado en la plataforma.</p>
-          </div>
-        </div>
+        </section>
       </div>
 
       <aside class="booking-card">
         <div class="booking-price">
           <strong id="detalle-precio">$0</strong> por servicio
+        </div>
+
+        <div class="rating-row">
+          <strong>★ Excelente</strong>
+          <span>Servicio turístico verificado</span>
         </div>
 
         <div class="booking-fields">
@@ -394,7 +557,7 @@
             </div>
           </div>
 
-          <div class="field full">
+          <div class="field">
             <label>Huéspedes / pasajeros</label>
             <select id="detalle-personas">
               <option>1 persona</option>
@@ -404,51 +567,86 @@
               <option>5+ personas</option>
             </select>
           </div>
+
+          <div class="field">
+            <label>Nombre completo</label>
+            <input
+              type="text"
+              id="detalle-nombre-cliente"
+              placeholder="Ingrese su nombre completo"
+            >
+          </div>
+
+          <div class="field">
+            <label>Correo electrónico</label>
+            <input
+              type="email"
+              id="detalle-email-cliente"
+              placeholder="Ingrese su correo electrónico"
+            >
+          </div>
+
+          <div class="field">
+            <label>Teléfono opcional</label>
+            <input
+              type="text"
+              id="detalle-telefono-cliente"
+              placeholder="Ingrese su teléfono"
+            >
+          </div>
+
+          <div class="field">
+            <label>Mensaje adicional</label>
+            <input
+              type="text"
+              id="detalle-mensaje-cliente"
+              placeholder="Ej.: horario de llegada, consultas, etc."
+            >
+          </div>
         </div>
-        <div class="field full">
-  <label>Nombre completo</label>
-  <input
-    type="text"
-    id="detalle-nombre-cliente"
-    placeholder="Ingrese su nombre completo"
-  >
-</div>
-
-<div class="field full">
-  <label>Correo electrónico</label>
-  <input
-    type="email"
-    id="detalle-email-cliente"
-    placeholder="Ingrese su correo electrónico"
-  >
-</div>
-
-<div class="field full">
-  <label>Teléfono (opcional)</label>
-  <input
-    type="text"
-    id="detalle-telefono-cliente"
-    placeholder="Ingrese su teléfono"
-  >
-</div>
-
-<div class="field full">
-  <label>Mensaje adicional</label>
-  <input
-    type="text"
-    id="detalle-mensaje-cliente"
-    placeholder="Ej.: horario de llegada, consultas, etc."
-  >
-</div>
 
         <button class="reserve-btn" onclick="solicitarReservaPublica()">
           Solicitar reserva
         </button>
 
         <p class="reserve-note">
-          No se hará ningún cargo por el momento.
+          🔒 No se hará ningún cargo por el momento.
         </p>
       </aside>
+    </section>
+
+    <section class="trust-strip">
+      <div class="trust-item">
+        <div class="trust-icon">🛡️</div>
+        <div>
+          <strong>Reserva segura</strong>
+          <span>Tus datos protegidos</span>
+        </div>
+      </div>
+
+      <div class="trust-item">
+        <div class="trust-icon">⚡</div>
+        <div>
+          <strong>Confirmación rápida</strong>
+          <span>Gestión simple y directa</span>
+        </div>
+      </div>
+
+      <div class="trust-item">
+        <div class="trust-icon">💳</div>
+        <div>
+          <strong>Sin cargos previos</strong>
+          <span>Pagas después de confirmar</span>
+        </div>
+      </div>
+
+      <div class="trust-item">
+        <div class="trust-icon">🎧</div>
+        <div>
+          <strong>Atención personalizada</strong>
+          <span>Te acompañamos siempre</span>
+        </div>
+      </div>
     </section>
   </main>
 
