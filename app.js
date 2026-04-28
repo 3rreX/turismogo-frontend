@@ -970,6 +970,14 @@ document.getElementById('admin-stat-propietarios').textContent = propietarios;
         <button onclick="cambiarRolUsuario('${u._id}', 'propietario')">Propietario</button>
         <button onclick="cambiarRolUsuario('${u._id}', 'admin')">Admin</button>
       </div>
+      <div class="admin-actions">
+  <button
+    class="danger-btn"
+    onclick="eliminarUsuarioAdmin('${u._id}', '${u.username}')"
+  >
+    Eliminar usuario
+  </button>
+</div>
 
       <div class="admin-actions">
         <button onclick="actualizarSuscripcionUsuario('${u._id}', true, 'basico')">Básico</button>
@@ -2039,4 +2047,39 @@ function renderReservasAdmin(reservas) {
   cont.innerHTML = reservas.map((r) => {
     // aquí pegas el return actual completo
   }).join('');
+}
+async function eliminarUsuarioAdmin(usuarioId, username) {
+  try {
+    const confirmar = confirm(
+      `¿Seguro que deseas eliminar al usuario "${username}"?\n\nEsta acción no se puede deshacer.`
+    );
+
+    if (!confirmar) return;
+
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_URL}/admin/usuarios/${usuarioId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || 'No se pudo eliminar el usuario');
+      return;
+    }
+
+    alert(data.message || 'Usuario eliminado correctamente');
+
+    cargarUsuariosAdmin();
+    cargarServiciosAdmin();
+    cargarReservasAdmin();
+
+  } catch (error) {
+    console.error('Error eliminando usuario:', error);
+    alert('Error al eliminar usuario');
+  }
 }
