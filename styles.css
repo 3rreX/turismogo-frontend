@@ -805,3 +805,33 @@
   font-weight: 700;
   padding: 36px;
 }
+
+.quick-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin-bottom: 36px;
+}
+
+.filter-btn {
+  border: 1px solid #dbe6f7;
+  background: #ffffff;
+  color: #08256f;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.filter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(8,37,111,0.08);
+}
+
+.filter-btn.active {
+  background: linear-gradient(90deg, #08256f, #0b63ce);
+  color: white;
+  border-color: transparent;
+}

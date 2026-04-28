@@ -1820,20 +1820,46 @@ async function cargarServiciosPublicos() {
 
     renderizarServicios(servicios);
 
-    if (buscador) {
-      buscador.addEventListener('input', () => {
-        const texto = buscador.value.trim().toLowerCase();
+    const botonesFiltro = document.querySelectorAll('.filter-btn');
 
-        const serviciosFiltrados = servicios.filter((s) => {
-          const nombre = (s.nombre || '').toLowerCase();
-          const descripcion = (s.descripcion || '').toLowerCase();
+let filtroCategoria = 'todos';
 
-          return nombre.includes(texto) || descripcion.includes(texto);
-        });
+function aplicarFiltros() {
+  const texto = buscador ? buscador.value.trim().toLowerCase() : '';
 
-        renderizarServicios(serviciosFiltrados);
-      });
-    }
+  const serviciosFiltrados = servicios.filter((s) => {
+    const nombre = (s.nombre || '').toLowerCase();
+    const descripcion = (s.descripcion || '').toLowerCase();
+
+    const coincideTexto =
+      nombre.includes(texto) ||
+      descripcion.includes(texto);
+
+    const coincideCategoria =
+      filtroCategoria === 'todos' ||
+      nombre.includes(filtroCategoria) ||
+      descripcion.includes(filtroCategoria);
+
+    return coincideTexto && coincideCategoria;
+  });
+
+  renderizarServicios(serviciosFiltrados);
+}
+
+if (buscador) {
+  buscador.addEventListener('input', aplicarFiltros);
+}
+
+botonesFiltro.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    botonesFiltro.forEach((b) => b.classList.remove('active'));
+
+    btn.classList.add('active');
+    filtroCategoria = btn.dataset.filter;
+
+    aplicarFiltros();
+  });
+});
 
   } catch (error) {
     console.error('Error al cargar servicios públicos:', error);
