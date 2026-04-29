@@ -2115,6 +2115,87 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+.owner-service-card {
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 16px 36px rgba(6, 59, 115, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.owner-service-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 24px 54px rgba(6, 59, 115, 0.16);
+}
+
+.owner-service-gallery {
+  background: linear-gradient(180deg, #eef7ff 0%, #f8fafc 100%);
+  padding: 16px;
+  gap: 12px;
+  min-height: 160px;
+}
+
+.owner-image-box {
+  min-width: 190px;
+  position: relative;
+}
+
+.owner-image-box img {
+  width: 190px;
+  height: 130px;
+  border-radius: 18px;
+  object-fit: cover;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+}
+
+.owner-image-box button {
+  background: rgba(220, 38, 38, 0.92);
+  border-radius: 12px;
+  font-size: 12px;
+  padding: 8px;
+}
+
+.owner-service-content {
+  padding: 24px;
+}
+
+.owner-service-content h3 {
+  color: #061b3a;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.4px;
+}
+
+.owner-service-content p {
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.owner-service-content strong {
+  color: #0b6fa4;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.owner-actions {
+  margin-top: 8px;
+  gap: 12px;
+}
+
+.owner-actions button {
+  border-radius: 14px;
+  padding: 13px 16px;
+}
+
+.owner-actions .danger-btn {
+  background: #dc2626;
+}
+
+.owner-actions .danger-btn:hover {
+  background: #b91c1c;
+}
   </style>
 </head>
 <body>
