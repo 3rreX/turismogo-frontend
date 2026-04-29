@@ -1930,6 +1930,191 @@ footer {
     max-width: none;
   }
 }
+.owner-heading {
+  background: linear-gradient(135deg, #062f5f 0%, #0b6fa4 65%, #0fbbc3 100%);
+  color: #ffffff;
+  border-radius: 28px;
+  padding: 36px;
+  margin-bottom: 30px;
+  box-shadow: 0 18px 42px rgba(6, 59, 115, 0.24);
+}
+
+.owner-heading h2 {
+  margin: 10px 0;
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: -0.8px;
+}
+
+.owner-heading p {
+  margin: 0;
+  max-width: 780px;
+  color: #e0f2fe;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.owner-kicker {
+  display: inline-block;
+  background: rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.22);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.owner-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 22px;
+  margin: 38px 0 20px;
+  padding: 20px 22px;
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  border-left: 6px solid #ff6236;
+  border-radius: 18px;
+  box-shadow: 0 10px 24px rgba(6, 59, 115, 0.06);
+}
+
+.owner-section-header span {
+  color: #ff6236;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+}
+
+.owner-section-header h3 {
+  margin: 6px 0 0;
+  color: #061b3a;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.owner-section-header p {
+  margin: 0;
+  max-width: 430px;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.owner-stats .stat-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #dbeafe;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+}
+
+.owner-stats .stat-card::after {
+  content: "";
+  position: absolute;
+  width: 86px;
+  height: 86px;
+  right: -26px;
+  top: -26px;
+  background: rgba(255, 98, 54, 0.09);
+  border-radius: 999px;
+}
+
+.plan-card {
+  text-align: left;
+  position: relative;
+}
+
+.plan-card ul {
+  padding-left: 20px;
+  margin: 18px 0;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.plan-card button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.featured-plan::before {
+  content: "Recomendado";
+  position: absolute;
+  top: -14px;
+  right: 20px;
+  background: #ff6236;
+  color: #ffffff;
+  padding: 7px 13px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .4px;
+}
+
+.owner-form-card {
+  padding: 28px;
+  border-radius: 24px;
+  border: 1px solid #dbeafe;
+  box-shadow: 0 14px 32px rgba(6, 59, 115, 0.08);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.form-full {
+  grid-column: 1 / -1;
+}
+
+.form-grid label {
+  display: block;
+  color: #061b3a;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.form-grid small {
+  display: block;
+  color: #64748b;
+  margin-top: 6px;
+}
+
+.owner-primary-btn {
+  background: linear-gradient(135deg, #063b73, #0b6fa4);
+  padding: 14px 22px;
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(11, 111, 164, 0.22);
+}
+
+.owner-primary-btn:hover {
+  background: linear-gradient(135deg, #062f5f, #075f8f);
+}
+
+@media (max-width: 760px) {
+  .owner-heading {
+    padding: 26px 22px;
+  }
+
+  .owner-heading h2 {
+    font-size: 28px;
+  }
+
+  .owner-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .owner-section-header p {
+    max-width: none;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
   </style>
 </head>
 <body>
@@ -1957,10 +2142,11 @@ footer {
     </section>
 
     <section id="panel-propietario" class="panel" style="display:none;">
-      <div class="section-title">
-        <h2>Panel del propietario</h2>
-        <p>Publica, edita y administra tus servicios turísticos.</p>
-      </div>
+      <div class="owner-heading">
+  <span class="owner-kicker">Área de proveedor</span>
+  <h2>Panel del propietario</h2>
+  <p>Administra tus publicaciones, reservas, planes y oportunidades comerciales dentro de TurismoGO.</p>
+</div>
       <div class="owner-stats" id="owner-stats">
   <div class="stat-card">
     <h4>Servicios publicados</h4>
@@ -1983,14 +2169,25 @@ footer {
   </div>
 </div>
 <div class="subscription-plans">
-  <h3>Planes de Suscripción</h3>
+  <div class="owner-section-header">
+    <div>
+      <span>Suscripción</span>
+      <h3>Planes para publicar en TurismoGO</h3>
+    </div>
+    <p>Elige el nivel de visibilidad y beneficios que tendrá tu negocio dentro del marketplace.</p>
+  </div>
 
   <div class="plans-grid">
 
     <div class="plan-card">
       <h4>Básico</h4>
       <p class="plan-price">$9.990 / mes</p>
-      <p>Publicación de servicios + gestión básica.</p>
+      <p>Ideal para comenzar a publicar servicios turísticos.</p>
+<ul>
+  <li>Hasta 3 servicios publicados</li>
+  <li>Gestión básica de reservas</li>
+  <li>Visibilidad estándar</li>
+</ul>
       <button onclick="simularPagoPlan('basico')">
         Elegir Básico
       </button>
@@ -1999,7 +2196,12 @@ footer {
     <div class="plan-card featured-plan">
       <h4>Pro</h4>
       <p class="plan-price">$19.990 / mes</p>
-      <p>Mayor visibilidad + prioridad en reservas.</p>
+      <p>Recomendado para negocios turísticos activos.</p>
+<ul>
+  <li>Hasta 10 servicios publicados</li>
+  <li>Mayor visibilidad en resultados</li>
+  <li>Estadísticas básicas</li>
+</ul>
       <button onclick="simularPagoPlan('pro')">
         Elegir Pro
       </button>
@@ -2008,7 +2210,12 @@ footer {
     <div class="plan-card">
       <h4>Premium</h4>
       <p class="plan-price">$39.990 / mes</p>
-      <p>Máxima exposición + beneficios exclusivos.</p>
+      <p>Para operadores turísticos que buscan máxima exposición.</p>
+<ul>
+  <li>Servicios ilimitados</li>
+  <li>Destacado en portada</li>
+  <li>Soporte preferente</li>
+</ul>
       <button onclick="simularPagoPlan('premium')">
         Elegir Premium
       </button>
@@ -2017,23 +2224,60 @@ footer {
   </div>
 </div>
 
-      <div class="form-card">
-        <h3>Publicar nuevo servicio</h3>
+      <div class="owner-section-header">
+  <div>
+    <span>Publicación</span>
+    <h3>Publicar nuevo servicio</h3>
+  </div>
+  <p>Carga un servicio atractivo con nombre claro, descripción comercial, precio e imágenes de calidad.</p>
+</div>
 
-        <input id="nuevo-nombre" placeholder="Nombre del servicio">
-        <input id="nuevo-descripcion" placeholder="Descripción">
-        <input id="nuevo-precio" type="number" placeholder="Precio">
-        <input id="nuevo-imagen" type="file" accept="image/*" multiple>
+<div class="form-card owner-form-card">
+  <div class="form-grid">
+    <div>
+      <label>Nombre del servicio</label>
+      <input id="nuevo-nombre" placeholder="Ej: Tour full day Torres del Paine">
+    </div>
 
-        <img id="preview-imagen" style="display:none; width:180px; border-radius:10px; margin:10px 0;">
+    <div>
+      <label>Precio</label>
+      <input id="nuevo-precio" type="number" placeholder="Ej: 65000">
+    </div>
 
-        <button onclick="crearServicio()">Publicar servicio</button>
+    <div class="form-full">
+      <label>Descripción</label>
+      <input id="nuevo-descripcion" placeholder="Describe la experiencia, duración, beneficios e información relevante">
+    </div>
+
+    <div class="form-full">
+      <label>Imágenes del servicio</label>
+      <input id="nuevo-imagen" type="file" accept="image/*" multiple>
+      <small>Recomendado: imágenes horizontales, nítidas y bien iluminadas.</small>
+    </div>
+  </div>
+
+  <img id="preview-imagen" style="display:none; width:180px; border-radius:14px; margin:14px 0;">
+
+  <button class="owner-primary-btn" onclick="crearServicio()">Publicar servicio</button>
+</div>
       </div>
 
-      <h3>Mis servicios publicados</h3>
+      <div class="owner-section-header">
+  <div>
+    <span>Marketplace</span>
+    <h3>Mis servicios publicados</h3>
+  </div>
+  <p>Visualiza cómo se muestran tus servicios y administra su contenido.</p>
+</div>
       <div id="mis-servicios" class="grid"></div>
 
-      <h3>Reservas recibidas</h3>
+      <div class="owner-section-header">
+  <div>
+    <span>Operación</span>
+    <h3>Reservas recibidas</h3>
+  </div>
+  <p>Revisa solicitudes, clientes, fechas y estado de cada reserva.</p>
+</div>
       <div id="reservas-propietario" class="grid"></div>
     </section>
 
