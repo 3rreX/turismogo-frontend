@@ -880,7 +880,16 @@
         <button class="reserve-btn" onclick="solicitarReservaPublica()">
   Reservar ahora
 </button>
+<div class="service-chat-box">
+  <h3>Contactar al propietario</h3>
+  <p>Envía una consulta directa antes de reservar.</p>
 
+  <input id="chat-nombre" type="text" placeholder="Tu nombre">
+  <input id="chat-email" type="email" placeholder="Tu correo electrónico">
+  <textarea id="chat-mensaje" placeholder="Escribe tu consulta"></textarea>
+
+  <button onclick="enviarMensajeServicio()">Enviar mensaje</button>
+</div>
 <div class="booking-trust">
   <div class="trust-line">
     ✅ Confirmación rápida

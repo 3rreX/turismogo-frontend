@@ -406,6 +406,7 @@ function mostrarPanelPropietario() {
     cargarMisServicios();
     cargarReservasPropietario();
     cargarCalendarioPropietario();
+    cargarMensajesPropietario();
   } else {
     panel.style.display = 'none';
   }
@@ -2321,4 +2322,123 @@ function toggleDetalleReserva(reservaId) {
   if (!detalle) return;
 
   detalle.classList.toggle('reservation-details-visible');
+}
+async function enviarMensajeServicio() {
+  try {
+    if (!servicioActualId) {
+      alert('No se encontró el servicio.');
+      return;
+    }
+
+    const nombreCliente = document.getElementById('chat-nombre')?.value.trim();
+    const emailCliente = document.getElementById('chat-email')?.value.trim();
+    const mensaje = document.getElementById('chat-mensaje')?.value.trim();
+
+    if (!nombreCliente || !emailCliente || !mensaje) {
+      alert('Debes completar nombre, correo y mensaje.');
+      return;
+    }
+
+    const res = await fetch(`${API_URL}/servicios/${servicioActualId}/mensajes`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        nombreCliente,
+        emailCliente,
+        mensaje
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || 'No se pudo enviar el mensaje.');
+      return;
+    }
+
+    alert(data.message || 'Mensaje enviado correctamente.');
+
+    document.getElementById('chat-nombre').value = '';
+    document.getElementById('chat-email').value = '';
+    document.getElementById('chat-mensaje').value = '';
+
+  } catch (error) {
+    console.error('Error enviando mensaje:', error);
+    alert('Error al enviar mensaje.');
+  }
+}
+async function cargarMensajesPropietario() {
+  try {
+    const cont = document.getElementById('mensajes-propietario');
+    if (!cont) return;
+
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_URL}/mensajes-propietario`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const mensajes = await res.json();
+
+    if (!res.ok) {
+      cont.innerHTML = `<p>${mensajes.error || 'No se pudieron cargar los mensajes.'}</p>`;
+      return;
+    }
+
+    cont.innerHTML = '';
+
+    if (!Array.isArray(mensajes) || mensajes.length === 0) {
+      cont.innerHTML = `
+        <div class="empty-owner-state">
+          <h3>No tienes mensajes recibidos</h3>
+          <p>Cuando un cliente consulte por un servicio, aparecerá aquí.</p>
+        </div>
+      `;
+      return;
+    }
+
+    mensajes.forEach((m) => {
+      const fecha = m.fecha
+        ? new Date(m.fecha).toLocaleDateString('es-CL')
+        : 'Fecha no disponible';
+
+      cont.innerHTML += `
+        <article class="owner-message-card">
+          <div>
+            <span class="reservation-label">Consulta recibida</span>
+            <h3>${m.servicioId?.nombre || 'Servicio no disponible'}</h3>
+            <p>${fecha}</p>
+          </div>
+
+          <div class="owner-client-box">
+            <div>
+              <span>Cliente</span>
+              <strong>${m.nombreCliente}</strong>
+            </div>
+
+            <div>
+              <span>Correo</span>
+              <strong>${m.emailCliente}</strong>
+            </div>
+          </div>
+
+          <div class="owner-message-box">
+            <span>Mensaje</span>
+            <p>${m.mensaje}</p>
+          </div>
+
+          <a class="reply-mail-btn" href="mailto:${m.emailCliente}?subject=Respuesta desde TurismoGO">
+            Responder por correo
+          </a>
+        </article>
+      `;
+    });
+
+  } catch (error) {
+    console.error('Error cargando mensajes:', error);
+  }
 }
