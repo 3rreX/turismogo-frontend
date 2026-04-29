@@ -2551,9 +2551,37 @@ footer {
 }
 .reservation-main-actions {
   display: grid;
-  grid-template-columns: 1fr 1fr 1.2fr;
-  gap: 12px;
-  margin-top: 6px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "details details"
+    "approve reject";
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.details-btn {
+  grid-area: details;
+  width: 100%;
+  background: #061b3a;
+  border-radius: 14px;
+  padding: 13px 18px;
+  font-weight: 800;
+}
+
+.approve-btn {
+  grid-area: approve;
+  background: #16a34a;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-weight: 800;
+}
+
+.reject-btn {
+  grid-area: reject;
+  background: #dc2626;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-weight: 800;
 }
 
 .approve-btn {
