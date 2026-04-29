@@ -2196,6 +2196,83 @@ footer {
 .owner-actions .danger-btn:hover {
   background: #b91c1c;
 }
+.custom-alert-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  padding: 20px;
+}
+
+.custom-alert-box {
+  width: 100%;
+  max-width: 430px;
+  background: #ffffff;
+  border-radius: 26px;
+  padding: 34px 30px;
+  text-align: center;
+  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.28);
+  border: 1px solid #dbeafe;
+  animation: alertPop 0.22s ease;
+}
+
+.custom-alert-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0b6fa4, #0fbbc3);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.custom-alert-box h3 {
+  margin: 0 0 10px;
+  color: #061b3a;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.custom-alert-box p {
+  margin: 0 0 24px;
+  color: #475569;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.custom-alert-box button {
+  width: 100%;
+  background: linear-gradient(135deg, #063b73, #0b6fa4);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 20px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.custom-alert-box button:hover {
+  background: linear-gradient(135deg, #062f5f, #075f8f);
+}
+
+@keyframes alertPop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
   </style>
 </head>
 <body>
@@ -2523,6 +2600,37 @@ footer {
 
   if (estadoPago === 'error') {
     alert('No fue posible validar el pago. Intenta nuevamente o contacta soporte.');
+  }
+</script>
+<div id="customAlert" class="custom-alert-overlay" style="display:none;">
+  <div class="custom-alert-box">
+    <div class="custom-alert-icon">✓</div>
+    <h3 id="customAlertTitle">TurismoGO</h3>
+    <p id="customAlertMessage"></p>
+    <button onclick="cerrarCustomAlert()">Aceptar</button>
+  </div>
+</div>
+<script>
+  const alertaOriginal = window.alert;
+
+  window.alert = function(mensaje) {
+    const alerta = document.getElementById('customAlert');
+    const mensajeBox = document.getElementById('customAlertMessage');
+
+    if (!alerta || !mensajeBox) {
+      alertaOriginal(mensaje);
+      return;
+    }
+
+    mensajeBox.textContent = mensaje;
+    alerta.style.display = 'flex';
+  };
+
+  function cerrarCustomAlert() {
+    const alerta = document.getElementById('customAlert');
+    if (alerta) {
+      alerta.style.display = 'none';
+    }
   }
 </script>
 </body>
