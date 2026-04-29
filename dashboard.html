@@ -3026,29 +3026,7 @@ footer {
     </div>
   </div>
 </div>
-<script>
-  const paramsPago = new URLSearchParams(window.location.search);
-  const estadoPago = paramsPago.get('pago');
-
-  if (estadoPago === 'exitoso') {
-    customAlert('Pago aprobado correctamente. Tu suscripción fue activada.');
-  }
-
-  if (estadoPago === 'fallido') {
- customAlert(
-    'Cuenta creada correctamente, pero el pago fue rechazado. Tu suscripción no fue activada y no podrás publicar servicios hasta completar el pago.'
-  );
-}
-
-  if (estadoPago === 'cancelado') {
-    customAlert('El pago fue cancelado antes de finalizar.');
-  }
-
-  if (estadoPago === 'error') {
-    customAlert('No fue posible validar el pago. Intenta nuevamente o contacta soporte.');
-  }
-</script>
-<div id="customAlert" class="custom-alert-overlay" style="display:none;">
+ <div id="customAlert" class="custom-alert-overlay" style="display:none;">
   <div class="custom-alert-box">
     <div class="custom-alert-icon">✓</div>
     <h3 id="customAlertTitle">TurismoGO</h3>
@@ -3056,84 +3034,7 @@ footer {
     <button onclick="cerrarCustomAlert()">Aceptar</button>
   </div>
 </div>
-  <script>
-  function customConfirm(mensaje) {
-    return new Promise((resolve) => {
-      const modal = document.getElementById('customConfirm');
-      const mensajeBox = document.getElementById('customConfirmMessage');
-      const aceptar = document.getElementById('customConfirmAccept');
-      const cancelar = document.getElementById('customConfirmCancel');
 
-      if (!modal || !mensajeBox || !aceptar || !cancelar) {
-        resolve(confirm(mensaje));
-        return;
-      }
-
-      mensajeBox.textContent = mensaje;
-      modal.style.display = 'flex';
-
-      aceptar.onclick = () => {
-        modal.style.display = 'none';
-        resolve(true);
-      };
-
-      cancelar.onclick = () => {
-        modal.style.display = 'none';
-        resolve(false);
-      };
-    });
-  }
-</script>
-  const alertaOriginal = window.alert;
-
-  window.alert = function(mensaje) {
-    const alerta = document.getElementById('customAlert');
-    const mensajeBox = document.getElementById('customAlertMessage');
-
-    if (!alerta || !mensajeBox) {
-      alertaOriginal(mensaje);
-      return;
-    }
-
-    mensajeBox.textContent = mensaje;
-    alerta.style.display = 'flex';
-  };
-
-  function cerrarCustomAlert() {
-    const alerta = document.getElementById('customAlert');
-    if (alerta) {
-      alerta.style.display = 'none';
-    }
-  }
-</script>
-<script>
-  function customConfirm(mensaje) {
-    return new Promise((resolve) => {
-      const modal = document.getElementById('customConfirm');
-      const mensajeBox = document.getElementById('customConfirmMessage');
-      const aceptar = document.getElementById('customConfirmAccept');
-      const cancelar = document.getElementById('customConfirmCancel');
-
-      if (!modal || !mensajeBox || !aceptar || !cancelar) {
-        resolve(window.confirm(mensaje));
-        return;
-      }
-
-      mensajeBox.textContent = mensaje;
-      modal.style.display = 'flex';
-
-      aceptar.onclick = () => {
-        modal.style.display = 'none';
-        resolve(true);
-      };
-
-      cancelar.onclick = () => {
-        modal.style.display = 'none';
-        resolve(false);
-      };
-    });
-  }
-</script>
 <div id="customConfirm" class="custom-alert-overlay" style="display:none;">
   <div class="custom-alert-box">
     <div class="custom-alert-icon">!</div>
@@ -3150,5 +3051,81 @@ footer {
     </div>
   </div>
 </div>
+
+<script>
+  const alertaOriginal = window.alert.bind(window);
+  const confirmarOriginal = window.confirm.bind(window);
+
+  function customAlert(mensaje) {
+    const alerta = document.getElementById('customAlert');
+    const mensajeBox = document.getElementById('customAlertMessage');
+
+    if (!alerta || !mensajeBox) {
+      alertaOriginal(mensaje);
+      return;
+    }
+
+    mensajeBox.textContent = mensaje;
+    alerta.style.display = 'flex';
+  }
+
+  function cerrarCustomAlert() {
+    const alerta = document.getElementById('customAlert');
+
+    if (alerta) {
+      alerta.style.display = 'none';
+    }
+  }
+
+  function customConfirm(mensaje) {
+    return new Promise((resolve) => {
+      const modal = document.getElementById('customConfirm');
+      const mensajeBox = document.getElementById('customConfirmMessage');
+      const aceptar = document.getElementById('customConfirmAccept');
+      const cancelar = document.getElementById('customConfirmCancel');
+
+      if (!modal || !mensajeBox || !aceptar || !cancelar) {
+        resolve(confirmarOriginal(mensaje));
+        return;
+      }
+
+      mensajeBox.textContent = mensaje;
+      modal.style.display = 'flex';
+
+      aceptar.onclick = () => {
+        modal.style.display = 'none';
+        resolve(true);
+      };
+
+      cancelar.onclick = () => {
+        modal.style.display = 'none';
+        resolve(false);
+      };
+    });
+  }
+
+  window.alert = customAlert;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const paramsPago = new URLSearchParams(window.location.search);
+    const estadoPago = paramsPago.get('pago');
+
+    if (estadoPago === 'exitoso') {
+      customAlert('Pago aprobado correctamente. Tu suscripción fue activada.');
+    }
+
+    if (estadoPago === 'fallido') {
+      customAlert('Cuenta creada correctamente, pero el pago fue rechazado. Tu suscripción no fue activada y no podrás publicar servicios hasta completar el pago.');
+    }
+
+    if (estadoPago === 'cancelado') {
+      customAlert('El pago fue cancelado antes de finalizar.');
+    }
+
+    if (estadoPago === 'error') {
+      customAlert('No fue posible validar el pago. Intenta nuevamente o contacta soporte.');
+    }
+  });
+</script>
 </body>
 </html>
