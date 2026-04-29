@@ -2700,6 +2700,137 @@ footer {
 .reply-mail-btn:hover {
   background: #0b6fa4;
 }
+
+/* =====================================================
+   TURISMOGO - PANEL ADMIN PREMIUM
+   Mejora visual segura solo CSS
+===================================================== */
+
+.admin-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-panel::before {
+  content: "";
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  right: -140px;
+  top: -140px;
+  background: radial-gradient(circle, rgba(15, 187, 195, 0.16), transparent 68%);
+  pointer-events: none;
+}
+
+.admin-heading {
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-heading::after {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  right: -70px;
+  bottom: -90px;
+  background: rgba(255,255,255,0.10);
+  border-radius: 999px;
+}
+
+.admin-stats .stat-card {
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.admin-user-card,
+.admin-service-card,
+.admin-reservation-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.admin-card-top {
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 16px;
+}
+
+.admin-card-top h3 {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.admin-user-info {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.admin-user-info p {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.admin-actions button,
+.admin-card-actions button {
+  border-radius: 14px;
+  padding: 13px 16px;
+  font-weight: 900;
+}
+
+.admin-actions button:nth-child(1) {
+  background: linear-gradient(135deg, #063b73, #0b6fa4);
+}
+
+.admin-actions button:nth-child(2) {
+  background: linear-gradient(135deg, #0f766e, #14b8a6);
+}
+
+.admin-actions button:nth-child(3),
+.admin-actions button:nth-child(4) {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+}
+
+.admin-filtros {
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  border-radius: 22px;
+  padding: 20px;
+  box-shadow: 0 14px 30px rgba(6, 59, 115, 0.06);
+}
+
+.admin-filtros input,
+.admin-filtros select {
+  margin: 0;
+  font-weight: 700;
+}
+
+.role-badge {
+  border: 1px solid rgba(255,255,255,0.65);
+}
+
+.role-admin {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  color: #063b73;
+}
+
+.role-propietario {
+  background: linear-gradient(135deg, #ccfbf1, #99f6e4);
+  color: #0f766e;
+}
+
+.role-usuario {
+  background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+  color: #075985;
+}
+
+.admin-alert {
+  border-radius: 20px;
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+}
 /* =====================================================
    TURISMOGO - CAPA PREMIUM GLOBAL
    Mejora visual segura: no modifica lógica JS ni backend
