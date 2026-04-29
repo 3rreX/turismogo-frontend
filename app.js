@@ -1923,24 +1923,46 @@ async function cargarServiciosPublicos() {
             ? s.imagenes[0]
             : s.imagen || 'https://placehold.co/400x300?text=TurismoGO';
 
-        cont.innerHTML += `
-          <article class="public-service-card">
-            <img src="${imagenPrincipal}" alt="${s.nombre}">
+        const planPropietario = s.propietarioId?.plan || 'ninguno';
+const esPremium = planPropietario === 'premium';
+const esPro = planPropietario === 'pro';
 
-            <div class="public-service-content">
-              <h3>${s.nombre}</h3>
-              <p>${s.descripcion}</p>
+cont.innerHTML += `
+  <article class="public-service-card ${esPremium ? 'premium-service-card' : ''}">
+    <div class="public-image-wrap">
+      <img src="${imagenPrincipal}" alt="${s.nombre}">
 
-              <p class="public-price">
-                $${Number(s.precio).toLocaleString('es-CL')}
-              </p>
+      <div class="public-card-badges">
+        <span class="verified-badge">Verificado</span>
+        ${
+          esPremium
+            ? '<span class="premium-badge">Premium</span>'
+            : esPro
+              ? '<span class="pro-badge">Pro</span>'
+              : ''
+        }
+      </div>
+    </div>
 
-              <button onclick="window.location.href='servicio.html?id=${s._id}'">
-                Ver aviso
-              </button>
-            </div>
-          </article>
-        `;
+    <div class="public-service-content">
+      <h3>${s.nombre}</h3>
+      <p>${s.descripcion}</p>
+
+      <div class="trust-row">
+        <span>★ 5.0</span>
+        <span>Proveedor TurismoGO</span>
+      </div>
+
+      <p class="public-price">
+        $${Number(s.precio).toLocaleString('es-CL')}
+      </p>
+
+      <button onclick="window.location.href='servicio.html?id=${s._id}'">
+        Ver aviso
+      </button>
+    </div>
+  </article>
+`;
       });
     }
 

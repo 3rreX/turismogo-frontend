@@ -1012,3 +1012,64 @@
     grid-template-columns: 1fr;
   }
 }
+.public-image-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.public-card-badges {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  z-index: 2;
+}
+
+.verified-badge,
+.premium-badge,
+.pro-badge {
+  padding: 7px 11px;
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
+}
+
+.verified-badge {
+  background: #0b6fa4;
+}
+
+.premium-badge {
+  background: #ff6236;
+}
+
+.pro-badge {
+  background: #16a34a;
+}
+
+.premium-service-card {
+  border: 2px solid rgba(255, 98, 54, 0.45);
+  box-shadow: 0 18px 42px rgba(255, 98, 54, 0.14);
+}
+
+.trust-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
+.trust-row span {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 800;
+}
