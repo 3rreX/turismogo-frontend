@@ -2511,6 +2511,44 @@ footer {
     min-width: 760px;
   }
 }
+.compact-reservation-card {
+  min-height: auto;
+}
+
+.details-btn {
+  width: 100%;
+  background: #061b3a;
+  border-radius: 14px;
+  padding: 13px 18px;
+  margin: 0;
+}
+
+.details-btn:hover {
+  background: #0b6fa4;
+}
+
+.reservation-details-hidden {
+  display: none;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 6px;
+  animation: fadeDetails 0.2s ease;
+}
+
+.reservation-details-visible {
+  display: flex;
+}
+
+@keyframes fadeDetails {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
   </style>
 </head>
 <body>

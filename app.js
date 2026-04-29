@@ -876,83 +876,92 @@ async function cargarReservasPropietario() {
         0;
 
       cont.innerHTML += `
-        <article class="owner-reservation-card">
-          <div class="owner-reservation-header">
-            <div>
-              <span class="reservation-label">Reserva recibida</span>
-              <h3>${r.servicio}</h3>
-              <p>Solicitud generada desde TurismoGO</p>
-            </div>
+  <article class="owner-reservation-card compact-reservation-card">
+    <div class="owner-reservation-header">
+      <div>
+        <span class="reservation-label">Reserva recibida</span>
+        <h3>${r.servicio}</h3>
+        <p>Solicitud generada desde TurismoGO</p>
+      </div>
 
-            <div class="reservation-badges">
-              <span class="status-badge status-${estado}">
-                ${estado}
-              </span>
+      <div class="reservation-badges">
+        <span class="status-badge status-${estado}">
+          ${estado}
+        </span>
 
-              <span class="payment-badge payment-${pagoEstado}">
-                Pago: ${pagoEstado}
-              </span>
-            </div>
-          </div>
+        <span class="payment-badge payment-${pagoEstado}">
+          Pago: ${pagoEstado}
+        </span>
+      </div>
+    </div>
 
-          <div class="owner-client-box">
-            <div>
-              <span>Cliente</span>
-              <strong>${nombreCliente}</strong>
-            </div>
+    <button
+      class="details-btn"
+      onclick="toggleDetalleReserva('${r._id}')"
+    >
+      Ver detalles
+    </button>
 
-            <div>
-              <span>Correo</span>
-              <strong>${emailCliente}</strong>
-            </div>
+    <div id="detalle-reserva-${r._id}" class="reservation-details-hidden">
+      <div class="owner-client-box">
+        <div>
+          <span>Cliente</span>
+          <strong>${nombreCliente}</strong>
+        </div>
 
-            <div>
-              <span>Teléfono</span>
-              <strong>${telefonoCliente}</strong>
-            </div>
+        <div>
+          <span>Correo</span>
+          <strong>${emailCliente}</strong>
+        </div>
 
-            <div>
-              <span>Personas</span>
-              <strong>${personasReserva}</strong>
-            </div>
-          </div>
+        <div>
+          <span>Teléfono</span>
+          <strong>${telefonoCliente}</strong>
+        </div>
 
-          <div class="owner-reservation-dates">
-            <div>
-              <span>Fecha inicio</span>
-              <strong>${r.fechaInicio}</strong>
-            </div>
+        <div>
+          <span>Personas</span>
+          <strong>${personasReserva}</strong>
+        </div>
+      </div>
 
-            <div>
-              <span>Fecha fin</span>
-              <strong>${r.fechaFin}</strong>
-            </div>
+      <div class="owner-reservation-dates">
+        <div>
+          <span>Fecha inicio</span>
+          <strong>${r.fechaInicio}</strong>
+        </div>
 
-            <div>
-              <span>Monto estimado</span>
-              <strong>$${monto.toLocaleString('es-CL')}</strong>
-            </div>
-          </div>
+        <div>
+          <span>Fecha fin</span>
+          <strong>${r.fechaFin}</strong>
+        </div>
 
-          <div class="owner-message-box">
-            <span>Mensaje del cliente</span>
-            <p>${mensajeCliente}</p>
-          </div>
+        <div>
+          <span>Monto estimado</span>
+          <strong>$${monto.toLocaleString('es-CL')}</strong>
+        </div>
+      </div>
 
-          <div class="owner-reservation-actions">
-            <button onclick="cambiarEstadoReserva('${r._id}', 'confirmada')">
-              Confirmar reserva
-            </button>
+      <div class="owner-message-box">
+        <span>Mensaje del cliente</span>
+        <p>${mensajeCliente}</p>
+      </div>
 
-            <button
-              class="danger-btn"
-              onclick="cambiarEstadoReserva('${r._id}', 'rechazada')"
-            >
-              Rechazar reserva
-            </button>
-          </div>
-        </article>
-      `;
+      <div class="owner-reservation-actions">
+        <button onclick="cambiarEstadoReserva('${r._id}', 'confirmada')">
+          Confirmar reserva
+        </button>
+
+        <button
+          class="danger-btn"
+          onclick="cambiarEstadoReserva('${r._id}', 'rechazada')"
+        >
+          Rechazar reserva
+        </button>
+      </div>
+    </div>
+  </article>
+`;
     });
 
   } catch (error) {
@@ -2267,4 +2276,11 @@ function formatearFechaCalendario(fecha) {
     month: 'short',
     year: 'numeric'
   });
+}
+function toggleDetalleReserva(reservaId) {
+  const detalle = document.getElementById(`detalle-reserva-${reservaId}`);
+
+  if (!detalle) return;
+
+  detalle.classList.toggle('reservation-details-visible');
 }
