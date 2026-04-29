@@ -3106,6 +3106,34 @@ footer {
     }
   }
 </script>
+<script>
+  function customConfirm(mensaje) {
+    return new Promise((resolve) => {
+      const modal = document.getElementById('customConfirm');
+      const mensajeBox = document.getElementById('customConfirmMessage');
+      const aceptar = document.getElementById('customConfirmAccept');
+      const cancelar = document.getElementById('customConfirmCancel');
+
+      if (!modal || !mensajeBox || !aceptar || !cancelar) {
+        resolve(window.confirm(mensaje));
+        return;
+      }
+
+      mensajeBox.textContent = mensaje;
+      modal.style.display = 'flex';
+
+      aceptar.onclick = () => {
+        modal.style.display = 'none';
+        resolve(true);
+      };
+
+      cancelar.onclick = () => {
+        modal.style.display = 'none';
+        resolve(false);
+      };
+    });
+  }
+</script>
 <div id="customConfirm" class="custom-alert-overlay" style="display:none;">
   <div class="custom-alert-box">
     <div class="custom-alert-icon">!</div>
