@@ -2273,6 +2273,168 @@ footer {
     transform: translateY(0) scale(1);
   }
 }
+.owner-reservation-card {
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  border-radius: 28px;
+  padding: 26px;
+  box-shadow: 0 16px 36px rgba(6, 59, 115, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.owner-reservation-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 54px rgba(6, 59, 115, 0.15);
+}
+
+.owner-reservation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.reservation-label {
+  display: inline-block;
+  color: #ff6236;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 8px;
+}
+
+.owner-reservation-header h3 {
+  margin: 0;
+  color: #061b3a;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.owner-reservation-header p {
+  margin: 6px 0 0;
+  color: #64748b;
+}
+
+.reservation-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.payment-badge {
+  padding: 8px 13px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.payment-pagado {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.payment-pendiente {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.payment-fallido {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.owner-client-box,
+.owner-reservation-dates {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+.owner-client-box div,
+.owner-reservation-dates div {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.owner-client-box span,
+.owner-reservation-dates span,
+.owner-message-box span {
+  display: block;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.owner-client-box strong,
+.owner-reservation-dates strong {
+  color: #0f172a;
+  font-size: 15px;
+  word-break: break-word;
+}
+
+.owner-message-box {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border: 1px solid #dbeafe;
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.owner-message-box p {
+  margin: 0;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.owner-reservation-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: auto;
+}
+
+.owner-reservation-actions button {
+  border-radius: 14px;
+  padding: 14px 18px;
+}
+
+.empty-owner-state {
+  grid-column: 1 / -1;
+  background: #ffffff;
+  border: 1px dashed #bfdbfe;
+  border-radius: 24px;
+  padding: 34px;
+  text-align: center;
+  color: #64748b;
+}
+
+.empty-owner-state h3 {
+  margin: 0 0 8px;
+  color: #061b3a;
+  font-size: 22px;
+}
+
+@media (max-width: 760px) {
+  .owner-reservation-header {
+    flex-direction: column;
+  }
+
+  .reservation-badges {
+    align-items: flex-start;
+  }
+
+  .owner-reservation-actions {
+    grid-template-columns: 1fr;
+  }
+}
   </style>
 </head>
 <body>
