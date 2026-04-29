@@ -3056,7 +3056,34 @@ footer {
     <button onclick="cerrarCustomAlert()">Aceptar</button>
   </div>
 </div>
-<script>
+  <script>
+  function customConfirm(mensaje) {
+    return new Promise((resolve) => {
+      const modal = document.getElementById('customConfirm');
+      const mensajeBox = document.getElementById('customConfirmMessage');
+      const aceptar = document.getElementById('customConfirmAccept');
+      const cancelar = document.getElementById('customConfirmCancel');
+
+      if (!modal || !mensajeBox || !aceptar || !cancelar) {
+        resolve(confirm(mensaje));
+        return;
+      }
+
+      mensajeBox.textContent = mensaje;
+      modal.style.display = 'flex';
+
+      aceptar.onclick = () => {
+        modal.style.display = 'none';
+        resolve(true);
+      };
+
+      cancelar.onclick = () => {
+        modal.style.display = 'none';
+        resolve(false);
+      };
+    });
+  }
+</script>
   const alertaOriginal = window.alert;
 
   window.alert = function(mensaje) {
@@ -3079,5 +3106,21 @@ footer {
     }
   }
 </script>
+<div id="customConfirm" class="custom-alert-overlay" style="display:none;">
+  <div class="custom-alert-box">
+    <div class="custom-alert-icon">!</div>
+    <h3 id="customConfirmTitle">Confirmar acción</h3>
+    <p id="customConfirmMessage"></p>
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+      <button id="customConfirmCancel" style="background:#e5e7eb; color:#111827;">
+        Cancelar
+      </button>
+      <button id="customConfirmAccept">
+        Aceptar
+      </button>
+    </div>
+  </div>
+</div>
 </body>
 </html>

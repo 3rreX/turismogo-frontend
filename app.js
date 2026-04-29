@@ -2179,9 +2179,9 @@ function renderReservasAdmin(reservas) {
 }
 async function eliminarUsuarioAdmin(usuarioId, username) {
   try {
-    const confirmar = confirm(
-      `¿Seguro que deseas eliminar al usuario "${username}"?\n\nEsta acción no se puede deshacer.`
-    );
+    const confirmar = await customConfirm(
+  `¿Seguro que deseas eliminar al usuario "${username}"?\n\nEsta acción no se puede deshacer.`
+);
 
     if (!confirmar) return;
 
