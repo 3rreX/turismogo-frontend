@@ -2435,6 +2435,82 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+.owner-calendar {
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  border-radius: 26px;
+  padding: 22px;
+  box-shadow: 0 16px 36px rgba(6, 59, 115, 0.08);
+  margin-bottom: 34px;
+  overflow-x: auto;
+}
+
+.calendar-table {
+  min-width: 860px;
+}
+
+.calendar-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1.2fr 1fr 1fr 1fr 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 14px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.calendar-row:last-child {
+  border-bottom: none;
+}
+
+.calendar-head {
+  background: #f8fafc;
+  border-radius: 16px;
+  border-bottom: none;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+}
+
+.calendar-row span {
+  color: #334155;
+  font-size: 14px;
+}
+
+.calendar-row strong {
+  color: #061b3a;
+  font-weight: 900;
+}
+
+.calendar-empty {
+  text-align: center;
+  padding: 34px;
+  border: 1px dashed #bfdbfe;
+  border-radius: 22px;
+  background: #f8fbff;
+}
+
+.calendar-empty h3 {
+  margin: 0 0 8px;
+  color: #061b3a;
+  font-size: 22px;
+}
+
+.calendar-empty p {
+  margin: 0;
+  color: #64748b;
+}
+
+@media (max-width: 760px) {
+  .owner-calendar {
+    padding: 14px;
+  }
+
+  .calendar-table {
+    min-width: 760px;
+  }
+}
   </style>
 </head>
 <body>
@@ -2591,14 +2667,24 @@ footer {
 </div>
       <div id="mis-servicios" class="grid"></div>
 
-      <div class="owner-section-header">
+     <div class="owner-section-header">
+  <div>
+    <span>Disponibilidad</span>
+    <h3>Calendario de ocupación</h3>
+  </div>
+  <p>Visualiza qué servicios están ocupados, pendientes o confirmados según sus fechas de reserva.</p>
+</div>
+
+<div id="calendario-propietario" class="owner-calendar"></div>
+
+<div class="owner-section-header">
   <div>
     <span>Operación</span>
     <h3>Reservas recibidas</h3>
   </div>
   <p>Revisa solicitudes, clientes, fechas y estado de cada reserva.</p>
 </div>
-      <div id="reservas-propietario" class="grid"></div>
+<div id="reservas-propietario" class="grid"></div>
     </section>
 
    <section id="panel-admin" class="panel admin-panel" style="display:none;">

@@ -405,6 +405,7 @@ function mostrarPanelPropietario() {
     panel.style.display = 'block';
     cargarMisServicios();
     cargarReservasPropietario();
+    cargarCalendarioPropietario();
   } else {
     panel.style.display = 'none';
   }
@@ -2162,4 +2163,108 @@ async function eliminarUsuarioAdmin(usuarioId, username) {
     console.error('Error eliminando usuario:', error);
     alert('Error al eliminar usuario');
   }
+}
+async function cargarCalendarioPropietario() {
+  try {
+    const cont = document.getElementById('calendario-propietario');
+    if (!cont) return;
+
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(`${API_URL}/reservas-propietario`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const reservas = await res.json();
+
+    if (!res.ok) {
+      cont.innerHTML = `<p>${reservas.error || 'No se pudo cargar el calendario.'}</p>`;
+      return;
+    }
+
+    const reservasActivas = Array.isArray(reservas)
+      ? reservas.filter(r => ['pendiente', 'confirmada'].includes((r.estado || '').toLowerCase()))
+      : [];
+
+    if (reservasActivas.length === 0) {
+      cont.innerHTML = `
+        <div class="calendar-empty">
+          <h3>No hay servicios ocupados actualmente</h3>
+          <p>Cuando existan reservas pendientes o confirmadas, aparecerán aquí.</p>
+        </div>
+      `;
+      return;
+    }
+
+    reservasActivas.sort((a, b) => {
+      return new Date(a.fechaInicio) - new Date(b.fechaInicio);
+    });
+
+    cont.innerHTML = `
+      <div class="calendar-table">
+        <div class="calendar-row calendar-head">
+          <span>Servicio</span>
+          <span>Cliente</span>
+          <span>Inicio</span>
+          <span>Fin</span>
+          <span>Reserva</span>
+          <span>Pago</span>
+        </div>
+
+        ${reservasActivas.map((r) => {
+          const servicio = r.servicio || r.servicioId?.nombre || 'Servicio no disponible';
+          const cliente = r.nombreCliente || r.usuarioId?.username || 'Cliente externo';
+          const estado = r.estado || 'pendiente';
+          const pago = r.pagoEstado || 'pendiente';
+
+          return `
+            <div class="calendar-row">
+              <span>
+                <strong>${servicio}</strong>
+              </span>
+
+              <span>${cliente}</span>
+
+              <span>${formatearFechaCalendario(r.fechaInicio)}</span>
+
+              <span>${formatearFechaCalendario(r.fechaFin)}</span>
+
+              <span>
+                <b class="status-badge status-${estado}">
+                  ${estado}
+                </b>
+              </span>
+
+              <span>
+                <b class="payment-badge payment-${pago}">
+                  ${pago}
+                </b>
+              </span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+
+  } catch (error) {
+    console.error('Error calendario propietario:', error);
+  }
+}
+
+function formatearFechaCalendario(fecha) {
+  if (!fecha) return 'No disponible';
+
+  const fechaObj = new Date(fecha);
+
+  if (isNaN(fechaObj.getTime())) {
+    return fecha;
+  }
+
+  return fechaObj.toLocaleDateString('es-CL', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  });
 }
