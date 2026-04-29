@@ -244,7 +244,7 @@ async function cargarReservas() {
 }
 async function cancelarReserva(reservaId) {
   try {
-    const confirmar = confirm('¿Seguro que deseas cancelar esta reserva?');
+    const confirmar = await customConfirm('¿Seguro que deseas cancelar esta reserva?');
 
     if (!confirmar) return;
 
@@ -666,7 +666,7 @@ async function eliminarImagenDesdeModal(servicioId, imagenUrl) {
 }
 async function eliminarServicio(id) {
   try {
-    const confirmar = confirm('¿Seguro que deseas eliminar este servicio?');
+    const confirmar = await customConfirm('¿Seguro que deseas eliminar este servicio?');
 
     if (!confirmar) return;
 
@@ -695,7 +695,7 @@ async function eliminarServicio(id) {
     alert('Error al eliminar servicio');
   }
 }
-function mostrarFormularioEditar(id, nombre, descripcion, precio) {
+async function mostrarFormularioEditar(id, nombre, descripcion, precio) {
   const nuevoNombre = prompt('Nuevo nombre:', nombre);
   if (nuevoNombre === null) return;
 
@@ -714,7 +714,7 @@ function mostrarFormularioEditar(id, nombre, descripcion, precio) {
     editarServicio(id, nuevoNombre, nuevaDescripcion, nuevoPrecio, input.files);
   };
 
-  const agregarImagenes = confirm('¿Deseas agregar nuevas imágenes a este servicio?');
+  const agregarImagenes = await customConfirm('¿Deseas agregar nuevas imágenes a este servicio?');
 
   if (agregarImagenes) {
     input.click();
@@ -762,7 +762,7 @@ async function editarServicio(id, nombre, descripcion, precio, imagenFiles = nul
 }
 async function eliminarImagenServicio(servicioId, imagenUrl) {
   try {
-    const confirmar = confirm('¿Eliminar esta imagen?');
+    const confirmar = await customConfirm('¿Eliminar esta imagen?');
     if (!confirmar) return;
 
     const token = localStorage.getItem('token');
@@ -1520,7 +1520,7 @@ if (statTicket) {
 }
 async function cambiarRolUsuario(usuarioId, nuevoRole) {
   try {
-    const confirmar = confirm(`¿Seguro que deseas cambiar este usuario a ${nuevoRole}?`);
+    const confirmar = await customConfirm(`¿Seguro que deseas cambiar este usuario a ${nuevoRole}?`);
 
     if (!confirmar) return;
 
@@ -1552,7 +1552,7 @@ async function cambiarRolUsuario(usuarioId, nuevoRole) {
 }
 async function actualizarSuscripcionUsuario(usuarioId, suscripcionActiva, plan) {
   try {
-    const confirmar = confirm(`¿Actualizar suscripción a ${plan}?`);
+    const confirmar = await customConfirm(`¿Actualizar suscripción a ${plan}?`);
 
     if (!confirmar) return;
 
@@ -2134,7 +2134,7 @@ async function actualizarEstadoReservaAdmin(idReserva, nuevoEstado) {
       return;
     }
 
-    const confirmar = confirm(`¿Deseas cambiar esta reserva a "${nuevoEstado}"?`);
+    const confirmar = await customConfirm(`¿Deseas cambiar esta reserva a "${nuevoEstado}"?`);
 
     if (!confirmar) return;
 
