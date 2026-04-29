@@ -3031,21 +3031,21 @@ footer {
   const estadoPago = paramsPago.get('pago');
 
   if (estadoPago === 'exitoso') {
-    customalert('Pago aprobado correctamente. Tu suscripción fue activada.');
+    customAlert('Pago aprobado correctamente. Tu suscripción fue activada.');
   }
 
   if (estadoPago === 'fallido') {
- customalert(
+ customAlert(
     'Cuenta creada correctamente, pero el pago fue rechazado. Tu suscripción no fue activada y no podrás publicar servicios hasta completar el pago.'
   );
 }
 
   if (estadoPago === 'cancelado') {
-    customalert('El pago fue cancelado antes de finalizar.');
+    customAlert('El pago fue cancelado antes de finalizar.');
   }
 
   if (estadoPago === 'error') {
-    customalert('No fue posible validar el pago. Intenta nuevamente o contacta soporte.');
+    customAlert('No fue posible validar el pago. Intenta nuevamente o contacta soporte.');
   }
 </script>
 <div id="customAlert" class="custom-alert-overlay" style="display:none;">
