@@ -1935,12 +1935,12 @@ cont.innerHTML += `
       <div class="public-card-badges">
         <span class="verified-badge">Verificado</span>
         ${
-          esPremium
-            ? '<span class="premium-badge">Premium</span>'
-            : esPro
-              ? '<span class="pro-badge">Pro</span>'
-              : ''
-        }
+  esPremium
+    ? '<span class="premium-badge">Premium</span><span class="featured-badge">Destacado</span>'
+    : esPro
+      ? '<span class="pro-badge">Pro</span>'
+      : ''
+}
       </div>
     </div>
 
@@ -1965,6 +1965,19 @@ cont.innerHTML += `
 `;
       });
     }
+    const prioridadPlan = {
+  premium: 1,
+  pro: 2,
+  basico: 3,
+  ninguno: 4
+};
+
+servicios.sort((a, b) => {
+  const planA = a.propietarioId?.plan || 'ninguno';
+  const planB = b.propietarioId?.plan || 'ninguno';
+
+  return prioridadPlan[planA] - prioridadPlan[planB];
+});
 
     renderizarServicios(servicios);
 
