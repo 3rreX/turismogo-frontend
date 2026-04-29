@@ -895,12 +895,28 @@ async function cargarReservasPropietario() {
       </div>
     </div>
 
-    <button
-      class="details-btn"
-      onclick="toggleDetalleReserva('${r._id}')"
-    >
-      Ver detalles
-    </button>
+    <div class="reservation-main-actions">
+  <button
+    class="approve-btn"
+    onclick="cambiarEstadoReserva('${r._id}', 'confirmada')"
+  >
+    Confirmar
+  </button>
+
+  <button
+    class="reject-btn"
+    onclick="cambiarEstadoReserva('${r._id}', 'rechazada')"
+  >
+    Rechazar
+  </button>
+
+  <button
+    class="details-btn"
+    onclick="toggleDetalleReserva('${r._id}')"
+  >
+    Ver detalles
+  </button>
+</div>
 
     <div id="detalle-reserva-${r._id}" class="reservation-details-hidden">
       <div class="owner-client-box">
@@ -945,19 +961,6 @@ async function cargarReservasPropietario() {
       <div class="owner-message-box">
         <span>Mensaje del cliente</span>
         <p>${mensajeCliente}</p>
-      </div>
-
-      <div class="owner-reservation-actions">
-        <button onclick="cambiarEstadoReserva('${r._id}', 'confirmada')">
-          Confirmar reserva
-        </button>
-
-        <button
-          class="danger-btn"
-          onclick="cambiarEstadoReserva('${r._id}', 'rechazada')"
-        >
-          Rechazar reserva
-        </button>
       </div>
     </div>
   </article>
