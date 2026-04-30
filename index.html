@@ -58,8 +58,8 @@
   <main>
     <section class="hero-main" id="inicio">
   <div class="hero-overlay">
-    <h1>Explora la Patagonia,<br>reserva con confianza</h1>
-    <a href="#servicios-publicos-section" class="hero-main-btn">
+    <h1 class="reveal-item">Explora la Patagonia,<br>reserva con confianza</h1>
+    <a href="#servicios-publicos-section" class="hero-main-btn reveal-item reveal-delay-1">
       Encuentra tu aventura
     </a>
   </div>
@@ -90,8 +90,8 @@
 
     <section class="featured featured-layout" id="servicios-publicos-section">
   <div class="featured-content">
-    <h2>Destacados en Magallanes</h2>
-<p>Explora servicios turísticos publicados por propietarios verificados.</p>
+    <h2 class="reveal-item">Destacados en Magallanes</h2>
+<p class="reveal-item reveal-delay-1">Explora servicios turísticos publicados por propietarios verificados.</p>
 
 <div class="search-box">
   <input
@@ -391,6 +391,24 @@
 
   <script src="config.js"></script>
   <script src="app.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const revealItems = document.querySelectorAll('.reveal-item');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.16
+    });
+
+    revealItems.forEach((item) => revealObserver.observe(item));
+  });
+</script>
   
 </body>
 </html>
