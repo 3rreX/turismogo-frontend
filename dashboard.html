@@ -3053,6 +3053,114 @@ footer {
   font-weight: 900;
 }
 /* =====================================================
+   TURISMOGO - PRIMERA IMPRESIÓN PREMIUM
+   Navbar + Hero + estructura superior
+===================================================== */
+
+.navbar {
+  min-height: 82px;
+  padding: 18px 44px;
+}
+
+.navbar-brand {
+  gap: 16px;
+}
+
+.dashboard-logo {
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  padding: 7px;
+}
+
+.navbar h1 {
+  font-size: 31px;
+  letter-spacing: -0.8px;
+}
+
+.navbar p {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  font-weight: 800;
+}
+
+.navbar-actions {
+  gap: 16px;
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.22);
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 13px 20px;
+  box-shadow: none;
+}
+
+.btn-secondary:hover {
+  background: #ffffff;
+  color: #061b3a;
+}
+
+.hero {
+  margin-top: 8px;
+  margin-bottom: 34px;
+}
+
+.hero::before {
+  content: "Marketplace turístico profesional";
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  display: inline-block;
+  background: rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.24);
+  color: #ffffff;
+  padding: 9px 15px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 18px;
+  backdrop-filter: blur(8px);
+}
+
+.hero h2 {
+  text-shadow: 0 8px 24px rgba(0,0,0,0.22);
+}
+
+.hero p {
+  font-weight: 500;
+}
+
+.container::before {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(11,111,164,0.20), transparent);
+}
+
+@media (max-width: 700px) {
+  .navbar {
+    padding: 16px 20px;
+  }
+
+  .navbar-actions {
+    gap: 10px;
+  }
+
+  .btn-secondary {
+    width: 100%;
+  }
+
+  .hero::before {
+    font-size: 11px;
+  }
+}
+/* =====================================================
    TURISMOGO - CAPA PREMIUM GLOBAL
    Mejora visual segura: no modifica lógica JS ni backend
 ===================================================== */
