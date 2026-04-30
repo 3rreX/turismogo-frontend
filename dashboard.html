@@ -3926,6 +3926,90 @@ select:focus {
     justify-content: center;
   }
 }
+/* =====================================================
+   TURISMOGO - MINI BANNERS ADMIN / PROPIETARIO
+===================================================== */
+
+.owner-mini-banner,
+.admin-mini-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 22px;
+  border-radius: 24px;
+  padding: 24px 26px;
+  margin-bottom: 28px;
+  color: #ffffff;
+  box-shadow: 0 16px 38px rgba(6, 59, 115, 0.16);
+  overflow: hidden;
+}
+
+.owner-mini-banner {
+  background: linear-gradient(135deg, #062f5f, #0b6fa4);
+}
+
+.admin-mini-banner {
+  background: linear-gradient(135deg, #061b3a, #063b73);
+}
+
+.owner-mini-banner span,
+.admin-mini-banner span {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #bfdbfe;
+}
+
+.owner-mini-banner h2,
+.admin-mini-banner h2 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.6px;
+}
+
+.owner-mini-banner p,
+.admin-mini-banner p {
+  margin: 0;
+  max-width: 640px;
+  color: rgba(255,255,255,0.82);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.owner-mini-badge,
+.admin-mini-badge {
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.22);
+  padding: 12px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .owner-mini-banner,
+  .admin-mini-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 22px;
+    border-radius: 22px;
+  }
+
+  .owner-mini-banner h2,
+  .admin-mini-banner h2 {
+    font-size: 25px;
+  }
+
+  .owner-mini-badge,
+  .admin-mini-badge {
+    white-space: normal;
+  }
+}
   </style>
 </head>
 <body>
@@ -3963,10 +4047,15 @@ select:focus {
 
     <section id="panel-propietario" class="panel" style="display:none;">
       
-      <div class="owner-heading">
-  <span class="owner-kicker">Área de proveedor</span>
-  <h2>Panel del propietario</h2>
-  <p>Administra tus publicaciones, reservas, planes y oportunidades comerciales dentro de TurismoGO.</p>
+      <div class="owner-mini-banner">
+  <div>
+    <span>Área de proveedor</span>
+    <h2>Panel del propietario</h2>
+    <p>Administra tus publicaciones, reservas y oportunidades comerciales en TurismoGO.</p>
+  </div>
+  <div class="owner-mini-badge">
+    Publica y gestiona
+  </div>
 </div>
       <div class="owner-stats" id="owner-stats">
   <div class="stat-card">
@@ -4122,13 +4211,16 @@ select:focus {
     </section>
 
    <section id="panel-admin" class="panel admin-panel" style="display:none;">
-  <div class="admin-heading">
-    <div>
-      <span class="admin-kicker">Centro de control</span>
-      <h2>Panel de Administración</h2>
-      <p>Gestiona usuarios, servicios, reservas, pagos y rendimiento general de TurismoGO.</p>
-    </div>
+ <div class="admin-mini-banner">
+  <div>
+    <span>Gestión interna</span>
+    <h2>Panel administrador</h2>
+    <p>Controla usuarios, servicios, reservas y actividad general de la plataforma.</p>
   </div>
+  <div class="admin-mini-badge">
+    Administración segura
+  </div>
+</div>
 
   <div id="admin-alertas"></div>
       <div class="admin-stats">
