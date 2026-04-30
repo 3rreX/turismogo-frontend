@@ -1,5 +1,12 @@
 function mostrarAlerta(mensaje) {
   if (typeof customAlert === 'function') {
+    customAlert(mensaje); // usa modal premium si existe
+  } else {
+    alert(mensaje); // fallback en otras páginas
+  }
+}
+function mostrarAlerta(mensaje) {
+  if (typeof customAlert === 'function') {
     customAlert(mensaje);
   } else {
     alert(mensaje);
@@ -138,18 +145,18 @@ async function crearReserva() {
     const token = localStorage.getItem('token');
 
     if (!token) {
-      customAlert('Debes iniciar sesión');
+      mostrarAlerta('Debes iniciar sesión');
       window.location.href = 'login.html';
       return;
     }
 
     if (!fechaInicio || !fechaFin) {
-      customAlert('Debes seleccionar fechas');
+      mostrarAlerta('Debes seleccionar fechas');
       return;
     }
 
     if (fechaFin < fechaInicio) {
-      customAlert('La fecha final no puede ser menor a la fecha inicial');
+      mostrarAlerta('La fecha final no puede ser menor a la fecha inicial');
       return;
     }
 
@@ -163,7 +170,7 @@ async function crearReserva() {
     });
 
     const data = await res.json();
-    customAlert(data.message || data.error || 'Respuesta desconocida');
+    mostrarAlerta(data.message || data.error || 'Respuesta desconocida');
 
     if (res.ok) {
       cargarReservas();
@@ -269,16 +276,16 @@ async function cancelarReserva(reservaId) {
     const data = await res.json();
 
     if (!res.ok) {
-      customAlert(data.error || 'No se pudo cancelar la reserva');
+      mostrarAlerta(data.error || 'No se pudo cancelar la reserva');
       return;
     }
 
-    customAlert(data.message || 'Reserva cancelada correctamente');
+    mostrarAlerta(data.message || 'Reserva cancelada correctamente');
 
     cargarReservas();
   } catch (error) {
     console.error('Error al cancelar reserva:', error);
-    customAlert('Error al cancelar reserva');
+    mostrarAlerta('Error al cancelar reserva');
   }
 }
 async function cargarServicios() {
@@ -365,18 +372,18 @@ async function reservarServicio(nombre, id) {
     const token = localStorage.getItem('token');
 
     if (!token) {
-      customAlert('Debes iniciar sesión');
+      mostrarAlerta('Debes iniciar sesión');
       window.location.href = 'login.html';
       return;
     }
 
     if (!fechaInicio || !fechaFin) {
-      customAlert('Debes seleccionar fechas');
+      mostrarAlerta('Debes seleccionar fechas');
       return;
     }
 
     if (fechaFin < fechaInicio) {
-      customAlert('La fecha final no puede ser menor a la fecha inicial');
+      mostrarAlerta('La fecha final no puede ser menor a la fecha inicial');
       return;
     }
 
@@ -394,7 +401,7 @@ async function reservarServicio(nombre, id) {
     });
 
     const data = await res.json();
-   customAlert(data.message || data.error || 'Respuesta desconocida');
+   mostrarAlerta(data.message || data.error || 'Respuesta desconocida');
 
     if (res.ok) {
       cargarReservas();
@@ -429,13 +436,13 @@ async function crearServicio() {
     const token = localStorage.getItem('token');
 
     if (!token) {
-      customAlert('Debes iniciar sesión');
+      mostrarAlerta('Debes iniciar sesión');
       window.location.href = 'index.html';
       return;
     }
 
     if (!nombre || !descripcion || !precio || !imagenFiles || imagenFiles.length === 0) {
-      customAlert('Todos los campos son obligatorios');
+      mostrarAlerta('Todos los campos son obligatorios');
       return;
     }
 
@@ -458,11 +465,11 @@ async function crearServicio() {
     const data = await res.json();
 
     if (!res.ok) {
-      customAlert(data.error || 'No se pudo crear el servicio');
+      mostrarAlerta(data.error || 'No se pudo crear el servicio');
       return;
     }
 
-    customAlert(data.message || 'Servicio creado correctamente');
+    mostrarAlerta(data.message || 'Servicio creado correctamente');
 
     document.getElementById('nuevo-nombre').value = '';
     document.getElementById('nuevo-descripcion').value = '';
@@ -472,7 +479,7 @@ async function crearServicio() {
     cargarServicios();
   } catch (error) {
     console.error('Error al crear servicio:', error);
-   customAlert('Error al crear servicio');
+   mostrarAlerta('Error al crear servicio');
   }
 }
 
@@ -634,12 +641,12 @@ async function guardarCambiosServicio() {
   const imagenFiles = document.getElementById('editarImagenes').files;
 
   if (!servicioEditandoId) {
-   customAlert('No se encontró el servicio a editar.');
+   mostrarAlerta('No se encontró el servicio a editar.');
     return;
   }
 
   if (!nombre || !descripcion || !precio) {
-    customAlert('Nombre, descripción y precio son obligatorios.');
+    mostrarAlerta('Nombre, descripción y precio son obligatorios.');
     return;
   }
 
@@ -690,17 +697,17 @@ async function eliminarServicio(id) {
     const data = await res.json();
 
     if (!res.ok) {
-     customAlert(data.error || 'No se pudo eliminar el servicio');
+     mostrarAlerta(data.error || 'No se pudo eliminar el servicio');
       return;
     }
 
-    customAlert(data.message || 'Servicio eliminado correctamente');
+    mostrarAlerta(data.message || 'Servicio eliminado correctamente');
 
     cargarServicios();
     cargarMisServicios();
   } catch (error) {
     console.error('Error al eliminar servicio:', error);
-    customAlert('Error al eliminar servicio');
+    mostrarAlerta('Error al eliminar servicio');
   }
 }
 async function mostrarFormularioEditar(id, nombre, descripcion, precio) {
@@ -755,17 +762,17 @@ async function editarServicio(id, nombre, descripcion, precio, imagenFiles = nul
     const data = await res.json();
 
     if (!res.ok) {
-     customAlert(data.error || 'No se pudo editar el servicio');
+     mostrarAlerta(data.error || 'No se pudo editar el servicio');
       return;
     }
 
-    customAlert(data.message || 'Servicio actualizado');
+    mostrarAlerta(data.message || 'Servicio actualizado');
 
     cargarServicios();
     cargarMisServicios();
   } catch (error) {
     console.error('Error al editar servicio:', error);
-   customAlert('Error al editar servicio');
+   mostrarAlerta('Error al editar servicio');
   }
 }
 async function eliminarImagenServicio(servicioId, imagenUrl) {
@@ -787,17 +794,17 @@ async function eliminarImagenServicio(servicioId, imagenUrl) {
     const data = await res.json();
 
     if (!res.ok) {
-      customAlert(data.error || 'No se pudo eliminar la imagen');
+      mostrarAlerta(data.error || 'No se pudo eliminar la imagen');
       return;
     }
 
-    customAlert(data.message || 'Imagen eliminada correctamente');
+    mostrarAlerta(data.message || 'Imagen eliminada correctamente');
 
     cargarServicios();
     cargarMisServicios();
   } catch (error) {
     console.error('Error al eliminar imagen:', error);
-   customAlert('Error al eliminar imagen');
+   mostrarAlerta('Error al eliminar imagen');
   }
 }
 async function cargarReservasPropietario() {
@@ -996,16 +1003,16 @@ async function cambiarEstadoReserva(reservaId, estado) {
     const data = await res.json();
 
     if (!res.ok) {
-     customAlert(data.error || 'No se pudo actualizar la reserva');
+     mostrarAlerta(data.error || 'No se pudo actualizar la reserva');
       return;
     }
 
-    customAlert(data.message || 'Reserva actualizada');
+    mostrarAlerta(data.message || 'Reserva actualizada');
 
     cargarReservasPropietario();
   } catch (error) {
     console.error('Error al cambiar estado de reserva:', error);
-   customAlert('Error al actualizar reserva');
+   mostrarAlerta('Error al actualizar reserva');
   }
 }
 function mostrarPanelAdmin() {
@@ -1546,16 +1553,16 @@ async function cambiarRolUsuario(usuarioId, nuevoRole) {
     const data = await res.json();
 
     if (!res.ok) {
-     customAlert(data.error || 'No se pudo cambiar el rol');
+     mostrarAlerta(data.error || 'No se pudo cambiar el rol');
       return;
     }
 
-    customAlert(data.message || 'Rol actualizado correctamente');
+    mostrarAlerta(data.message || 'Rol actualizado correctamente');
 
     cargarUsuariosAdmin();
   } catch (error) {
     console.error('Error al cambiar rol:', error);
-   customAlert('Error al cambiar rol');
+   mostrarAlerta('Error al cambiar rol');
   }
 }
 async function actualizarSuscripcionUsuario(usuarioId, suscripcionActiva, plan) {
@@ -1581,16 +1588,16 @@ async function actualizarSuscripcionUsuario(usuarioId, suscripcionActiva, plan) 
     const data = await res.json();
 
     if (!res.ok) {
-      customAlert(data.error || 'No se pudo actualizar la suscripción');
+      mostrarAlerta(data.error || 'No se pudo actualizar la suscripción');
       return;
     }
 
-   customAlert(data.message || 'Suscripción actualizada correctamente');
+   mostrarAlerta(data.message || 'Suscripción actualizada correctamente');
 
     cargarUsuariosAdmin();
   } catch (error) {
     console.error('Error al actualizar suscripción:', error);
-    customAlert('Error al actualizar suscripción');
+    mostrarAlerta('Error al actualizar suscripción');
   }
 }
 async function exportarReservasAdmin() {
@@ -1598,7 +1605,7 @@ async function exportarReservasAdmin() {
     const token = localStorage.getItem('token');
 
     if (!token) {
-      customAlert('Sesión expirada. Inicia sesión nuevamente.');
+      mostrarAlerta('Sesión expirada. Inicia sesión nuevamente.');
       return;
     }
 
@@ -1611,12 +1618,12 @@ async function exportarReservasAdmin() {
     const reservas = await res.json();
 
     if (!res.ok) {
-      customAlert(reservas.error || 'No se pudieron exportar las reservas.');
+      mostrarAlerta(reservas.error || 'No se pudieron exportar las reservas.');
       return;
     }
 
     if (!Array.isArray(reservas) || reservas.length === 0) {
-     customAlert('No hay reservas para exportar.');
+     mostrarAlerta('No hay reservas para exportar.');
       return;
     }
 
@@ -1657,7 +1664,7 @@ async function exportarReservasAdmin() {
 
   } catch (error) {
     console.error('Error exportando reservas:', error);
-   customAlert('Error al exportar reservas.');
+   mostrarAlerta('Error al exportar reservas.');
   }
 }
 async function exportarReservasPDFAdmin() {
@@ -1665,7 +1672,7 @@ async function exportarReservasPDFAdmin() {
     const token = localStorage.getItem('token');
 
     if (!token) {
-     customAlert('Sesión expirada. Inicia sesión nuevamente.');
+     mostrarAlerta('Sesión expirada. Inicia sesión nuevamente.');
       return;
     }
 
@@ -1678,12 +1685,12 @@ async function exportarReservasPDFAdmin() {
     const reservas = await res.json();
 
     if (!res.ok) {
-     customAlert(reservas.error || 'No se pudieron exportar las reservas.');
+     mostrarAlerta(reservas.error || 'No se pudieron exportar las reservas.');
       return;
     }
 
     if (!Array.isArray(reservas) || reservas.length === 0) {
-      customAlert('No hay reservas para exportar.');
+      mostrarAlerta('No hay reservas para exportar.');
       return;
     }
 
@@ -1727,7 +1734,7 @@ async function exportarReservasPDFAdmin() {
 
   } catch (error) {
     console.error('Error exportando PDF:', error);
-   customAlert('Error al exportar PDF.');
+   mostrarAlerta('Error al exportar PDF.');
   }
 }
 async function simularPagoPlan(plan) {
@@ -1746,7 +1753,7 @@ async function simularPagoPlan(plan) {
     const data = await res.json();
 
     if (!res.ok) {
-     customAlert(data.error || 'No se pudo iniciar el pago');
+    mostrarAlerta(data.error || 'No se pudo iniciar el pago');
       return;
     }
 
@@ -1765,7 +1772,7 @@ async function simularPagoPlan(plan) {
 
   } catch (error) {
     console.error('Error Webpay:', error);
-   customAlert('Error iniciando pago');
+   mostrarAlerta('Error iniciando pago');
   }
 }
 async function cargarDetalleServicio() {
@@ -1851,7 +1858,7 @@ async function solicitarReservaPublica() {
     const mensajeCliente = document.getElementById('detalle-mensaje-cliente').value.trim();
 
     if (!fechaInicio || !fechaFin || !nombreCliente || !emailCliente) {
-      customAlert('Debe completar nombre, correo electrónico y fechas de reserva.');
+      mostrarAlerta('Debe completar nombre, correo electrónico y fechas de reserva.');
       return;
     }
 
@@ -1875,7 +1882,7 @@ async function solicitarReservaPublica() {
     const data = await res.json();
 
     if (!res.ok) {
-      customAlert(data.error || 'No fue posible iniciar el proceso de pago.');
+      mostrarAlerta(data.error || 'No fue posible iniciar el proceso de pago.');
       return;
     }
 
@@ -1894,7 +1901,7 @@ async function solicitarReservaPublica() {
 
   } catch (error) {
     console.error('Error en pago de reserva pública:', error);
-    customAlert('Ocurrió un error al iniciar el pago.');
+    mostrarAlerta('Ocurrió un error al iniciar el pago.');
   }
 }
 async function cargarServiciosPublicos() {
@@ -2051,7 +2058,7 @@ async function registrarPropietarioConPago() {
     const plan = document.getElementById('reg-plan').value;
 
     if (!nombreCompleto || !telefono || !email || !username || !password || !plan) {
-     customAlert('Debe completar todos los campos para registrar la cuenta de propietario.');
+     mostrarAlerta('Debe completar todos los campos para registrar la cuenta de propietario.');
       return;
     }
 
@@ -2072,7 +2079,7 @@ async function registrarPropietarioConPago() {
     const dataRegistro = await resRegistro.json();
 
     if (!resRegistro.ok) {
-     customAlert(dataRegistro.error || 'No fue posible registrar la cuenta.');
+     mostrarAlerta(dataRegistro.error || 'No fue posible registrar la cuenta.');
       return;
     }
 
@@ -2090,7 +2097,7 @@ async function registrarPropietarioConPago() {
     const dataLogin = await resLogin.json();
 
     if (!resLogin.ok || !dataLogin.token) {
-      customAlert('Cuenta creada, pero no fue posible iniciar sesión automáticamente.');
+      mostrarAlerta('Cuenta creada, pero no fue posible iniciar sesión automáticamente.');
       return;
     }
 
@@ -2111,7 +2118,7 @@ async function registrarPropietarioConPago() {
     const dataPago = await resPago.json();
 
     if (!resPago.ok) {
-     customAlert(dataPago.error || 'Cuenta creada, pero no fue posible iniciar el pago.');
+     mostrarAlerta(dataPago.error || 'Cuenta creada, pero no fue posible iniciar el pago.');
       return;
     }
 
@@ -2130,7 +2137,7 @@ async function registrarPropietarioConPago() {
 
   } catch (error) {
     console.error('Error en registro de propietario:', error);
-   customAlert('Ocurrió un error al registrar la cuenta de propietario.');
+   mostrarAlerta('Ocurrió un error al registrar la cuenta de propietario.');
   }
 }
 async function actualizarEstadoReservaAdmin(idReserva, nuevoEstado) {
@@ -2138,7 +2145,7 @@ async function actualizarEstadoReservaAdmin(idReserva, nuevoEstado) {
     const token = localStorage.getItem('token');
 
     if (!token) {
-     customAlert('Sesión expirada. Inicia sesión nuevamente.');
+     mostrarAlerta('Sesión expirada. Inicia sesión nuevamente.');
       return;
     }
 
@@ -2160,16 +2167,16 @@ async function actualizarEstadoReservaAdmin(idReserva, nuevoEstado) {
     const data = await res.json();
 
     if (!res.ok) {
-     customAlert(data.error || 'No se pudo actualizar la reserva.');
+     mostrarAlerta(data.error || 'No se pudo actualizar la reserva.');
       return;
     }
 
-   customAlert('Reserva actualizada correctamente.');
+   mostrarAlerta('Reserva actualizada correctamente.');
     cargarReservasAdmin();
 
   } catch (error) {
     console.error('Error al actualizar reserva:', error);
-   customAlert('Error al actualizar la reserva.');
+   mostrarAlerta('Error al actualizar la reserva.');
   }
 }
 function renderReservasAdmin(reservas) {
@@ -2205,11 +2212,11 @@ async function eliminarUsuarioAdmin(usuarioId, username) {
     const data = await res.json();
 
     if (!res.ok) {
-      customAlert(data.error || 'No se pudo eliminar el usuario');
+      mostrarAlerta(data.error || 'No se pudo eliminar el usuario');
       return;
     }
 
-    customAlert(data.message || 'Usuario eliminado correctamente');
+    mostrarAlerta(data.message || 'Usuario eliminado correctamente');
 
     cargarUsuariosAdmin();
     cargarServiciosAdmin();
@@ -2217,7 +2224,7 @@ async function eliminarUsuarioAdmin(usuarioId, username) {
 
   } catch (error) {
     console.error('Error eliminando usuario:', error);
-   customAlert('Error al eliminar usuario');
+   mostrarAlerta('Error al eliminar usuario');
   }
 }
 async function cargarCalendarioPropietario() {
@@ -2334,7 +2341,7 @@ function toggleDetalleReserva(reservaId) {
 async function enviarMensajeServicio() {
   try {
     if (!servicioActualId) {
-      customAlert('No se encontró el servicio.');
+      mostrarAlerta('No se encontró el servicio.');
       return;
     }
 
@@ -2343,7 +2350,7 @@ async function enviarMensajeServicio() {
     const mensaje = document.getElementById('chat-mensaje')?.value.trim();
 
     if (!nombreCliente || !emailCliente || !mensaje) {
-     customAlert('Debes completar nombre, correo y mensaje.');
+     mostrarAlerta('Debes completar nombre, correo y mensaje.');
       return;
     }
 
@@ -2362,11 +2369,11 @@ async function enviarMensajeServicio() {
     const data = await res.json();
 
     if (!res.ok) {
-     customAlert(data.error || 'No se pudo enviar el mensaje.');
+     mostrarAlerta(data.error || 'No se pudo enviar el mensaje.');
       return;
     }
 
-   customAlert(data.message || 'Mensaje enviado correctamente.');
+   mostrarAlerta(data.message || 'Mensaje enviado correctamente.');
 
     document.getElementById('chat-nombre').value = '';
     document.getElementById('chat-email').value = '';
@@ -2374,7 +2381,7 @@ async function enviarMensajeServicio() {
 
   } catch (error) {
     console.error('Error enviando mensaje:', error);
-   customAlert('Error al enviar mensaje.');
+   mostrarAlerta('Error al enviar mensaje.');
   }
 }
 async function cargarMensajesPropietario() {
