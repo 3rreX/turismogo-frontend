@@ -3278,6 +3278,144 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   outline: none;
 }
 /* =====================================================
+   TURISMOGO - DETALLES DE CONFIANZA PREMIUM
+   Estados, badges, alertas y mensajes vacíos
+===================================================== */
+
+.status-badge,
+.role-badge,
+.payment-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+}
+
+.status-confirmada::before,
+.payment-pagado::before {
+  content: "✓";
+}
+
+.status-pendiente::before,
+.payment-pendiente::before {
+  content: "•";
+}
+
+.status-rechazada::before,
+.status-cancelada::before,
+.payment-fallido::before {
+  content: "!";
+}
+
+.status-confirmada,
+.payment-pagado {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+.status-pendiente,
+.payment-pendiente {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: #92400e;
+  border: 1px solid #fbbf24;
+}
+
+.status-rechazada,
+.payment-fallido {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.status-cancelada {
+  background: linear-gradient(135deg, #e5e7eb, #cbd5e1);
+  color: #374151;
+  border: 1px solid #cbd5e1;
+}
+
+.empty-owner-state,
+.calendar-empty {
+  background:
+    radial-gradient(circle at top, rgba(15, 187, 195, 0.10), transparent 42%),
+    #ffffff;
+  border: 1px dashed #93c5fd;
+  border-radius: 28px;
+  padding: 42px 28px;
+  box-shadow: 0 16px 36px rgba(6, 59, 115, 0.06);
+}
+
+.empty-owner-state h3,
+.calendar-empty h3 {
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.empty-owner-state p,
+.calendar-empty p {
+  color: #64748b;
+  font-size: 15px;
+}
+
+.admin-alert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 22px;
+  padding: 20px 22px;
+  font-weight: 800;
+}
+
+.admin-alert.warning::before {
+  content: "!";
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 999px;
+  background: #f97316;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-alert.success::before {
+  content: "✓";
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 999px;
+  background: #16a34a;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-alert-overlay {
+  animation: modalFadeIn 0.18s ease;
+}
+
+.custom-alert-icon {
+  box-shadow: 0 14px 28px rgba(11, 111, 164, 0.22);
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* =====================================================
    TURISMOGO - CAPA PREMIUM GLOBAL
    Mejora visual segura: no modifica lógica JS ni backend
 ===================================================== */
