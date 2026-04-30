@@ -1090,12 +1090,12 @@
 
 .reveal-item {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(38px);
   filter: blur(4px);
-  transition:
-    opacity 0.85s ease,
-    transform 0.85s ease,
-    filter 0.85s ease;
+ transition:
+  opacity 1.35s ease,
+  transform 1.35s ease,
+  filter 1.35s ease;
   will-change: opacity, transform, filter;
 }
 
