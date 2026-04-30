@@ -1,3 +1,11 @@
+function mostrarAlerta(mensaje) {
+  if (typeof customAlert === 'function') {
+    customAlert(mensaje);
+  } else {
+    alert(mensaje);
+  }
+}
+
 async function login() {
   try {
     const userInput = document.getElementById('user');
