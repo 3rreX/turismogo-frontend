@@ -3416,6 +3416,231 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   }
 }
 /* =====================================================
+   TURISMOGO - RESPONSIVE PREMIUM CELULAR
+   Ajuste visual seguro para pantallas pequeñas
+===================================================== */
+
+@media (max-width: 760px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .container {
+    padding: 18px 14px;
+  }
+
+  .navbar {
+    position: relative;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .navbar-brand {
+    width: 100%;
+  }
+
+  .dashboard-logo {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+  }
+
+  .navbar h1 {
+    font-size: 24px;
+  }
+
+  .navbar p {
+    font-size: 11px;
+  }
+
+  .navbar-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  #perfil {
+    width: 100%;
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .btn-secondary {
+    width: 100%;
+    margin: 0;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 36px 22px;
+    border-radius: 24px;
+  }
+
+  .hero::after {
+    inset: 10px;
+    border-radius: 18px;
+  }
+
+  .hero h2 {
+    font-size: 30px;
+    line-height: 1.08;
+    letter-spacing: -0.8px;
+  }
+
+  .hero p {
+    font-size: 15px;
+  }
+
+  .panel {
+    padding: 18px;
+    border-radius: 24px;
+  }
+
+  .section-title h2,
+  .owner-heading h2,
+  .admin-heading h2 {
+    font-size: 26px;
+  }
+
+  .section-title p,
+  .owner-heading p,
+  .admin-heading p {
+    font-size: 14px;
+  }
+
+  .grid,
+  #servicios,
+  #reservas,
+  #mis-servicios,
+  #reservas-propietario,
+  #admin-usuarios,
+  #admin-servicios,
+  #admin-reservas {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .service-card,
+  .reservation-card,
+  .owner-service-card,
+  .owner-reservation-card,
+  .admin-user-card,
+  .admin-service-card,
+  .admin-reservation-card,
+  .plan-card {
+    border-radius: 22px;
+  }
+
+  .service-gallery,
+  .owner-service-gallery,
+  .admin-service-gallery {
+    min-height: auto;
+  }
+
+  .service-gallery img {
+    height: 220px;
+  }
+
+  .admin-service-gallery img {
+    height: 190px;
+  }
+
+  .service-content,
+  .owner-service-content,
+  .admin-service-content {
+    padding: 20px;
+  }
+
+  .service-header,
+  .reservation-top,
+  .owner-reservation-header,
+  .admin-card-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .service-price,
+  .status-badge,
+  .role-badge,
+  .payment-badge {
+    width: fit-content;
+  }
+
+  .date-row,
+  .reservation-dates,
+  .owner-client-box,
+  .owner-reservation-dates,
+  .form-grid,
+  .admin-actions,
+  .owner-actions,
+  .reservation-main-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-section-header,
+  .owner-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 18px;
+  }
+
+  .admin-filtros {
+    padding: 16px;
+  }
+
+  .admin-filtros input,
+  .admin-filtros select {
+    min-width: 100%;
+  }
+
+  .plans-grid,
+  .owner-stats,
+  .admin-stats,
+  .admin-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .owner-calendar {
+    padding: 12px;
+    border-radius: 22px;
+  }
+
+  .calendar-table {
+    min-width: 720px;
+  }
+
+  .calendar-row {
+    gap: 10px;
+    padding: 14px 10px;
+    font-size: 13px;
+  }
+
+  .custom-alert-box {
+    max-width: 92%;
+    padding: 28px 22px;
+    border-radius: 24px;
+  }
+
+  .custom-alert-box h3 {
+    font-size: 21px;
+  }
+
+  .custom-alert-box p {
+    font-size: 15px;
+  }
+
+  button,
+  .reserve-btn,
+  .cancel-btn,
+  .details-btn,
+  .approve-btn,
+  .reject-btn {
+    width: 100%;
+    min-height: 46px;
+  }
+}
+/* =====================================================
    TURISMOGO - CAPA PREMIUM GLOBAL
    Mejora visual segura: no modifica lógica JS ni backend
 ===================================================== */
