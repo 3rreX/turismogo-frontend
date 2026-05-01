@@ -1105,19 +1105,24 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+}
+
+.footer-copy {
+  color: #9ca3af; /* mismo gris */
+  font-size: 14px;
 }
 
 .footer-links-inline {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  color: #9ca3af;
+  font-size: 14px;
 }
 
 .footer-links-inline a {
-  color: #ffffff;
+  color: #9ca3af; /* 🔥 mismo color que el texto */
   text-decoration: none;
-  font-size: 14px;
 }
 
 .footer-links-inline a:hover {
