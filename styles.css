@@ -773,8 +773,11 @@
     }
 
     .footer-bottom-premium {
-      flex-direction: column;
-    }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row; /* 🔥 esto es la clave */
+}
   }
   .search-box {
   max-width: 620px;
@@ -1096,5 +1099,27 @@
 }
 
 .footer-links a:hover {
+  text-decoration: underline;
+}
+.footer-bottom-premium {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-links-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-links-inline a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.footer-links-inline a:hover {
   text-decoration: underline;
 }
