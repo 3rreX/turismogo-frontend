@@ -2056,11 +2056,17 @@ async function registrarPropietarioConPago() {
     const username = document.getElementById('reg-usuario').value.trim();
     const password = document.getElementById('reg-password').value.trim();
     const plan = document.getElementById('reg-plan').value;
+    const aceptaLegalPropietario = document.getElementById('aceptaLegalPropietario')?.checked;
 
-    if (!nombreCompleto || !telefono || !email || !username || !password || !plan) {
-     mostrarAlerta('Debe completar todos los campos para registrar la cuenta de propietario.');
-      return;
-    }
+  if (!nombreCompleto || !telefono || !email || !username || !password || !plan) {
+  mostrarAlerta('Debe completar todos los campos para registrar la cuenta de propietario.');
+  return;
+}
+
+if (!aceptaLegalPropietario) {
+  mostrarAlerta('Debes aceptar los Términos y Condiciones y la Política de Privacidad para continuar.');
+  return;
+}
 
     const resRegistro = await fetch(`${API_URL}/register-propietario`, {
       method: 'POST',

@@ -1128,3 +1128,27 @@
 .footer-links-inline a:hover {
   text-decoration: underline;
 }
+
+.legal-checkbox {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14px;
+  color: #334155;
+  margin: 14px 0;
+  line-height: 1.4;
+}
+
+.legal-checkbox input {
+  margin-top: 3px;
+}
+
+.legal-checkbox a {
+  color: #0b6fa4;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.legal-checkbox a:hover {
+  text-decoration: underline;
+}
