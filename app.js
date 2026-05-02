@@ -2419,3 +2419,10 @@ async function cargarMensajesPropietario() {
     console.error('Error cargando mensajes:', error);
   }
 }
+function mostrarRegistroPropietario() {
+  const modal = document.getElementById('registro-propietario');
+
+  if (!modal) return;
+
+  modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+}
