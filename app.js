@@ -8,12 +8,14 @@ function optimizarImagen(url) {
 }
 function mostrarAlerta(mensaje) {
   if (typeof customAlert === 'function') {
-    customAlert(mensaje); // usa modal premium si existe
+    customAlert(mensaje);
   } else {
-    alert(mensaje); // fallback en otras páginas
+    alert(mensaje);
   }
+}
 
-  function despertarBackend() {
+// 👇 FUNCIÓN CORRECTA (GLOBAL)
+function despertarBackend() {
   if (typeof API_URL === 'undefined') return;
 
   fetch(`${API_URL}/health`, {
@@ -23,7 +25,7 @@ function mostrarAlerta(mensaje) {
     console.warn('Backend aún no responde al warm-up');
   });
 }
-}
+
 function mostrarAlerta(mensaje) {
   if (typeof customAlert === 'function') {
     customAlert(mensaje);
