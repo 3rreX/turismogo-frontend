@@ -12,6 +12,17 @@ function mostrarAlerta(mensaje) {
   } else {
     alert(mensaje); // fallback en otras páginas
   }
+
+  function despertarBackend() {
+  if (typeof API_URL === 'undefined') return;
+
+  fetch(`${API_URL}/health`, {
+    method: 'GET',
+    cache: 'no-store'
+  }).catch(() => {
+    console.warn('Backend aún no responde al warm-up');
+  });
+}
 }
 function mostrarAlerta(mensaje) {
   if (typeof customAlert === 'function') {
@@ -492,6 +503,7 @@ async function crearServicio() {
 }
 
 window.onload = () => {
+  despertarBackend();
 
   if (document.getElementById('servicios')) {
     cargarServicios();
