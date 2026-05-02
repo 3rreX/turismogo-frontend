@@ -1941,12 +1941,7 @@ async function cargarServiciosPublicos() {
 
     // 👇 FUNCIÓN RENDER (DECLARADA ARRIBA → CORRECTO)
     function renderizarServicios(lista) {
-      document.querySelectorAll('.btn-ver-servicio').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const id = btn.dataset.id;
-    window.location.href = `servicio.html?id=${id}`;
-  });
-});
+      
       cont.innerHTML = '';
 
       if (lista.length === 0) {
@@ -2005,6 +2000,13 @@ async function cargarServiciosPublicos() {
           </article>
         `;
       });
+      // 👇 EVENTOS DESPUÉS DE RENDER
+document.querySelectorAll('.btn-ver-servicio').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.id;
+    window.location.href = `servicio.html?id=${id}`;
+  });
+});
     }
 
     // 👇 CACHE LOCAL (CARGA INMEDIATA)
