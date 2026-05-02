@@ -1954,7 +1954,7 @@ const esPro = planPropietario === 'pro';
 cont.innerHTML += `
   <article class="public-service-card ${esPremium ? 'premium-service-card' : ''}">
     <div class="public-image-wrap">
-      <img src="${imagenPrincipal}" alt="${s.nombre}">
+      <img src="${optimizarImagen(imagenPrincipal)}" alt="${s.nombre}" loading="lazy">
 
       <div class="public-card-badges">
         <span class="verified-badge">Verificado</span>
