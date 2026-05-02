@@ -1,3 +1,11 @@
+function optimizarImagen(url) {
+  if (!url || !url.includes('cloudinary')) return url;
+
+  return url.replace(
+    '/upload/',
+    '/upload/f_auto,q_auto,w_800/'
+  );
+}
 function mostrarAlerta(mensaje) {
   if (typeof customAlert === 'function') {
     customAlert(mensaje); // usa modal premium si existe
@@ -320,7 +328,7 @@ if (statServicios) {
     <article class="service-card">
       <div class="service-gallery">
         ${imagenes.map(img => `
-          <img src="${img}" alt="${s.nombre}">
+          <img src="${optimizarImagen(img)}" alt="${s.nombre}" loading="lazy">
         `).join('')}
       </div>
 
@@ -559,7 +567,7 @@ async function cargarMisServicios() {
       <div class="owner-service-gallery">
         ${imagenes.map(img => `
           <div class="owner-image-box">
-            <img src="${img}" alt="${s.nombre}">
+            <img src="${optimizarImagen(img)}" alt="${s.nombre}" loading="lazy">
             <button onclick='eliminarImagenServicio(${JSON.stringify(s._id)}, ${JSON.stringify(img)})'>
               Eliminar imagen
             </button>
@@ -615,7 +623,7 @@ function abrirModalEditarServicio(servicio) {
         imagenes.length
           ? imagenes.map(img => `
               <div class="owner-image-box">
-                <img src="${img}" alt="${servicio.nombre}">
+                <img src="${optimizarImagen(img)}" alt="${servicio.nombre}" loading="lazy">
                 <button type="button" onclick='eliminarImagenDesdeModal(${JSON.stringify(servicio._id)}, ${JSON.stringify(img)})'>
                   Eliminar imagen
                 </button>
@@ -1131,7 +1139,7 @@ async function cargarServiciosAdmin() {
     <article class="admin-service-card">
       <div class="admin-service-gallery">
         ${imagenes.map(img => `
-          <img src="${img}" alt="${s.nombre}">
+          <img src="${optimizarImagen(img)}" alt="${s.nombre}" loading="lazy">
         `).join('')}
       </div>
 
