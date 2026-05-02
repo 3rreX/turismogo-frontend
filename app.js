@@ -6,6 +6,7 @@ function optimizarImagen(url) {
     '/upload/f_auto,q_auto,w_800/'
   );
 }
+
 function mostrarAlerta(mensaje) {
   if (typeof customAlert === 'function') {
     customAlert(mensaje);
@@ -14,7 +15,6 @@ function mostrarAlerta(mensaje) {
   }
 }
 
-// 👇 FUNCIÓN CORRECTA (GLOBAL)
 function despertarBackend() {
   if (typeof API_URL === 'undefined') return;
 
@@ -24,14 +24,6 @@ function despertarBackend() {
   }).catch(() => {
     console.warn('Backend aún no responde al warm-up');
   });
-}
-
-function mostrarAlerta(mensaje) {
-  if (typeof customAlert === 'function') {
-    customAlert(mensaje);
-  } else {
-    alert(mensaje);
-  }
 }
 
 async function login() {
@@ -506,15 +498,8 @@ async function crearServicio() {
 
 window.onload = () => {
   if (typeof despertarBackend === 'function') {
-  despertarBackend();
-}
-  document.getElementById('btn-cerrar-registro')?.addEventListener('click', mostrarRegistroPropietario);
-
-document.getElementById('btn-abrir-registro')?.addEventListener('click', mostrarRegistroPropietario);
-
-document.getElementById('btn-registrar-propietario')?.addEventListener('click', registrarPropietarioConPago);
-
-document.getElementById('btn-login-index')?.addEventListener('click', login);
+    despertarBackend();
+  }
 
   if (document.getElementById('servicios')) {
     cargarServicios();
