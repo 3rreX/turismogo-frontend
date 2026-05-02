@@ -505,7 +505,9 @@ async function crearServicio() {
 }
 
 window.onload = () => {
+  if (typeof despertarBackend === 'function') {
   despertarBackend();
+}
   document.getElementById('btn-cerrar-registro')?.addEventListener('click', mostrarRegistroPropietario);
 
 document.getElementById('btn-abrir-registro')?.addEventListener('click', mostrarRegistroPropietario);
