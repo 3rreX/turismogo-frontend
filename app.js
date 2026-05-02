@@ -2426,3 +2426,18 @@ function mostrarRegistroPropietario() {
 
   modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
 }
+function mostrarRegistroPropietario() {
+  const modal = document.getElementById('registro-propietario');
+
+  if (!modal) {
+    console.error('Modal registro-propietario no encontrado');
+    return;
+  }
+
+  // Si está oculto → mostrar
+  if (modal.style.display === 'none' || modal.style.display === '') {
+    modal.style.display = 'flex';
+  } else {
+    modal.style.display = 'none';
+  }
+}
