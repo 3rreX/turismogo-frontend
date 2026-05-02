@@ -1169,3 +1169,9 @@
 .legal-checkbox-container .legal-checkbox a:hover {
   text-decoration: underline !important;
 }
+
+.public-service-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
