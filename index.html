@@ -82,15 +82,17 @@
     <option value="premium">Plan Premium - $39.990 / mes</option>
   </select>
 
-  <label class="legal-checkbox" style="display:flex; gap:8px; margin:12px 0; font-size:14px; color:#334155;">
-  <input type="checkbox" id="aceptaLegalPropietario">
-  <span>
-    Acepto los
-    <a href="/terminos.html" target="_blank">Términos y Condiciones</a>
-    y la
-    <a href="/privacidad.html" target="_blank">Política de Privacidad</a>.
-  </span>
-</label>
+  <div class="legal-checkbox-container">
+  <label class="legal-checkbox">
+    <input type="checkbox" id="aceptaLegalPropietario">
+    <span>
+      Acepto los 
+      <a href="/terminos.html" target="_blank">Términos y Condiciones</a> 
+      y la 
+      <a href="/privacidad.html" target="_blank">Política de Privacidad</a>.
+    </span>
+  </label>
+</div>
 
   <button class="primary-btn" onclick="registrarPropietarioConPago()">
     Crear cuenta y pagar suscripción
