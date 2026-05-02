@@ -1919,7 +1919,16 @@ async function cargarServiciosPublicos() {
 
     if (!cont) return;
 
-    const res = await fetch(`${API_URL}/servicios`);
+// 👇 SKELETON MIENTRAS CARGA
+cont.innerHTML = `
+  <div class="skeleton-card"></div>
+  <div class="skeleton-card"></div>
+  <div class="skeleton-card"></div>
+  <div class="skeleton-card"></div>
+`;
+
+// 👇 FETCH REAL
+const res = await fetch(`${API_URL}/servicios`);
     const servicios = await res.json();
 
     console.log('Servicios públicos:', servicios);
