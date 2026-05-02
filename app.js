@@ -504,6 +504,13 @@ async function crearServicio() {
 
 window.onload = () => {
   despertarBackend();
+  document.getElementById('btn-cerrar-registro')?.addEventListener('click', mostrarRegistroPropietario);
+
+document.getElementById('btn-abrir-registro')?.addEventListener('click', mostrarRegistroPropietario);
+
+document.getElementById('btn-registrar-propietario')?.addEventListener('click', registrarPropietarioConPago);
+
+document.getElementById('btn-login-index')?.addEventListener('click', login);
 
   if (document.getElementById('servicios')) {
     cargarServicios();
