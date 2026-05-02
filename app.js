@@ -1919,25 +1919,15 @@ async function cargarServiciosPublicos() {
 
     if (!cont) return;
 
-// 👇 SKELETON MIENTRAS CARGA
-cont.innerHTML = `
-  <div class="skeleton-card"></div>
-  <div class="skeleton-card"></div>
-  <div class="skeleton-card"></div>
-  <div class="skeleton-card"></div>
-`;
+    // 👇 SKELETON INICIAL
+    cont.innerHTML = `
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    `;
 
-// 👇 FETCH REAL
-const res = await fetch(`${API_URL}/servicios`);
-    const servicios = await res.json();
-
-    console.log('Servicios públicos:', servicios);
-
-    if (!res.ok || !Array.isArray(servicios)) {
-      cont.innerHTML = `<p>Error al cargar servicios.</p>`;
-      return;
-    }
-
+    // 👇 FUNCIÓN RENDER (DECLARADA ARRIBA → CORRECTO)
     function renderizarServicios(lista) {
       cont.innerHTML = '';
 
@@ -1957,210 +1947,143 @@ const res = await fetch(`${API_URL}/servicios`);
             : s.imagen || 'https://placehold.co/400x300?text=TurismoGO';
 
         const planPropietario = s.propietarioId?.plan || 'ninguno';
-const esPremium = planPropietario === 'premium';
-const esPro = planPropietario === 'pro';
+        const esPremium = planPropietario === 'premium';
+        const esPro = planPropietario === 'pro';
 
-cont.innerHTML += `
-  <article class="public-service-card ${esPremium ? 'premium-service-card' : ''}">
-    <div class="public-image-wrap">
-      <img src="${optimizarImagen(imagenPrincipal)}" alt="${s.nombre}" loading="lazy">
+        cont.innerHTML += `
+          <article class="public-service-card ${esPremium ? 'premium-service-card' : ''}">
+            <div class="public-image-wrap">
+              <img src="${optimizarImagen(imagenPrincipal)}" alt="${s.nombre}" loading="lazy">
 
-      <div class="public-card-badges">
-        <span class="verified-badge">Verificado</span>
-        ${
-  esPremium
-    ? '<span class="premium-badge">Premium</span><span class="featured-badge">Destacado</span>'
-    : esPro
-      ? '<span class="pro-badge">Pro</span>'
-      : ''
-}
-      </div>
-    </div>
+              <div class="public-card-badges">
+                <span class="verified-badge">Verificado</span>
+                ${
+                  esPremium
+                    ? '<span class="premium-badge">Premium</span><span class="featured-badge">Destacado</span>'
+                    : esPro
+                      ? '<span class="pro-badge">Pro</span>'
+                      : ''
+                }
+              </div>
+            </div>
 
-    <div class="public-service-content">
-      <h3>${s.nombre}</h3>
-      <p>${s.descripcion}</p>
+            <div class="public-service-content">
+              <h3>${s.nombre}</h3>
+              <p>${s.descripcion}</p>
 
-      <div class="trust-row">
-        <span>★ 5.0</span>
-        <span>Proveedor TurismoGO</span>
-      </div>
+              <div class="trust-row">
+                <span>★ 5.0</span>
+                <span>Proveedor TurismoGO</span>
+              </div>
 
-      <p class="public-price">
-        $${Number(s.precio).toLocaleString('es-CL')}
-      </p>
+              <p class="public-price">
+                $${Number(s.precio).toLocaleString('es-CL')}
+              </p>
 
-      <button onclick="window.location.href='servicio.html?id=${s._id}'">
-        Ver aviso
-      </button>
-    </div>
-  </article>
-`;
+              <button onclick="window.location.href='servicio.html?id=${s._id}'">
+                Ver aviso
+              </button>
+            </div>
+          </article>
+        `;
       });
     }
+
+    // 👇 CACHE LOCAL (CARGA INMEDIATA)
+    let servicios = [];
+
+    const cacheServicios = localStorage.getItem('turismogo_servicios_cache');
+
+    if (cacheServicios) {
+      try {
+        servicios = JSON.parse(cacheServicios);
+
+        if (Array.isArray(servicios) && servicios.length > 0) {
+          renderizarServicios(servicios);
+        }
+      } catch (error) {
+        console.warn('Cache inválida:', error);
+        localStorage.removeItem('turismogo_servicios_cache');
+      }
+    }
+
+    // 👇 FETCH REAL
+    const res = await fetch(`${API_URL}/servicios`);
+    const serviciosActualizados = await res.json();
+
+    if (!res.ok || !Array.isArray(serviciosActualizados)) {
+      if (!servicios.length) {
+        cont.innerHTML = `<p>Error al cargar servicios.</p>`;
+      }
+      return;
+    }
+
+    servicios = serviciosActualizados;
+
+    // 👇 GUARDAR CACHE
+    localStorage.setItem(
+      'turismogo_servicios_cache',
+      JSON.stringify(serviciosActualizados)
+    );
+
+    // 👇 ORDENAMIENTO
     const prioridadPlan = {
-  premium: 1,
-  pro: 2,
-  basico: 3,
-  ninguno: 4
-};
+      premium: 1,
+      pro: 2,
+      basico: 3,
+      ninguno: 4
+    };
 
-servicios.sort((a, b) => {
-  const planA = a.propietarioId?.plan || 'ninguno';
-  const planB = b.propietarioId?.plan || 'ninguno';
+    servicios.sort((a, b) => {
+      const planA = a.propietarioId?.plan || 'ninguno';
+      const planB = b.propietarioId?.plan || 'ninguno';
+      return prioridadPlan[planA] - prioridadPlan[planB];
+    });
 
-  return prioridadPlan[planA] - prioridadPlan[planB];
-});
-
+    // 👇 RENDER FINAL
     renderizarServicios(servicios);
 
+    // 👇 FILTROS (NO TOCAR)
     const botonesFiltro = document.querySelectorAll('.filter-btn');
+    let filtroCategoria = 'todos';
 
-let filtroCategoria = 'todos';
+    function aplicarFiltros() {
+      const texto = buscador ? buscador.value.trim().toLowerCase() : '';
 
-function aplicarFiltros() {
-  const texto = buscador ? buscador.value.trim().toLowerCase() : '';
+      const serviciosFiltrados = servicios.filter((s) => {
+        const nombre = (s.nombre || '').toLowerCase();
+        const descripcion = (s.descripcion || '').toLowerCase();
 
-  const serviciosFiltrados = servicios.filter((s) => {
-    const nombre = (s.nombre || '').toLowerCase();
-    const descripcion = (s.descripcion || '').toLowerCase();
+        const coincideTexto =
+          nombre.includes(texto) ||
+          descripcion.includes(texto);
 
-    const coincideTexto =
-      nombre.includes(texto) ||
-      descripcion.includes(texto);
+        const coincideCategoria =
+          filtroCategoria === 'todos' ||
+          nombre.includes(filtroCategoria) ||
+          descripcion.includes(filtroCategoria);
 
-    const coincideCategoria =
-      filtroCategoria === 'todos' ||
-      nombre.includes(filtroCategoria) ||
-      descripcion.includes(filtroCategoria);
+        return coincideTexto && coincideCategoria;
+      });
 
-    return coincideTexto && coincideCategoria;
-  });
+      renderizarServicios(serviciosFiltrados);
+    }
 
-  renderizarServicios(serviciosFiltrados);
-}
+    if (buscador) {
+      buscador.addEventListener('input', aplicarFiltros);
+    }
 
-if (buscador) {
-  buscador.addEventListener('input', aplicarFiltros);
-}
-
-botonesFiltro.forEach((btn) => {
-  btn.addEventListener('click', () => {
-    botonesFiltro.forEach((b) => b.classList.remove('active'));
-
-    btn.classList.add('active');
-    filtroCategoria = btn.dataset.filter;
-
-    aplicarFiltros();
-  });
-});
+    botonesFiltro.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        botonesFiltro.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        filtroCategoria = btn.dataset.filter;
+        aplicarFiltros();
+      });
+    });
 
   } catch (error) {
     console.error('Error al cargar servicios públicos:', error);
-  }
-}
-function mostrarRegistroPropietario() {
-  const modal = document.getElementById('registro-propietario');
-  if (!modal) return;
-
-  modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
-}
-async function registrarPropietarioConPago() {
-  try {
-    const nombreCompleto = document.getElementById('reg-nombre').value.trim();
-    const telefono = document.getElementById('reg-telefono').value.trim();
-    const email = document.getElementById('reg-email').value.trim();
-    const username = document.getElementById('reg-usuario').value.trim();
-    const password = document.getElementById('reg-password').value.trim();
-    const plan = document.getElementById('reg-plan').value;
-    const aceptaLegalPropietario = document.getElementById('aceptaLegalPropietario')?.checked;
-
-  if (!nombreCompleto || !telefono || !email || !username || !password || !plan) {
-  mostrarAlerta('Debe completar todos los campos para registrar la cuenta de propietario.');
-  return;
-}
-
-if (!aceptaLegalPropietario) {
-  mostrarAlerta('Debes aceptar los Términos y Condiciones y la Política de Privacidad para continuar.');
-  return;
-}
-
-    const resRegistro = await fetch(`${API_URL}/register-propietario`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        nombreCompleto,
-        telefono,
-        email,
-        username,
-        password
-      })
-    });
-
-    const dataRegistro = await resRegistro.json();
-
-    if (!resRegistro.ok) {
-     mostrarAlerta(dataRegistro.error || 'No fue posible registrar la cuenta.');
-      return;
-    }
-
-    const resLogin = await fetch(`${API_URL}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username,
-        password
-      })
-    });
-
-    const dataLogin = await resLogin.json();
-
-    if (!resLogin.ok || !dataLogin.token) {
-      mostrarAlerta('Cuenta creada, pero no fue posible iniciar sesión automáticamente.');
-      return;
-    }
-
-    localStorage.setItem('token', dataLogin.token);
-
-    const payload = JSON.parse(atob(dataLogin.token.split('.')[1]));
-    localStorage.setItem('role', payload.role);
-
-    const resPago = await fetch(`${API_URL}/webpay/crear`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${dataLogin.token}`
-      },
-      body: JSON.stringify({ plan })
-    });
-
-    const dataPago = await resPago.json();
-
-    if (!resPago.ok) {
-     mostrarAlerta(dataPago.error || 'Cuenta creada, pero no fue posible iniciar el pago.');
-      return;
-    }
-
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = dataPago.url;
-
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = 'token_ws';
-    input.value = dataPago.token;
-
-    form.appendChild(input);
-    document.body.appendChild(form);
-    form.submit();
-
-  } catch (error) {
-    console.error('Error en registro de propietario:', error);
-   mostrarAlerta('Ocurrió un error al registrar la cuenta de propietario.');
   }
 }
 async function actualizarEstadoReservaAdmin(idReserva, nuevoEstado) {
