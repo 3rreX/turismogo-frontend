@@ -1,3 +1,4 @@
+let limiteServiciosPublicos = 24;
 function optimizarImagen(url) {
   if (!url || !url.includes('cloudinary')) return url;
 
@@ -2024,7 +2025,7 @@ document.querySelectorAll('.btn-ver-servicio').forEach((btn) => {
     }
 
     // 👇 FETCH REAL
-    const res = await fetch(`${API_URL}/servicios`);
+    const res = await fetch(`${API_URL}/servicios?limit=${limiteServiciosPublicos}`);
     const serviciosActualizados = await res.json();
 
     if (!res.ok || !Array.isArray(serviciosActualizados)) {
@@ -2102,6 +2103,16 @@ document.querySelectorAll('.btn-ver-servicio').forEach((btn) => {
     console.error('Error al cargar servicios públicos:', error);
   }
 }
+document.addEventListener('DOMContentLoaded', () => {
+  const btnVerMas = document.getElementById('btn-ver-mas-servicios');
+
+  if (btnVerMas) {
+    btnVerMas.addEventListener('click', () => {
+      limiteServiciosPublicos += 24;
+      cargarServiciosPublicos();
+    });
+  }
+});
 async function actualizarEstadoReservaAdmin(idReserva, nuevoEstado) {
   try {
     const token = localStorage.getItem('token');
