@@ -2036,6 +2036,15 @@ document.querySelectorAll('.btn-ver-servicio').forEach((btn) => {
     }
 
     servicios = serviciosActualizados;
+    const btnVerMas = document.getElementById('btn-ver-mas-servicios');
+
+if (btnVerMas) {
+  if (serviciosActualizados.length < limiteServiciosPublicos) {
+    btnVerMas.style.display = 'none';
+  } else {
+    btnVerMas.style.display = 'block';
+  }
+}
 
     // 👇 GUARDAR CACHE
     localStorage.setItem(
