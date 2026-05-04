@@ -68,7 +68,7 @@
     min-height: 430px;
     background:
       linear-gradient(rgba(8, 37, 111, 0.35), rgba(8, 37, 111, 0.35)),
-      url("https://res.cloudinary.com/dqehz2duc/image/upload/f_auto,q_auto:eco,w_960/v1777683226/torres-del-paine-banner_phrytc.jpg");
+      url("https://res.cloudinary.com/dqehz2duc/image/upload/f_auto,q_auto:eco,w_auto/v1777683226/torres-del-paine-banner_phrytc.jpg");
     background-size: cover;
     background-position: center;
     display: flex;
