@@ -1990,6 +1990,10 @@ async function cargarServiciosPublicos() {
       </p>
 
       <div class="card-trust">
+      <div class="card-urgency">
+  ${Math.random() > 0.5 ? '<span class="urgency-high">🔥 Alta demanda</span>' : ''}
+  ${Math.random() > 0.6 ? '<span class="urgency-low">⏳ Últimos cupos</span>' : ''}
+</div>
         <span>⭐ 4.8</span>
         <span>+120 reservas</span>
       </div>

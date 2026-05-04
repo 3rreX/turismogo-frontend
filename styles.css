@@ -1293,3 +1293,28 @@
 .btn-ver-servicio {
   margin-top: 0 !important;
 }
+
+.card-urgency {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.urgency-high {
+  background: #fff4ed;
+  color: #ff6236;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+.urgency-low {
+  background: #ecfdf5;
+  color: #16a34a;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 6px 10px;
+  border-radius: 999px;
+}
