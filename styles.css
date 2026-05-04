@@ -1318,3 +1318,10 @@
   padding: 6px 10px;
   border-radius: 999px;
 }
+
+.card-safe-note {
+  font-size: 12px;
+  color: #16a34a;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
