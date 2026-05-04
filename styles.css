@@ -173,12 +173,20 @@
   display: block;
 }
 
-  .public-service-content {
-    padding: 22px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
+ .public-service-content {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.btn-ver-servicio {
+  margin-top: auto;
+}
+
+.card-description {
+  min-height: 40px;
+}
 
   .public-service-content h3 {
   margin: 0 0 10px;
