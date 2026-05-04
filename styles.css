@@ -1326,37 +1326,5 @@
   margin-bottom: 12px;
 }
 
-.side-menu {
-  position: fixed;
-  top: 120px;
-  left: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  z-index: 1000;
-}
 
-.side-menu a {
-  background: white;
-  border: 1px solid #dbe6f7;
-  padding: 10px 14px;
-  border-radius: 12px;
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 800;
-  color: #08256f;
-  box-shadow: 0 8px 20px rgba(8,37,111,0.08);
-  transition: all 0.2s ease;
-}
 
-.side-menu a:hover {
-  background: #ff6236;
-  color: white;
-  transform: translateX(3px);
-}
-
-@media (max-width: 900px) {
-  .side-menu {
-    display: none;
-  }
-}
