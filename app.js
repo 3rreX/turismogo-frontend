@@ -2593,46 +2593,6 @@ document.addEventListener('click', async (e) => {
   }
 });
 
-async function abrirModalServicio(id) {
-  try {
-    const res = await fetch(`${API_URL}/servicios`);
-    const servicios = await res.json();
 
-    const servicio = servicios.find(s => s._id === id);
 
-    if (!servicio) return;
 
-    const modal = document.getElementById('modal-servicio');
-
-    modal.innerHTML = `
-      <div class="modal-card">
-        <h2>${servicio.nombre}</h2>
-        <img src="${optimizarImagen(servicio.imagen || servicio.imagenes?.[0])}" style="width:100%; border-radius:12px; margin:10px 0;">
-        <p>${servicio.descripcion}</p>
-        <h3 style="color:#ff6236;">$${Number(servicio.precio).toLocaleString('es-CL')}</h3>
-
-        <button onclick="iniciarReserva('${servicio._id}')" class="primary-btn">
-          Reservar ahora
-        </button>
-
-        <button onclick="cerrarModalServicio()" class="secondary-register-btn">
-          Cerrar
-        </button>
-      </div>
-    `;
-
-    modal.style.display = 'flex';
-
-  } catch (error) {
-    console.error('Error al abrir servicio:', error);
-  }
-}
-
-function cerrarModalServicio() {
-  const modal = document.getElementById('modal-servicio');
-  modal.style.display = 'none';
-}
-
-function iniciarReserva(id) {
-  window.location.href = `/reserva.html?servicio=${id}`;
-}
