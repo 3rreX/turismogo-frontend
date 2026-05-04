@@ -2009,23 +2009,38 @@ document.querySelectorAll('.btn-ver-servicio').forEach((btn) => {
     // 👇 CACHE LOCAL (CARGA INMEDIATA)
     let servicios = [];
 
-    const cacheServicios = localStorage.getItem('turismogo_servicios_cache');
+   const cacheServicios = localStorage.getItem('turismogo_servicios_cache');
+const cacheFecha = localStorage.getItem('turismogo_servicios_cache_fecha');
+const cacheValida =
+  cacheFecha && Date.now() - Number(cacheFecha) < 10 * 60 * 1000;
 
-    if (cacheServicios) {
-      try {
-        servicios = JSON.parse(cacheServicios);
+if (cacheServicios && cacheValida) {
+  try {
+    servicios = JSON.parse(cacheServicios);
 
-        if (Array.isArray(servicios) && servicios.length > 0) {
-          renderizarServicios(servicios);
-        }
-      } catch (error) {
-        console.warn('Cache inválida:', error);
-        localStorage.removeItem('turismogo_servicios_cache');
-      }
+    if (Array.isArray(servicios) && servicios.length > 0) {
+      renderizarServicios(servicios);
     }
+  } catch (error) {
+    console.warn('Cache inválida:', error);
+    localStorage.removeItem('turismogo_servicios_cache');
+    localStorage.removeItem('turismogo_servicios_cache_fecha');
+  }
+} else {
+  localStorage.removeItem('turismogo_servicios_cache');
+  localStorage.removeItem('turismogo_servicios_cache_fecha');
+}
 
     // 👇 FETCH REAL
-    const res = await fetch(`${API_URL}/servicios?limit=${limiteServiciosPublicos}`);
+    const controller = new AbortController();
+const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+const res = await fetch(`${API_URL}/servicios?limit=${limiteServiciosPublicos}`, {
+  signal: controller.signal,
+  cache: 'no-store'
+});
+
+clearTimeout(timeoutId);
     const serviciosActualizados = await res.json();
 
     if (!res.ok || !Array.isArray(serviciosActualizados)) {
@@ -2051,6 +2066,11 @@ if (btnVerMas) {
       'turismogo_servicios_cache',
       JSON.stringify(serviciosActualizados)
     );
+
+    localStorage.setItem(
+  'turismogo_servicios_cache_fecha',
+  String(Date.now())
+);
 
     // 👇 ORDENAMIENTO
     const prioridadPlan = {
