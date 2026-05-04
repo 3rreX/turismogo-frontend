@@ -200,22 +200,22 @@
   letter-spacing: -0.4px;
 }
 
-  .public-service-content button {
+.public-service-content button {
   width: 100%;
   padding: 14px;
-  background: linear-gradient(90deg, #08256f, #0b63ce);
+  background: linear-gradient(90deg, #ff6236, #ff8a50);
   color: white;
   border: none;
   border-radius: 12px;
   cursor: pointer;
   font-weight: 900;
   margin-top: 14px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: all 0.25s ease;
 }
 
 .public-service-content button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(8,37,111,0.18);
+  box-shadow: 0 12px 24px rgba(255, 98, 54, 0.25);
 }
 
   .login-card {
@@ -1231,4 +1231,39 @@
     background-size: cover;
     background-position: center;
   }
+}
+
+.card-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.card-price {
+  color: #ff6236;
+  font-weight: 900;
+  font-size: 20px;
+  white-space: nowrap;
+}
+
+.card-description {
+  font-size: 14px;
+  margin: 10px 0;
+  color: #4966a3;
+}
+
+.card-trust {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  margin-bottom: 12px;
+  color: #334155;
+}
+
+.card-trust span {
+  background: #f1f5f9;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
 }

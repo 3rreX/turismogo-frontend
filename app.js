@@ -1961,41 +1961,46 @@ async function cargarServiciosPublicos() {
         const esPro = planPropietario === 'pro';
 
         cont.innerHTML += `
-          <article class="public-service-card ${esPremium ? 'premium-service-card' : ''}">
-            <div class="public-image-wrap">
-              <img src="${optimizarImagen(imagenPrincipal)}" alt="${s.nombre}" loading="lazy">
+  <article class="public-service-card ${esPremium ? 'premium-service-card' : ''}">
+    
+    <div class="public-image-wrap">
+      <img src="${optimizarImagen(imagenPrincipal)}" alt="${s.nombre}" loading="lazy">
 
-              <div class="public-card-badges">
-                <span class="verified-badge">Verificado</span>
-                ${
-                  esPremium
-                    ? '<span class="premium-badge">Premium</span><span class="featured-badge">Destacado</span>'
-                    : esPro
-                      ? '<span class="pro-badge">Pro</span>'
-                      : ''
-                }
-              </div>
-            </div>
+      <div class="public-card-badges">
+        <span class="verified-badge">Verificado</span>
+        ${
+          esPremium
+            ? '<span class="premium-badge">Premium</span><span class="featured-badge">Destacado</span>'
+            : esPro
+              ? '<span class="pro-badge">Pro</span>'
+              : ''
+        }
+      </div>
+    </div>
 
-            <div class="public-service-content">
-              <h3>${s.nombre}</h3>
-              <p>${s.descripcion}</p>
+    <div class="public-service-content">
 
-              <div class="trust-row">
-                <span>★ 5.0</span>
-                <span>Proveedor TurismoGO</span>
-              </div>
+      <div class="card-top-row">
+        <h3>${s.nombre}</h3>
+        <span class="card-price">$${Number(s.precio).toLocaleString('es-CL')}</span>
+      </div>
 
-              <p class="public-price">
-                $${Number(s.precio).toLocaleString('es-CL')}
-              </p>
+      <p class="card-description">
+        ${s.descripcion.length > 90 ? s.descripcion.slice(0, 90) + '...' : s.descripcion}
+      </p>
 
-              <button class="btn-ver-servicio" data-id="${s._id}">
-  Ver aviso
-</button>
-            </div>
-          </article>
-        `;
+      <div class="card-trust">
+        <span>⭐ 4.8</span>
+        <span>+120 reservas</span>
+      </div>
+
+      <button class="btn-ver-servicio" data-id="${s._id}">
+        Ver disponibilidad
+      </button>
+
+    </div>
+  </article>
+`;
       });
       // 👇 EVENTOS DESPUÉS DE RENDER
 document.querySelectorAll('.btn-ver-servicio').forEach((btn) => {
