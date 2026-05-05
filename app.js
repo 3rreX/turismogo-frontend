@@ -2551,34 +2551,11 @@ async function registrarPropietarioConPago() {
     const payload = JSON.parse(atob(dataLogin.token.split('.')[1]));
     localStorage.setItem('role', payload.role);
 
-    const resPago = await fetch(`${API_URL}/webpay/crear`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${dataLogin.token}`
-      },
-      body: JSON.stringify({ plan })
-    });
+mostrarAlerta('Cuenta creada correctamente. Ya puedes acceder al panel y publicar tus servicios.');
 
-    const dataPago = await resPago.json();
-
-    if (!resPago.ok) {
-      mostrarAlerta(dataPago.error || 'Cuenta creada, pero no fue posible iniciar el pago.');
-      return;
-    }
-
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = dataPago.url;
-
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = 'token_ws';
-    input.value = dataPago.token;
-
-    form.appendChild(input);
-    document.body.appendChild(form);
-    form.submit();
+setTimeout(() => {
+  window.location.href = 'dashboard.html';
+}, 1200);
 
   } catch (error) {
     console.error('Error en registro de propietario:', error);
