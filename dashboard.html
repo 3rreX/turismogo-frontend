@@ -4024,6 +4024,52 @@ select:focus {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* =====================================================
+   TABS INTERNAS DASHBOARD
+===================================================== */
+
+.dashboard-tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 24px 0 28px;
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  border-radius: 18px;
+  box-shadow: 0 10px 24px rgba(6, 59, 115, 0.06);
+}
+
+.dashboard-tab-btn {
+  background: #f8fafc;
+  color: #061b3a;
+  border: 1px solid #dbeafe;
+  border-radius: 999px;
+  padding: 11px 16px;
+  margin: 0;
+  font-weight: 900;
+  font-size: 14px;
+}
+
+.dashboard-tab-btn:hover {
+  background: #eaf6ff;
+  color: #063b73;
+}
+
+.dashboard-tab-btn.active {
+  background: linear-gradient(135deg, #063b73, #0b6fa4);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.dashboard-tab-content {
+  display: none;
+}
+
+.dashboard-tab-content.active {
+  display: block;
+}
   </style>
 </head>
 <body>
@@ -4067,10 +4113,22 @@ select:focus {
     Publica y gestiona
   </div>
 </div>
+
+<div class="dashboard-tabs owner-tabs">
+  <button class="dashboard-tab-btn active" onclick="mostrarTabDashboard('owner-resumen', this)">Resumen</button>
+  <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('owner-publicar', this)">Publicar servicio</button>
+  <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('owner-servicios', this)">Mis servicios</button>
+  <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('owner-reservas', this)">Reservas</button>
+  <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('owner-calendario', this)">Calendario</button>
+  <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('owner-mensajes', this)">Mensajes</button>
+</div>
+
+<div id="owner-resumen" class="dashboard-tab-content active">
       <div class="owner-stats" id="owner-stats">
   <div class="stat-card">
     <h4>Servicios publicados</h4>
     <p id="stat-servicios">0</p>
+  </div>
   </div>
 
   <div class="stat-card">
@@ -4143,7 +4201,7 @@ select:focus {
 
   </div>
 </div>
-
+<div id="owner-publicar" class="dashboard-tab-content"></div>
       <div class="owner-section-header">
   <div>
     <span>Publicación</span>
@@ -4180,7 +4238,9 @@ select:focus {
 
   <button class="owner-primary-btn" onclick="crearServicio()">Publicar servicio</button>
 </div>
+</div>
       </div>
+      <div id="owner-servicios" class="dashboard-tab-content"></div>
 
       <div class="owner-section-header">
   <div>
@@ -4190,6 +4250,8 @@ select:focus {
   <p>Visualiza cómo se muestran tus servicios y administra su contenido.</p>
 </div>
       <div id="mis-servicios" class="grid"></div>
+      </div>
+      <div id="owner-calendario" class="dashboard-tab-content"></div>
 
      <div class="owner-section-header">
   <div>
@@ -4200,7 +4262,8 @@ select:focus {
 </div>
 
 <div id="calendario-propietario" class="owner-calendar"></div>
-
+</div>
+<div id="owner-reservas" class="dashboard-tab-content"></div>
 <div class="owner-section-header">
   <div>
     <span>Operación</span>
@@ -4209,6 +4272,8 @@ select:focus {
   <p>Revisa solicitudes, clientes, fechas y estado de cada reserva.</p>
 </div>
 <div id="reservas-propietario" class="grid"></div>
+</div>
+<div id="owner-mensajes" class="dashboard-tab-content"></div>
 <div class="owner-section-header">
   <div>
     <span>Mensajería</span>
@@ -4218,6 +4283,7 @@ select:focus {
 </div>
 
 <div id="mensajes-propietario" class="grid"></div>
+</div>
     </section>
 
    <section id="panel-admin" class="panel admin-panel" style="display:none;">
@@ -4346,6 +4412,31 @@ select:focus {
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="config.js"></script>
+  <script>
+  function mostrarTabDashboard(tabId, boton) {
+    const panel = boton.closest('.panel');
+    if (!panel) return;
+
+    const contenidos = panel.querySelectorAll('.dashboard-tab-content');
+    const botones = panel.querySelectorAll('.dashboard-tab-btn');
+
+    contenidos.forEach(contenido => {
+      contenido.classList.remove('active');
+    });
+
+    botones.forEach(btn => {
+      btn.classList.remove('active');
+    });
+
+    const tabSeleccionada = document.getElementById(tabId);
+
+    if (tabSeleccionada) {
+      tabSeleccionada.classList.add('active');
+    }
+
+    boton.classList.add('active');
+  }
+</script>
   <script src="app.js"></script>
   <div id="modalEditarServicio" class="modal-editar" style="display:none;">
   <div class="modal-contenido">
