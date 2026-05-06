@@ -246,8 +246,15 @@ button:hover {
 }
 
 #perfil {
-  font-weight: bold;
-  color: #111827;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.16);
+  padding: 8px 14px;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 13px;
+  line-height: 1.3;
+  min-width: 260px;
+  font-weight: 800;
 }
 
 @media (max-width: 700px) {
@@ -4094,6 +4101,57 @@ select:focus {
   gap: 8px;
   flex-wrap: wrap;
   font-weight: 700;
+}
+
+.profile-active {
+  color: #4ade80;
+}
+
+.profile-pending {
+  color: #ff7b54;
+}
+
+.navbar h1 {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+.navbar p {
+  color: #cbd5e1 !important;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.navbar h1 {
+  color: #ffffff !important;
+}
+
+.navbar p {
+  color: #dbeafe !important;
+}
+
+#perfil {
+  background: rgba(255,255,255,0.10) !important;
+  border: 1px solid rgba(255,255,255,0.18) !important;
+  padding: 8px 14px !important;
+  border-radius: 14px !important;
+  color: #ffffff !important;
+  font-size: 13px !important;
+  line-height: 1.3 !important;
+  min-width: auto !important;
+}
+
+.top-profile-mini {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  color: #ffffff;
+  font-weight: 800;
 }
 
 .profile-active {

@@ -113,22 +113,29 @@ async function cargarPerfil() {
     tituloBienvenidaOwner.textContent = `Hola, ${data.username}`;
 }
 
-  if (role === 'admin') {
-    perfil.innerHTML = `
-  <div class="top-profile-mini">
-    <span>${data.username}</span>
-    <span>•</span>
-    <span>${data.plan ? data.plan : 'Sin plan'}</span>
-    <span>•</span>
-
-    ${
-      data.suscripcionActiva
-        ? '<span class="profile-active">Activo</span>'
-        : '<span class="profile-pending">Pendiente</span>'
-    }
-  </div>
-`;
-  }
+if (role === 'admin') {
+  perfil.innerHTML = `
+    <div class="top-profile-mini">
+      <span>${data.username}</span>
+      <span>•</span>
+      <span>Administrador</span>
+    </div>
+  `;
+} else {
+  perfil.innerHTML = `
+    <div class="top-profile-mini">
+      <span>${data.username}</span>
+      <span>•</span>
+      <span>${data.plan ? data.plan : 'Sin plan'}</span>
+      <span>•</span>
+      ${
+        data.suscripcionActiva
+          ? '<span class="profile-active">Activo</span>'
+          : '<span class="profile-pending">Pendiente</span>'
+      }
+    </div>
+  `;
+}
 }
   } catch (error) {
     console.error('Error al cargar perfil:', error);
