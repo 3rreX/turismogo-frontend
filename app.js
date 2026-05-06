@@ -106,7 +106,12 @@ async function cargarPerfil() {
     }
 
     if (data.username && perfil) {
-  const role = localStorage.getItem('role');
+    const role = localStorage.getItem('role');
+    const tituloBienvenidaOwner = document.getElementById('titulo-bienvenida-owner');
+
+    if (tituloBienvenidaOwner && role === 'propietario') {
+    tituloBienvenidaOwner.textContent = `Hola, ${data.username}`;
+}
 
   if (role === 'admin') {
     perfil.innerHTML = `
