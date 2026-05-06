@@ -115,27 +115,19 @@ async function cargarPerfil() {
 
   if (role === 'admin') {
     perfil.innerHTML = `
-      <p><strong>Usuario:</strong> ${data.username}</p>
-      <p><strong>Rol:</strong> Administrador</p>
-    `;
-  } else {
-    perfil.innerHTML = `
-      <p><strong>Usuario:</strong> ${data.username}</p>
+  <div class="top-profile-mini">
+    <span>${data.username}</span>
+    <span>•</span>
+    <span>${data.plan ? data.plan : 'Sin plan'}</span>
+    <span>•</span>
 
-      <p>
-        <strong>Plan:</strong>
-        ${data.plan ? data.plan : 'Sin plan activo'}
-      </p>
-
-      <p>
-        <strong>Estado de suscripción:</strong>
-        ${
-          data.suscripcionActiva
-            ? '<span style="color: green; font-weight: bold;">Activa</span>'
-            : '<span style="color: #ff6236; font-weight: bold;">Pendiente de pago</span>'
-        }
-      </p>
-    `;
+    ${
+      data.suscripcionActiva
+        ? '<span class="profile-active">Activo</span>'
+        : '<span class="profile-pending">Pendiente</span>'
+    }
+  </div>
+`;
   }
 }
   } catch (error) {
