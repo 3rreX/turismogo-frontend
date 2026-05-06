@@ -18,7 +18,7 @@ body {
 
 .navbar {
   background: linear-gradient(90deg, #062f5f 0%, #075f8f 55%, #0b84ad 100%);
-  padding: 18px 38px;
+  padding: 12px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -36,8 +36,8 @@ body {
 }
 
 .dashboard-logo {
-  width: 48px;
-  height: 48px;
+  width: 42px;
+  height: 42px;
   object-fit: contain;
   background: rgba(255,255,255,0.14);
   border: 1px solid rgba(255,255,255,0.22);
@@ -48,7 +48,7 @@ body {
 .navbar h1 {
   margin: 0;
   color: #ffffff;
-  font-size: 30px;
+  font-size: 26px;
   letter-spacing: -0.5px;
 }
 
@@ -1941,14 +1941,14 @@ footer {
   background: linear-gradient(135deg, #062f5f 0%, #0b6fa4 65%, #0fbbc3 100%);
   color: #ffffff;
   border-radius: 28px;
-  padding: 36px;
-  margin-bottom: 30px;
+  padding: 24px 30px;
+  margin-bottom: 22px;
   box-shadow: 0 18px 42px rgba(6, 59, 115, 0.24);
 }
 
 .owner-heading h2 {
   margin: 10px 0;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: 900;
   letter-spacing: -0.8px;
 }
@@ -4105,9 +4105,9 @@ select:focus {
       
       <div class="owner-mini-banner">
   <div>
-    <span>Área de proveedor</span>
-    <h2>Panel del propietario</h2>
-    <p>Administra tus publicaciones, reservas y oportunidades comerciales en TurismoGO.</p>
+    <span class="owner-kicker">Bienvenido a tu panel</span>
+    <h2>Hola, propietario</h2>
+    <p>Gestiona tus servicios, reservas, calendario, mensajes e ingresos desde un solo lugar.</p>
   </div>
   <div class="owner-mini-badge">
     Publica y gestiona
@@ -4412,7 +4412,7 @@ select:focus {
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="config.js"></script>
-  <script>
+ <script>
   function mostrarTabDashboard(tabId, boton) {
     const panel = boton.closest('.panel');
     if (!panel) return;
@@ -4432,6 +4432,13 @@ select:focus {
 
     if (tabSeleccionada) {
       tabSeleccionada.classList.add('active');
+
+      setTimeout(() => {
+        tabSeleccionada.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 100);
     }
 
     boton.classList.add('active');
