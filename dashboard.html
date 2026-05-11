@@ -4162,6 +4162,111 @@ select:focus {
   color: #ff7b54;
 }
 
+/* =====================================================
+   HEADER OPERATIVO PROPIETARIO
+===================================================== */
+
+.owner-operational-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 22px;
+  align-items: center;
+  padding: 24px 28px !important;
+  margin-bottom: 22px !important;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #061b3a 0%, #075f8f 65%, #0fbbc3 100%);
+  box-shadow: 0 18px 38px rgba(6, 59, 115, 0.18);
+}
+
+.owner-header-text span {
+  display: inline-block;
+  color: #bae6fd;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+}
+
+.owner-header-text h2 {
+  margin: 0 0 8px;
+  color: #ffffff;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -0.6px;
+}
+
+.owner-header-text p {
+  margin: 0;
+  color: #dbeafe;
+  font-size: 15px;
+  line-height: 1.45;
+  max-width: 720px;
+}
+
+.owner-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.owner-header-chip {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 18px;
+  padding: 12px 16px;
+  min-width: 230px;
+}
+
+.owner-header-chip strong {
+  display: block;
+  color: #ffffff;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.owner-header-chip span {
+  display: block;
+  color: #dbeafe;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.owner-header-btn {
+  margin: 0;
+  background: #ff6236;
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  padding: 13px 18px;
+  font-weight: 900;
+  white-space: nowrap;
+  box-shadow: 0 12px 24px rgba(255, 98, 54, 0.24);
+}
+
+.owner-header-btn:hover {
+  background: #ea580c;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 900px) {
+  .owner-operational-header {
+    grid-template-columns: 1fr;
+  }
+
+  .owner-header-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .owner-header-chip {
+    min-width: auto;
+  }
+
+  .owner-header-btn {
+    width: 100%;
+  }
+}
   </style>
 </head>
 <body>
@@ -4195,14 +4300,26 @@ select:focus {
 
     <section id="panel-propietario" class="panel" style="display:none;">
       
-      <div class="owner-mini-banner">
-  <div>
-    <span class="owner-kicker">Bienvenido a tu panel</span>
+      <div class="owner-mini-banner owner-operational-header">
+  <div class="owner-header-text">
+    <span>Panel operativo</span>
     <h2 id="titulo-bienvenida-owner">Hola, propietario</h2>
-    <p>Gestiona tus servicios, reservas, calendario, mensajes e ingresos desde un solo lugar.</p>
+    <p>Gestiona tus publicaciones, reservas, calendario, mensajes e ingresos desde un solo lugar.</p>
   </div>
-  <div class="owner-mini-badge">
-    Publica y gestiona
+
+  <div class="owner-header-actions">
+    <div class="owner-header-chip">
+      <strong>Modelo comisión</strong>
+      <span>Publica gratis y paga solo por reserva confirmada</span>
+    </div>
+
+    <button
+      class="owner-header-btn"
+      type="button"
+      onclick="mostrarTabDashboard('owner-publicar', document.querySelector('.owner-tabs .dashboard-tab-btn:nth-child(2)'))"
+    >
+      + Nuevo servicio
+    </button>
   </div>
 </div>
 
