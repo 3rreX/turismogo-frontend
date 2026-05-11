@@ -879,10 +879,6 @@ if (reservasPendientes.length === 0) {
 
     let ingresos = 0;
 
-    const reservasPendientes = reservas.filter(
-  r => (r.estado || '').toLowerCase() === 'pendiente'
-);
-
     reservasPendientes.forEach((r) => {
       if (r.estado === 'confirmada') {
         ingresos +=
