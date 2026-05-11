@@ -4361,6 +4361,103 @@ z-index: 9;
   color: #94a3b8;
   font-size: 12px;
 }
+
+.owner-stats {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+  margin: 24px 0 30px !important;
+}
+
+.owner-stat-card {
+  width: 100%;
+  min-height: 170px;
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow: 0 14px 30px rgba(6, 59, 115, 0.07);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.owner-stat-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(180deg, #0b6fa4, #0fbbc3);
+}
+
+.owner-stat-card::after {
+  content: "";
+  position: absolute;
+  right: -34px;
+  top: -34px;
+  width: 96px;
+  height: 96px;
+  background: rgba(255, 98, 54, 0.09);
+  border-radius: 999px;
+}
+
+.stat-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  background: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.stat-info {
+  position: relative;
+  z-index: 1;
+}
+
+.stat-info span {
+  display: block;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+.stat-info h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.stat-info small {
+  display: block;
+  margin-top: 8px;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+@media (max-width: 1100px) {
+  .owner-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 650px) {
+  .owner-stats {
+    grid-template-columns: 1fr !important;
+  }
+}
   </style>
 </head>
 <body>
@@ -4427,40 +4524,45 @@ z-index: 9;
 </div>
 
 <div id="owner-resumen" class="dashboard-tab-content active">
-      <div class="owner-stats" id="owner-stats">
- <div class="stat-card owner-stat-card">
-  <div class="stat-icon">🧭</div>
+  <div class="owner-stats" id="owner-stats">
 
-  <div class="stat-info">
-    <span>Servicios publicados</span>
-    <h3 id="stat-servicios">0</h3>
-    <small>Publicaciones visibles actualmente</small>
+    <div class="owner-stat-card">
+      <div class="stat-icon">🧭</div>
+      <div class="stat-info">
+        <span>Servicios publicados</span>
+        <h3 id="stat-servicios">0</h3>
+        <small>Publicaciones visibles actualmente</small>
+      </div>
+    </div>
+
+    <div class="owner-stat-card">
+      <div class="stat-icon">📅</div>
+      <div class="stat-info">
+        <span>Reservas pendientes</span>
+        <h3 id="stat-pendientes">0</h3>
+        <small>Esperando confirmación</small>
+      </div>
+    </div>
+
+    <div class="owner-stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-info">
+        <span>Reservas confirmadas</span>
+        <h3 id="stat-confirmadas">0</h3>
+        <small>Operaciones exitosas</small>
+      </div>
+    </div>
+
+    <div class="owner-stat-card">
+      <div class="stat-icon">💰</div>
+      <div class="stat-info">
+        <span>Ingresos estimados</span>
+        <h3 id="stat-ingresos">$0</h3>
+        <small>Estimación mensual</small>
+      </div>
+    </div>
+
   </div>
-</div>
-
-  <div class="stat-icon">📅</div>
-
-<div class="stat-info">
-  <span>Reservas pendientes</span>
-  <h3 id="stat-pendientes">0</h3>
-  <small>Esperando confirmación</small>
-</div>
-
-  <div class="stat-icon">✅</div>
-
-<div class="stat-info">
-  <span>Reservas confirmadas</span>
-  <h3 id="stat-confirmadas">0</h3>
-  <small>Operaciones exitosas</small>
-</div>
-
-  <div class="stat-icon">💰</div>
-
-<div class="stat-info">
-  <span>Ingresos estimados</span>
-  <h3 id="stat-ingresos">$0</h3>
-  <small>Estimación mensual</small>
-</div>
 </div>
 <div class="subscription-plans">
   <div class="owner-section-header">
