@@ -999,6 +999,33 @@ async function cargarReservasPropietario() {
         <span>Mensaje del cliente</span>
         <p>${mensajeCliente}</p>
       </div>
+      <div class="reservation-money-box">
+
+  <div class="money-item">
+    <span>Valor reserva</span>
+    <strong>
+      $${Number(monto || 0).toLocaleString('es-CL')}
+    </strong>
+  </div>
+
+  <div class="money-item">
+    <span>Comisión TurismoGO</span>
+
+    <strong class="money-commission">
+      ${r.comisionPorcentaje || 8}% ≈
+      $${Number(r.comisionTurismoGO || 0).toLocaleString('es-CL')}
+    </strong>
+  </div>
+
+  <div class="money-item">
+    <span>Monto líquido propietario</span>
+
+    <strong class="money-owner">
+      $${Number(r.montoPropietario || 0).toLocaleString('es-CL')}
+    </strong>
+  </div>
+
+</div>
     </div>
   </article>
 `;
