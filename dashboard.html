@@ -4284,7 +4284,83 @@ z-index: 9;
     white-space: nowrap;
   }
 }
+/* =====================================================
+   ESTADISTICAS PREMIUM
+===================================================== */
 
+.owner-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+}
+
+.owner-stat-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 24px;
+  border-radius: 22px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+  transition: all 0.25s ease;
+}
+
+.owner-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 42px rgba(15, 23, 42, 0.10);
+  border-color: #bfdbfe;
+}
+
+.owner-stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(180deg, #0b6fa4, #0fbbc3);
+}
+
+.stat-icon {
+  width: 62px;
+  height: 62px;
+  min-width: 62px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eff6ff;
+  font-size: 28px;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-info span {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.stat-info h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.stat-info small {
+  margin-top: 6px;
+  color: #94a3b8;
+  font-size: 12px;
+}
   </style>
 </head>
 <body>
@@ -4352,26 +4428,39 @@ z-index: 9;
 
 <div id="owner-resumen" class="dashboard-tab-content active">
       <div class="owner-stats" id="owner-stats">
-  <div class="stat-card">
-    <h4>Servicios publicados</h4>
-    <p id="stat-servicios">0</p>
-  </div>
-  </div>
+ <div class="stat-card owner-stat-card">
+  <div class="stat-icon">🧭</div>
 
-  <div class="stat-card">
-    <h4>Reservas pendientes</h4>
-    <p id="stat-pendientes">0</p>
+  <div class="stat-info">
+    <span>Servicios publicados</span>
+    <h3 id="stat-servicios">0</h3>
+    <small>Publicaciones visibles actualmente</small>
   </div>
+</div>
 
-  <div class="stat-card">
-    <h4>Reservas confirmadas</h4>
-    <p id="stat-confirmadas">0</p>
-  </div>
+  <div class="stat-icon">📅</div>
 
-  <div class="stat-card">
-    <h4>Ingresos estimados</h4>
-    <p id="stat-ingresos">$0</p>
-  </div>
+<div class="stat-info">
+  <span>Reservas pendientes</span>
+  <h3 id="stat-pendientes">0</h3>
+  <small>Esperando confirmación</small>
+</div>
+
+  <div class="stat-icon">✅</div>
+
+<div class="stat-info">
+  <span>Reservas confirmadas</span>
+  <h3 id="stat-confirmadas">0</h3>
+  <small>Operaciones exitosas</small>
+</div>
+
+  <div class="stat-icon">💰</div>
+
+<div class="stat-info">
+  <span>Ingresos estimados</span>
+  <h3 id="stat-ingresos">$0</h3>
+  <small>Estimación mensual</small>
+</div>
 </div>
 <div class="subscription-plans">
   <div class="owner-section-header">
