@@ -4063,6 +4063,9 @@ select:focus {
   border: 1px solid #dbeafe;
   border-radius: 18px;
   box-shadow: 0 10px 24px rgba(6, 59, 115, 0.06);
+  position: sticky;
+top: 88px;
+z-index: 9;
 }
 
 .dashboard-tab-btn {
@@ -4267,6 +4270,21 @@ select:focus {
     width: 100%;
   }
 }
+
+@media (max-width: 760px) {
+  .dashboard-tabs {
+    position: sticky;
+    top: 72px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding: 10px;
+  }
+
+  .dashboard-tab-btn {
+    white-space: nowrap;
+  }
+}
+
   </style>
 </head>
 <body>
