@@ -2312,22 +2312,20 @@ async function cargarCalendarioPropietario() {
     }
 
     const reservasActivas = Array.isArray(reservas)
-      ? reservas.filter(r => ['confirmada'].includes((r.estado || '').toLowerCase()))
+      ? reservas.filter(r => (r.estado || '').toLowerCase() === 'confirmada')
       : [];
 
     if (reservasActivas.length === 0) {
       cont.innerHTML = `
         <div class="calendar-empty">
           <h3>No hay reservas confirmadas actualmente</h3>
-          <p>Cuando confirmes una reserva, aparecerá aquí con sus detalles.</p>
+          <p>Cuando confirmes una reserva, aparecerá aquí.</p>
         </div>
       `;
       return;
     }
 
-    reservasActivas.sort((a, b) => {
-      return new Date(a.fechaInicio) - new Date(b.fechaInicio);
-    });
+    reservasActivas.sort((a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio));
 
     cont.innerHTML = `
       <div class="calendar-table">
@@ -2343,7 +2341,7 @@ async function cargarCalendarioPropietario() {
         ${reservasActivas.map((r) => {
           const servicio = r.servicio || r.servicioId?.nombre || 'Servicio no disponible';
           const cliente = r.nombreCliente || r.usuarioId?.username || 'Cliente externo';
-          const estado = r.estado || 'pendiente';
+          const estado = r.estado || 'confirmada';
           const pago = r.pagoEstado || 'pendiente';
 
           const monto =
@@ -2359,16 +2357,9 @@ async function cargarCalendarioPropietario() {
               <span>${cliente}</span>
               <span>${formatearFechaCalendario(r.fechaInicio)}</span>
               <span>${formatearFechaCalendario(r.fechaFin)}</span>
+              <span><b class="status-badge status-${estado}">${estado}</b></span>
               <span>
-                <b class="status-badge status-${estado}">
-                  ${estado}
-                </b>
-              </span>
-              <span>
-                <button
-                  class="calendar-detail-btn"
-                  onclick="toggleDetalleCalendario('${r._id}')"
-                >
+                <button class="calendar-detail-btn" onclick="toggleDetalleCalendario('${r._id}')">
                   Ver detalles
                 </button>
               </span>
@@ -2376,50 +2367,15 @@ async function cargarCalendarioPropietario() {
 
             <div id="detalle-calendario-${r._id}" class="calendar-detail-hidden">
               <div class="calendar-detail-grid">
-                <div>
-                  <span>Cliente</span>
-                  <strong>${cliente}</strong>
-                </div>
-
-                <div>
-                  <span>Servicio</span>
-                  <strong>${servicio}</strong>
-                </div>
-
-                <div>
-                  <span>Estado reserva</span>
-                  <strong>${estado}</strong>
-                </div>
-
-                <div>
-                  <span>Estado pago</span>
-                  <strong>${pago}</strong>
-                </div>
-
-                <div>
-                  <span>Fecha inicio</span>
-                  <strong>${formatearFechaCalendario(r.fechaInicio)}</strong>
-                </div>
-
-                <div>
-                  <span>Fecha fin</span>
-                  <strong>${formatearFechaCalendario(r.fechaFin)}</strong>
-                </div>
-
-                <div>
-                  <span>Valor reserva</span>
-                  <strong>$${monto.toLocaleString('es-CL')}</strong>
-                </div>
-
-                <div>
-                  <span>Comisión TurismoGO</span>
-                  <strong>${r.comisionPorcentaje || 0}% ≈ $${Number(r.comisionTurismoGO || 0).toLocaleString('es-CL')}</strong>
-                </div>
-
-                <div>
-                  <span>Monto líquido propietario</span>
-                  <strong>$${Number(r.montoPropietario || 0).toLocaleString('es-CL')}</strong>
-                </div>
+                <div><span>Cliente</span><strong>${cliente}</strong></div>
+                <div><span>Servicio</span><strong>${servicio}</strong></div>
+                <div><span>Estado reserva</span><strong>${estado}</strong></div>
+                <div><span>Estado pago</span><strong>${pago}</strong></div>
+                <div><span>Fecha inicio</span><strong>${formatearFechaCalendario(r.fechaInicio)}</strong></div>
+                <div><span>Fecha fin</span><strong>${formatearFechaCalendario(r.fechaFin)}</strong></div>
+                <div><span>Valor reserva</span><strong>$${monto.toLocaleString('es-CL')}</strong></div>
+                <div><span>Comisión TurismoGO</span><strong>${r.comisionPorcentaje || 0}% ≈ $${Number(r.comisionTurismoGO || 0).toLocaleString('es-CL')}</strong></div>
+                <div><span>Monto líquido propietario</span><strong>$${Number(r.montoPropietario || 0).toLocaleString('es-CL')}</strong></div>
               </div>
             </div>
           `;
