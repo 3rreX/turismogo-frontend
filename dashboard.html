@@ -4495,6 +4495,45 @@ z-index: 9;
 .money-owner {
   color: #16a34a !important;
 }
+
+.calendar-detail-hidden {
+  display: none;
+  background: #f8fafc;
+  border: 1px solid #dbeafe;
+  border-radius: 18px;
+  padding: 18px;
+  margin: 10px 0 18px;
+}
+
+.calendar-detail-visible {
+  display: block;
+}
+
+.calendar-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.calendar-detail-grid div {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.calendar-detail-grid span {
+  display: block;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.calendar-detail-grid strong {
+  color: #0f172a;
+  font-size: 14px;
+}
   </style>
 </head>
 <body>

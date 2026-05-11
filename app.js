@@ -898,7 +898,7 @@ if (reservasPendientes.length === 0) {
     if (statConfirmadas) statConfirmadas.textContent = confirmadas;
     if (statIngresos) statIngresos.textContent = `$${ingresos.toLocaleString('es-CL')}`;
 
-    reservas.forEach((r) => {
+    reservasPendientes.forEach((r) => {
       const estado = r.estado || 'pendiente';
       const pagoEstado = r.pagoEstado || 'pendiente';
 
