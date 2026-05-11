@@ -851,21 +851,39 @@ async function cargarReservasPropietario() {
     cont.innerHTML = '';
 
     if (!Array.isArray(reservas) || reservas.length === 0) {
-      cont.innerHTML = `
-        <div class="empty-owner-state">
-          <h3>Aún no tienes reservas recibidas</h3>
-          <p>Cuando un cliente solicite o pague una reserva, aparecerá en esta sección.</p>
-        </div>
-      `;
-      return;
-    }
+  cont.innerHTML = `
+    <div class="empty-owner-state">
+      <h3>No tienes reservas recibidas</h3>
+      <p>Cuando un cliente solicite una reserva, aparecerá en esta sección.</p>
+    </div>
+  `;
+  return;
+}
+
+const reservasPendientes = reservas.filter(
+  r => (r.estado || '').toLowerCase() === 'pendiente'
+);
+
+if (reservasPendientes.length === 0) {
+  cont.innerHTML = `
+    <div class="empty-owner-state">
+      <h3>No tienes solicitudes pendientes</h3>
+      <p>Las reservas confirmadas se muestran en el calendario de ocupación.</p>
+    </div>
+  `;
+  return;
+}
 
     const pendientes = reservas.filter(r => r.estado === 'pendiente').length;
     const confirmadas = reservas.filter(r => r.estado === 'confirmada').length;
 
     let ingresos = 0;
 
-    reservas.forEach((r) => {
+    const reservasPendientes = reservas.filter(
+  r => (r.estado || '').toLowerCase() === 'pendiente'
+);
+
+    reservasPendientes.forEach((r) => {
       if (r.estado === 'confirmada') {
         ingresos +=
           Number(r.montoPagado) ||
@@ -1058,6 +1076,7 @@ async function cambiarEstadoReserva(reservaId, estado) {
     mostrarAlerta(data.message || 'Reserva actualizada');
 
     cargarReservasPropietario();
+    cargarCalendarioPropietario();
   } catch (error) {
     console.error('Error al cambiar estado de reserva:', error);
    mostrarAlerta('Error al actualizar reserva');
@@ -2293,14 +2312,14 @@ async function cargarCalendarioPropietario() {
     }
 
     const reservasActivas = Array.isArray(reservas)
-      ? reservas.filter(r => ['pendiente', 'confirmada'].includes((r.estado || '').toLowerCase()))
+      ? reservas.filter(r => ['confirmada'].includes((r.estado || '').toLowerCase()))
       : [];
 
     if (reservasActivas.length === 0) {
       cont.innerHTML = `
         <div class="calendar-empty">
-          <h3>No hay servicios ocupados actualmente</h3>
-          <p>Cuando existan reservas pendientes o confirmadas, aparecerán aquí.</p>
+          <h3>No hay reservas confirmadas actualmente</h3>
+          <p>Cuando confirmes una reserva, aparecerá aquí con sus detalles.</p>
         </div>
       `;
       return;
@@ -2318,7 +2337,7 @@ async function cargarCalendarioPropietario() {
           <span>Inicio</span>
           <span>Fin</span>
           <span>Reserva</span>
-          <span>Pago</span>
+          <span>Detalles</span>
         </div>
 
         ${reservasActivas.map((r) => {
@@ -2327,29 +2346,81 @@ async function cargarCalendarioPropietario() {
           const estado = r.estado || 'pendiente';
           const pago = r.pagoEstado || 'pendiente';
 
+          const monto =
+            Number(r.montoPagado) ||
+            Number(r.montoTotal) ||
+            Number(r.precio) ||
+            Number(r.servicioId?.precio) ||
+            0;
+
           return `
             <div class="calendar-row">
-              <span>
-                <strong>${servicio}</strong>
-              </span>
-
+              <span><strong>${servicio}</strong></span>
               <span>${cliente}</span>
-
               <span>${formatearFechaCalendario(r.fechaInicio)}</span>
-
               <span>${formatearFechaCalendario(r.fechaFin)}</span>
-
               <span>
                 <b class="status-badge status-${estado}">
                   ${estado}
                 </b>
               </span>
-
               <span>
-                <b class="payment-badge payment-${pago}">
-                  ${pago}
-                </b>
+                <button
+                  class="calendar-detail-btn"
+                  onclick="toggleDetalleCalendario('${r._id}')"
+                >
+                  Ver detalles
+                </button>
               </span>
+            </div>
+
+            <div id="detalle-calendario-${r._id}" class="calendar-detail-hidden">
+              <div class="calendar-detail-grid">
+                <div>
+                  <span>Cliente</span>
+                  <strong>${cliente}</strong>
+                </div>
+
+                <div>
+                  <span>Servicio</span>
+                  <strong>${servicio}</strong>
+                </div>
+
+                <div>
+                  <span>Estado reserva</span>
+                  <strong>${estado}</strong>
+                </div>
+
+                <div>
+                  <span>Estado pago</span>
+                  <strong>${pago}</strong>
+                </div>
+
+                <div>
+                  <span>Fecha inicio</span>
+                  <strong>${formatearFechaCalendario(r.fechaInicio)}</strong>
+                </div>
+
+                <div>
+                  <span>Fecha fin</span>
+                  <strong>${formatearFechaCalendario(r.fechaFin)}</strong>
+                </div>
+
+                <div>
+                  <span>Valor reserva</span>
+                  <strong>$${monto.toLocaleString('es-CL')}</strong>
+                </div>
+
+                <div>
+                  <span>Comisión TurismoGO</span>
+                  <strong>${r.comisionPorcentaje || 0}% ≈ $${Number(r.comisionTurismoGO || 0).toLocaleString('es-CL')}</strong>
+                </div>
+
+                <div>
+                  <span>Monto líquido propietario</span>
+                  <strong>$${Number(r.montoPropietario || 0).toLocaleString('es-CL')}</strong>
+                </div>
+              </div>
             </div>
           `;
         }).join('')}
@@ -2360,7 +2431,6 @@ async function cargarCalendarioPropietario() {
     console.error('Error calendario propietario:', error);
   }
 }
-
 function formatearFechaCalendario(fecha) {
   if (!fecha) return 'No disponible';
 
@@ -2383,6 +2453,15 @@ function toggleDetalleReserva(reservaId) {
 
   detalle.classList.toggle('reservation-details-visible');
 }
+
+function toggleDetalleCalendario(reservaId) {
+  const detalle = document.getElementById(`detalle-calendario-${reservaId}`);
+
+  if (!detalle) return;
+
+  detalle.classList.toggle('calendar-detail-visible');
+}
+
 async function enviarMensajeServicio() {
   try {
     if (!servicioActualId) {
