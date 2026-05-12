@@ -4674,16 +4674,16 @@ z-index: 9;
 }
 
 .notification-panel {
-  position: absolute;
-  top: 54px;
-  right: 0;
-  width: 340px;
+  position: fixed;
+  top: 86px;
+  right: 28px;
+  width: 360px;
   max-width: calc(100vw - 32px);
   background: #ffffff;
   border: 1px solid #dbeafe;
   border-radius: 22px;
-  box-shadow: 0 22px 55px rgba(15, 23, 42, 0.18);
-  z-index: 9999;
+  box-shadow: 0 22px 55px rgba(15, 23, 42, 0.22);
+  z-index: 99999;
   display: none;
   overflow: hidden;
 }
@@ -4711,9 +4711,10 @@ z-index: 9;
 }
 
 .notification-list {
-  max-height: 360px;
+  max-height: 420px;
   overflow-y: auto;
-  padding: 10px;
+  padding: 12px;
+  background: #ffffff;
 }
 
 .notification-item {
