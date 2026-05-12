@@ -543,7 +543,7 @@ function renderNotificaciones(notificaciones) {
   }
 
   lista.innerHTML = notificaciones.map(n => `
-    <div class="notification-item">
+    <div class="notification-item" onclick="${n.accion}">
       <div class="notification-icon">${n.icono}</div>
       <div class="notification-content">
         <strong>${n.titulo}</strong>
@@ -579,20 +579,22 @@ async function cargarNotificacionesPropietario() {
       );
 
       if (pendientes.length > 0) {
-        notificaciones.push({
-          icono: '📅',
-          titulo: `${pendientes.length} reserva${pendientes.length > 1 ? 's' : ''} pendiente${pendientes.length > 1 ? 's' : ''}`,
-          descripcion: 'Tienes solicitudes esperando confirmación o rechazo.'
-        });
-      }
+  notificaciones.push({
+    icono: '📅',
+    titulo: `${pendientes.length} reserva${pendientes.length > 1 ? 's' : ''} pendiente${pendientes.length > 1 ? 's' : ''}`,
+    descripcion: 'Tienes solicitudes esperando confirmación o rechazo.',
+    accion: 'mostrarTabDashboard("owner-reservas", document.querySelector(".owner-tabs .dashboard-tab-btn:nth-child(4)"))'
+  });
+}
 
       if (confirmadas.length > 0) {
-        notificaciones.push({
-          icono: '✅',
-          titulo: `${confirmadas.length} reserva${confirmadas.length > 1 ? 's' : ''} confirmada${confirmadas.length > 1 ? 's' : ''}`,
-          descripcion: 'Revísalas en el calendario de ocupación.'
-        });
-      }
+  notificaciones.push({
+    icono: '✅',
+    titulo: `${confirmadas.length} reserva${confirmadas.length > 1 ? 's' : ''} confirmada${confirmadas.length > 1 ? 's' : ''}`,
+    descripcion: 'Revísalas en el calendario de ocupación.',
+    accion: 'mostrarTabDashboard("owner-calendario", document.querySelector(".owner-tabs .dashboard-tab-btn:nth-child(5)"))'
+  });
+}
     }
 
     const resMensajes = await fetch(`${API_URL}/mensajes-propietario`, {
@@ -604,12 +606,13 @@ async function cargarNotificacionesPropietario() {
     const mensajes = await resMensajes.json();
 
     if (Array.isArray(mensajes) && mensajes.length > 0) {
-      notificaciones.push({
-        icono: '💬',
-        titulo: `${mensajes.length} mensaje${mensajes.length > 1 ? 's' : ''} recibido${mensajes.length > 1 ? 's' : ''}`,
-        descripcion: 'Tienes consultas de clientes interesados en tus servicios.'
-      });
-    }
+  notificaciones.push({
+    icono: '💬',
+    titulo: `${mensajes.length} mensaje${mensajes.length > 1 ? 's' : ''} recibido${mensajes.length > 1 ? 's' : ''}`,
+    descripcion: 'Tienes consultas de clientes interesados en tus servicios.',
+    accion: 'mostrarTabDashboard("owner-mensajes", document.querySelector(".owner-tabs .dashboard-tab-btn:nth-child(6)"))'
+  });
+}
 
     renderNotificaciones(notificaciones);
 
