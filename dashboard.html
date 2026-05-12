@@ -4765,6 +4765,49 @@ z-index: 9;
   color: #64748b;
   margin: 0;
 }
+/* Corrección definitiva dropdown notificaciones */
+.navbar {
+  overflow: visible !important;
+  position: relative;
+  z-index: 10000;
+}
+
+.navbar-actions {
+  position: relative !important;
+  overflow: visible !important;
+  z-index: 10001;
+}
+
+.notification-wrapper {
+  position: relative !important;
+  overflow: visible !important;
+  z-index: 10002;
+}
+
+.notification-panel {
+  position: absolute !important;
+  top: 58px !important;
+  right: 0 !important;
+  width: 360px !important;
+  max-width: calc(100vw - 32px) !important;
+  background: #ffffff !important;
+  border: 1px solid #dbeafe !important;
+  border-radius: 20px !important;
+  box-shadow: 0 22px 55px rgba(15, 23, 42, 0.24) !important;
+  z-index: 10003 !important;
+  overflow: hidden !important;
+}
+
+.notification-panel.active {
+  display: block !important;
+}
+
+.notification-list {
+  max-height: 320px !important;
+  overflow-y: auto !important;
+  padding: 12px !important;
+  background: #ffffff !important;
+}
   </style>
 </head>
 <body>
