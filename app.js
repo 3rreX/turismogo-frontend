@@ -543,7 +543,7 @@ function renderNotificaciones(notificaciones) {
   }
 
   lista.innerHTML = notificaciones.map(n => `
-    <div class="notification-item" onclick="${n.accion}">
+    <div class="notification-item" onclick="irANotificacion('${n.tab}', ${n.boton})">
       <div class="notification-icon">${n.icono}</div>
       <div class="notification-content">
         <strong>${n.titulo}</strong>
@@ -551,6 +551,19 @@ function renderNotificaciones(notificaciones) {
       </div>
     </div>
   `).join('');
+}
+
+function irANotificacion(tabId, numeroBoton) {
+  const boton = document.querySelector(`.owner-tabs .dashboard-tab-btn:nth-child(${numeroBoton})`);
+
+  if (boton) {
+    mostrarTabDashboard(tabId, boton);
+  }
+
+  const panel = document.getElementById('notification-panel');
+  if (panel) {
+    panel.classList.remove('active');
+  }
 }
 
 async function cargarNotificacionesPropietario() {
@@ -580,20 +593,22 @@ async function cargarNotificacionesPropietario() {
 
       if (pendientes.length > 0) {
   notificaciones.push({
-    icono: '📅',
-    titulo: `${pendientes.length} reserva${pendientes.length > 1 ? 's' : ''} pendiente${pendientes.length > 1 ? 's' : ''}`,
-    descripcion: 'Tienes solicitudes esperando confirmación o rechazo.',
-    accion: 'mostrarTabDashboard("owner-reservas", document.querySelector(".owner-tabs .dashboard-tab-btn:nth-child(4)"))'
-  });
+  icono: '📅',
+  titulo: `${pendientes.length} reserva${pendientes.length > 1 ? 's' : ''} pendiente${pendientes.length > 1 ? 's' : ''}`,
+  descripcion: 'Tienes solicitudes esperando confirmación o rechazo.',
+  tab: 'owner-reservas',
+  boton: 4
+});
 }
 
       if (confirmadas.length > 0) {
   notificaciones.push({
-    icono: '✅',
-    titulo: `${confirmadas.length} reserva${confirmadas.length > 1 ? 's' : ''} confirmada${confirmadas.length > 1 ? 's' : ''}`,
-    descripcion: 'Revísalas en el calendario de ocupación.',
-    accion: 'mostrarTabDashboard("owner-calendario", document.querySelector(".owner-tabs .dashboard-tab-btn:nth-child(5)"))'
-  });
+  icono: '✅',
+  titulo: `${confirmadas.length} reserva${confirmadas.length > 1 ? 's' : ''} confirmada${confirmadas.length > 1 ? 's' : ''}`,
+  descripcion: 'Revísalas en el calendario de ocupación.',
+  tab: 'owner-calendario',
+  boton: 5
+});
 }
     }
 
@@ -607,11 +622,12 @@ async function cargarNotificacionesPropietario() {
 
     if (Array.isArray(mensajes) && mensajes.length > 0) {
   notificaciones.push({
-    icono: '💬',
-    titulo: `${mensajes.length} mensaje${mensajes.length > 1 ? 's' : ''} recibido${mensajes.length > 1 ? 's' : ''}`,
-    descripcion: 'Tienes consultas de clientes interesados en tus servicios.',
-    accion: 'mostrarTabDashboard("owner-mensajes", document.querySelector(".owner-tabs .dashboard-tab-btn:nth-child(6)"))'
-  });
+  icono: '💬',
+  titulo: `${mensajes.length} mensaje${mensajes.length > 1 ? 's' : ''} recibido${mensajes.length > 1 ? 's' : ''}`,
+  descripcion: 'Tienes consultas de clientes interesados en tus servicios.',
+  tab: 'owner-mensajes',
+  boton: 6
+});
 }
 
     renderNotificaciones(notificaciones);
