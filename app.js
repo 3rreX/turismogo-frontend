@@ -500,7 +500,123 @@ async function crearServicio() {
    mostrarAlerta('Error al crear servicio');
   }
 }
+function toggleCentroNotificaciones() {
+  const panel = document.getElementById('notification-panel');
 
+  if (!panel) return;
+
+  panel.classList.toggle('active');
+}
+
+function cerrarCentroNotificacionesAlClickFuera() {
+  document.addEventListener('click', (e) => {
+    const wrapper = document.querySelector('.notification-wrapper');
+
+    if (!wrapper) return;
+
+    if (!wrapper.contains(e.target)) {
+      const panel = document.getElementById('notification-panel');
+      if (panel) panel.classList.remove('active');
+    }
+  });
+}
+
+function renderNotificaciones(notificaciones) {
+  const contador = document.getElementById('notification-count');
+  const lista = document.getElementById('notification-list');
+
+  if (!contador || !lista) return;
+
+  const total = notificaciones.length;
+
+  if (total > 0) {
+    contador.textContent = total;
+    contador.style.display = 'flex';
+  } else {
+    contador.textContent = '0';
+    contador.style.display = 'none';
+  }
+
+  if (total === 0) {
+    lista.innerHTML = '<p class="notification-empty">No tienes notificaciones pendientes.</p>';
+    return;
+  }
+
+  lista.innerHTML = notificaciones.map(n => `
+    <div class="notification-item">
+      <div class="notification-icon">${n.icono}</div>
+      <div class="notification-content">
+        <strong>${n.titulo}</strong>
+        <p>${n.descripcion}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function cargarNotificacionesPropietario() {
+  try {
+    const role = localStorage.getItem('role');
+    if (role !== 'propietario') return;
+
+    const token = localStorage.getItem('token');
+    const notificaciones = [];
+
+    const resReservas = await fetch(`${API_URL}/reservas-propietario`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const reservas = await resReservas.json();
+
+    if (Array.isArray(reservas)) {
+      const pendientes = reservas.filter(
+        r => (r.estado || '').toLowerCase() === 'pendiente'
+      );
+
+      const confirmadas = reservas.filter(
+        r => (r.estado || '').toLowerCase() === 'confirmada'
+      );
+
+      if (pendientes.length > 0) {
+        notificaciones.push({
+          icono: '📅',
+          titulo: `${pendientes.length} reserva${pendientes.length > 1 ? 's' : ''} pendiente${pendientes.length > 1 ? 's' : ''}`,
+          descripcion: 'Tienes solicitudes esperando confirmación o rechazo.'
+        });
+      }
+
+      if (confirmadas.length > 0) {
+        notificaciones.push({
+          icono: '✅',
+          titulo: `${confirmadas.length} reserva${confirmadas.length > 1 ? 's' : ''} confirmada${confirmadas.length > 1 ? 's' : ''}`,
+          descripcion: 'Revísalas en el calendario de ocupación.'
+        });
+      }
+    }
+
+    const resMensajes = await fetch(`${API_URL}/mensajes-propietario`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const mensajes = await resMensajes.json();
+
+    if (Array.isArray(mensajes) && mensajes.length > 0) {
+      notificaciones.push({
+        icono: '💬',
+        titulo: `${mensajes.length} mensaje${mensajes.length > 1 ? 's' : ''} recibido${mensajes.length > 1 ? 's' : ''}`,
+        descripcion: 'Tienes consultas de clientes interesados en tus servicios.'
+      });
+    }
+
+    renderNotificaciones(notificaciones);
+
+  } catch (error) {
+    console.error('Error cargando notificaciones:', error);
+  }
+}
 window.onload = () => {
   if (typeof despertarBackend === 'function') {
     despertarBackend();
@@ -528,6 +644,8 @@ window.onload = () => {
 
   mostrarPanelPropietario();
   mostrarPanelAdmin();
+  cerrarCentroNotificacionesAlClickFuera();
+  cargarNotificacionesPropietario();
 };
 
 document.getElementById('nuevo-imagen')?.addEventListener('change', function (e) {
@@ -1073,6 +1191,7 @@ async function cambiarEstadoReserva(reservaId, estado) {
 
     cargarReservasPropietario();
     cargarCalendarioPropietario();
+    cargarNotificacionesPropietario();
   } catch (error) {
     console.error('Error al cambiar estado de reserva:', error);
    mostrarAlerta('Error al actualizar reserva');
