@@ -2379,15 +2379,103 @@ async function actualizarEstadoReservaAdmin(idReserva, nuevoEstado) {
 }
 function renderReservasAdmin(reservas) {
   const cont = document.getElementById('admin-reservas');
+
   if (!cont) return;
 
-  if (reservas.length === 0) {
+  if (!Array.isArray(reservas) || reservas.length === 0) {
     cont.innerHTML = '<p>No se encontraron reservas.</p>';
     return;
   }
 
   cont.innerHTML = reservas.map((r) => {
-    // aquí pegas el return actual completo
+
+    const estado = r.estado || 'pendiente';
+
+    const servicio =
+      r.servicio ||
+      r.servicioId?.nombre ||
+      'Servicio no disponible';
+
+    const cliente =
+      r.nombreCliente ||
+      r.usuarioId?.username ||
+      'Cliente no disponible';
+
+    const email =
+      r.emailCliente ||
+      r.usuarioId?.email ||
+      'Correo no disponible';
+
+    const telefono =
+      r.telefonoCliente ||
+      'Teléfono no disponible';
+
+    const fechaInicio = r.fechaInicio
+      ? new Date(r.fechaInicio).toLocaleDateString('es-CL')
+      : 'No disponible';
+
+    const fechaFin = r.fechaFin
+      ? new Date(r.fechaFin).toLocaleDateString('es-CL')
+      : 'No disponible';
+
+    const precio =
+      Number(r.montoPagado) ||
+      Number(r.montoTotal) ||
+      Number(r.precio) ||
+      Number(r.servicioId?.precio) ||
+      0;
+
+    return `
+      <article class="admin-reservation-card">
+
+        <div class="admin-card-top">
+          <div>
+            <h3>${servicio}</h3>
+            <p>Reserva generada desde TurismoGO</p>
+          </div>
+
+          <span class="status-badge status-${estado}">
+            ${estado}
+          </span>
+        </div>
+
+        <div class="admin-user-info">
+          <p><b>Cliente:</b> ${cliente}</p>
+          <p><b>Correo:</b> ${email}</p>
+          <p><b>Teléfono:</b> ${telefono}</p>
+          <p><b>Fecha inicio:</b> ${fechaInicio}</p>
+          <p><b>Fecha fin:</b> ${fechaFin}</p>
+          <p><b>Personas:</b> ${r.personas || 1}</p>
+          <p><b>Monto:</b> $${precio.toLocaleString('es-CL')}</p>
+        </div>
+
+        <div class="admin-card-actions">
+
+          <button
+            onclick="actualizarEstadoReservaAdmin('${r._id}', 'confirmada')"
+            class="btn-admin-confirmar"
+          >
+            Confirmar
+          </button>
+
+          <button
+            onclick="actualizarEstadoReservaAdmin('${r._id}', 'rechazada')"
+            class="btn-admin-rechazar"
+          >
+            Rechazar
+          </button>
+
+          <button
+            onclick="actualizarEstadoReservaAdmin('${r._id}', 'cancelada')"
+            class="btn-admin-cancelar"
+          >
+            Cancelar
+          </button>
+
+        </div>
+
+      </article>
+    `;
   }).join('');
 }
 async function eliminarUsuarioAdmin(usuarioId, username) {
