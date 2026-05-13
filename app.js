@@ -211,6 +211,23 @@ async function cargarNotificacionesPropietario() {
     console.error('Error cargando notificaciones:', error);
   }
 }
+function mostrarPanelCliente() {
+  const role = localStorage.getItem('role');
+  const panel = document.getElementById('panel-cliente');
+
+  if (!panel) return;
+
+  if (role === 'usuario') {
+    panel.style.display = 'block';
+
+    if (typeof cargarReservasCliente === 'function') {
+      cargarReservasCliente();
+    }
+  } else {
+    panel.style.display = 'none';
+  }
+}
+
 window.onload = () => {
   if (typeof despertarBackend === 'function') {
     despertarBackend();
@@ -238,6 +255,7 @@ window.onload = () => {
 
   mostrarPanelPropietario();
   mostrarPanelAdmin();
+  mostrarPanelCliente();
   cerrarCentroNotificacionesAlClickFuera();
   cargarNotificacionesPropietario();
 };

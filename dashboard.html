@@ -280,6 +280,81 @@
 
 </section>
 
+<section id="panel-cliente" class="panel client-panel" style="display:none;">
+
+  <div class="client-mini-banner">
+    <div>
+      <span>Cuenta cliente</span>
+      <h2>Mis viajes y reservas</h2>
+      <p>Revisa tus reservas, estados de pago, fechas y servicios turísticos contratados en TurismoGO.</p>
+    </div>
+
+    <div class="client-mini-badge">
+      Reserva segura
+    </div>
+  </div>
+
+  <div class="dashboard-tabs client-tabs">
+    <button class="dashboard-tab-btn active" onclick="mostrarTabDashboard('client-resumen', this)">Resumen</button>
+    <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('client-reservas', this)">Mis reservas</button>
+  </div>
+
+  <div id="client-resumen" class="dashboard-tab-content active">
+    <div class="client-stats">
+
+      <div class="owner-stat-card">
+        <div class="stat-icon">📅</div>
+        <div class="stat-info">
+          <span>Total reservas</span>
+          <h3 id="client-stat-total">0</h3>
+          <small>Reservas realizadas en TurismoGO</small>
+        </div>
+      </div>
+
+      <div class="owner-stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-info">
+          <span>Confirmadas</span>
+          <h3 id="client-stat-confirmadas">0</h3>
+          <small>Reservas aprobadas</small>
+        </div>
+      </div>
+
+      <div class="owner-stat-card">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-info">
+          <span>Pendientes</span>
+          <h3 id="client-stat-pendientes">0</h3>
+          <small>Esperando confirmación</small>
+        </div>
+      </div>
+
+      <div class="owner-stat-card">
+        <div class="stat-icon">💳</div>
+        <div class="stat-info">
+          <span>Pagos activos</span>
+          <h3 id="client-stat-pagos">0</h3>
+          <small>Pagos registrados</small>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="client-reservas" class="dashboard-tab-content">
+    <div class="owner-section-header">
+      <div>
+        <span>Reservas</span>
+        <h3>Mis reservas</h3>
+      </div>
+      <p>Consulta el estado de tus solicitudes, fechas, pagos y servicios reservados.</p>
+    </div>
+
+    <div id="reservas-cliente" class="grid"></div>
+  </div>
+
+</section>
+
    <section id="panel-admin" class="panel admin-panel" style="display:none;">
 
   <div class="admin-mini-banner">
