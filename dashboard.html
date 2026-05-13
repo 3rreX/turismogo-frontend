@@ -4829,6 +4829,28 @@ z-index: 9;
 .notification-item {
   cursor: pointer;
 }
+
+.admin-export-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 18px 0 24px;
+}
+
+.admin-tabs {
+  margin-bottom: 30px;
+}
+
+@media (max-width: 760px) {
+  .admin-export-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .admin-export-actions button {
+    width: 100%;
+  }
+}
   </style>
 </head>
 <body>
@@ -5104,119 +5126,179 @@ z-index: 9;
 </section>
 
    <section id="panel-admin" class="panel admin-panel" style="display:none;">
- <div class="admin-mini-banner">
-  <div>
-    <span>Gestión interna</span>
-    <h2>Panel administrador</h2>
-    <p>Controla usuarios, servicios, reservas y actividad general de la plataforma.</p>
-  </div>
-  <div class="admin-mini-badge">
-    Administración segura
-  </div>
-</div>
 
-  <div id="admin-alertas"></div>
-      <div class="admin-stats">
-  <div class="stat-card">
-    <h4>Total usuarios</h4>
-    <p id="admin-stat-usuarios">0</p>
+  <div class="admin-mini-banner">
+    <div>
+      <span>Gestión interna</span>
+      <h2>Panel administrador</h2>
+      <p>Controla usuarios, servicios, reservas, pagos, actividad general y métricas comerciales de TurismoGO.</p>
+    </div>
+
+    <div class="admin-mini-badge">
+      Administración segura
+    </div>
   </div>
 
-  <div class="stat-card">
-    <h4>Propietarios</h4>
-    <p id="admin-stat-propietarios">0</p>
+  <div class="dashboard-tabs admin-tabs">
+    <button class="dashboard-tab-btn active" onclick="mostrarTabDashboard('admin-resumen-tab', this)">Resumen</button>
+    <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('admin-usuarios-tab', this)">Usuarios</button>
+    <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('admin-servicios-tab', this)">Servicios</button>
+    <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('admin-reservas-tab', this)">Reservas</button>
+    <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('admin-reportes-tab', this)">Reportes</button>
   </div>
 
-  <div class="stat-card">
-    <h4>Total reservas</h4>
-    <p id="admin-stat-reservas">0</p>
+  <div id="admin-resumen-tab" class="dashboard-tab-content active">
+
+    <div id="admin-alertas"></div>
+
+    <div class="admin-section-header">
+      <div>
+        <span>Resumen ejecutivo</span>
+        <h3>Indicadores generales</h3>
+      </div>
+      <p>Vista rápida del rendimiento general de usuarios, propietarios, reservas, pagos e ingresos.</p>
+    </div>
+
+    <div class="admin-stats">
+      <div class="stat-card">
+        <h4>Total usuarios</h4>
+        <p id="admin-stat-usuarios">0</p>
+      </div>
+
+      <div class="stat-card">
+        <h4>Propietarios</h4>
+        <p id="admin-stat-propietarios">0</p>
+      </div>
+
+      <div class="stat-card">
+        <h4>Total reservas</h4>
+        <p id="admin-stat-reservas">0</p>
+      </div>
+
+      <div class="stat-card">
+        <h4>Ingresos confirmados</h4>
+        <p id="admin-stat-ingresos">$0</p>
+      </div>
+
+      <div class="stat-card">
+        <h4>Ticket promedio</h4>
+        <p id="admin-stat-ticket">$0</p>
+      </div>
+
+      <div class="stat-card">
+        <h4>Reservas confirmadas</h4>
+        <p id="admin-stat-confirmadas">0</p>
+      </div>
+
+      <div class="stat-card">
+        <h4>Reservas pendientes</h4>
+        <p id="admin-stat-pendientes">0</p>
+      </div>
+
+      <div class="stat-card">
+        <h4>Pagos fallidos</h4>
+        <p id="admin-stat-pagos-fallidos">0</p>
+      </div>
+    </div>
+
   </div>
 
-  <div class="stat-card">
-    <h4>Ingresos confirmados</h4>
-    <p id="admin-stat-ingresos">$0</p>
+  <div id="admin-usuarios-tab" class="dashboard-tab-content">
+
+    <div class="admin-section-header">
+      <div>
+        <span>Usuarios</span>
+        <h3>Usuarios registrados</h3>
+      </div>
+      <p>Administra roles, planes, suscripciones y cuentas de la plataforma.</p>
+    </div>
+
+    <div id="admin-usuarios" class="grid"></div>
+
   </div>
 
-  <div class="stat-card">
-  <h4>Ticket promedio</h4>
-  <p id="admin-stat-ticket">$0</p>
-</div>
+  <div id="admin-servicios-tab" class="dashboard-tab-content">
 
-  <div class="stat-card">
-    <h4>Reservas confirmadas</h4>
-    <p id="admin-stat-confirmadas">0</p>
+    <div class="admin-section-header">
+      <div>
+        <span>Servicios</span>
+        <h3>Servicios publicados</h3>
+      </div>
+      <p>Revisa los servicios cargados por propietarios turísticos y controla su presencia dentro del marketplace.</p>
+    </div>
+
+    <div id="admin-servicios" class="grid"></div>
+
   </div>
 
-  <div class="stat-card">
-    <h4>Reservas pendientes</h4>
-    <p id="admin-stat-pendientes">0</p>
-  </div>
-  <div class="stat-card">
-  <h4>Pagos fallidos</h4>
-  <p id="admin-stat-pagos-fallidos">0</p>
-</div>
-</div>
+  <div id="admin-reservas-tab" class="dashboard-tab-content">
 
-      <div class="admin-section-header">
-  <div>
-    <span>Usuarios</span>
-    <h3>Usuarios registrados</h3>
-  </div>
-  <p>Administra roles, planes, suscripciones y cuentas de la plataforma.</p>
-</div>
-      <div id="admin-usuarios" class="grid"></div>
+    <div class="admin-section-header">
+      <div>
+        <span>Reservas</span>
+        <h3>Reservas del sistema</h3>
+      </div>
+      <p>Controla solicitudes, pagos, estados y seguimiento operativo de cada reserva.</p>
+    </div>
 
-      <div class="admin-section-header">
-  <div>
-    <span>Servicios</span>
-    <h3>Servicios publicados</h3>
-  </div>
-  <p>Revisa los servicios cargados por propietarios turísticos.</p>
-</div>
-      <div id="admin-servicios" class="grid"></div>
-      <div class="admin-filtros">
-  <input
-    type="text"
-    id="filtroReservaTexto"
-    placeholder="Buscar por cliente o servicio..."
-  />
+    <div class="admin-filtros">
+      <input
+        type="text"
+        id="filtroReservaTexto"
+        placeholder="Buscar por cliente o servicio..."
+      >
 
-  <select id="filtroReservaEstado">
-    <option value="">Todos los estados</option>
-    <option value="pendiente">Pendiente</option>
-    <option value="confirmada">Confirmada</option>
-    <option value="rechazada">Rechazada</option>
-    <option value="cancelada">Cancelada</option>
-  </select>
-</div>
-<button onclick="exportarReservasAdmin()" class="btn-secondary">
-  Exportar reservas
-</button>
-<button onclick="exportarReservasPDFAdmin()" class="btn-secondary">
-  Exportar PDF
-</button>
+      <select id="filtroReservaEstado">
+        <option value="">Todos los estados</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="confirmada">Confirmada</option>
+        <option value="rechazada">Rechazada</option>
+        <option value="cancelada">Cancelada</option>
+      </select>
+    </div>
 
-      <div class="admin-section-header">
-  <div>
-    <span>Reservas</span>
-    <h3>Reservas del sistema</h3>
+    <div class="admin-export-actions">
+      <button onclick="exportarReservasAdmin()" class="btn-secondary">
+        Exportar reservas
+      </button>
+
+      <button onclick="exportarReservasPDFAdmin()" class="btn-secondary">
+        Exportar PDF
+      </button>
+    </div>
+
+    <div id="admin-reservas" class="grid"></div>
+
   </div>
-  <p>Controla solicitudes, pagos, estados y seguimiento operativo.</p>
-</div>
-      <div id="admin-reservas-recientes" class="panel" style="margin-bottom: 20px;">
-  <h3>Últimas reservas recientes</h3>
-  <div id="tabla-reservas-recientes"></div>
-</div>
-<div id="admin-top-servicios" class="panel" style="margin-bottom: 20px;">
-  <h3>Top servicios más reservados</h3>
-  <div id="lista-top-servicios"></div>
-</div>
-<div class="panel" style="margin-bottom: 20px;">
-  <h3>Ingresos mensuales</h3>
-  <canvas id="graficoIngresosAdmin" height="120"></canvas>
-</div>
-      <div id="admin-reservas" class="grid"></div>
-    </section>
+
+  <div id="admin-reportes-tab" class="dashboard-tab-content">
+
+    <div class="admin-section-header">
+      <div>
+        <span>Reportes</span>
+        <h3>Actividad y rendimiento</h3>
+      </div>
+      <p>Consulta últimas reservas, servicios más reservados e ingresos mensuales de la plataforma.</p>
+    </div>
+
+    <div id="admin-reservas-recientes" class="panel" style="margin-bottom: 20px;">
+      <h3>Últimas reservas recientes</h3>
+      <div id="tabla-reservas-recientes"></div>
+    </div>
+
+    <div id="admin-top-servicios" class="panel" style="margin-bottom: 20px;">
+      <h3>Top servicios más reservados</h3>
+      <div id="lista-top-servicios"></div>
+    </div>
+
+    <div class="panel" style="margin-bottom: 20px;">
+      <h3>Ingresos mensuales</h3>
+      <canvas id="graficoIngresosAdmin" height="120"></canvas>
+    </div>
+
+  </div>
+
+</section>
 
   </main>
   <a id="btn-publicar-flotante" class="floating-owner-cta" href="#panel-propietario">
