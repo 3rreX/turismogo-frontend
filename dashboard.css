@@ -4915,9 +4915,32 @@ z-index: 9;
 
 .client-stats {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
   gap: 18px;
   margin: 24px 0 30px;
+}
+
+.client-stats .owner-stat-card {
+  min-height: 150px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-radius: 24px;
+}
+
+.client-stats .stat-icon {
+  margin-bottom: 16px;
+}
+
+.client-stats .stat-info h3 {
+  font-size: 34px;
+}
+
+.client-stats .stat-info span,
+.client-stats .stat-info small {
+  text-align: left;
 }
 
 .client-reservation-card {
@@ -5013,6 +5036,98 @@ z-index: 9;
 
   .client-mini-badge {
     white-space: normal;
+  }
+}
+
+/* =====================================================
+   TURISMOGO - CLIENT DASHBOARD PREMIUM V2
+===================================================== */
+
+.client-panel {
+  max-width: 1180px;
+  margin: 0 auto 34px;
+}
+
+.client-mini-banner {
+  background:
+    radial-gradient(circle at top right, rgba(255,255,255,0.16), transparent 34%),
+    linear-gradient(135deg, #061b3a 0%, #075f8f 58%, #0fbbc3 100%);
+  min-height: 190px;
+  align-items: flex-end;
+}
+
+.client-mini-banner h2 {
+  font-size: clamp(30px, 4vw, 44px);
+  letter-spacing: -1px;
+}
+
+.client-mini-banner p {
+  max-width: 760px;
+  font-size: 16px;
+}
+
+.client-mini-badge {
+  background: rgba(255,255,255,0.18);
+  color: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.20);
+}
+
+.client-tabs {
+  position: sticky;
+  top: 88px;
+  z-index: 8;
+}
+
+.client-reservation-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.client-reservation-card::before {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: linear-gradient(180deg, #0b6fa4, #0fbbc3);
+}
+
+.client-reservation-card .cancel-btn {
+  margin: 0;
+}
+
+#reservas-cliente {
+  align-items: stretch;
+}
+
+@media (max-width: 1100px) {
+  .client-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .client-panel {
+    margin: 0 0 24px;
+  }
+
+  .client-mini-banner {
+    min-height: auto;
+  }
+
+  .client-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .client-tabs {
+    top: 72px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .client-tabs .dashboard-tab-btn {
+    white-space: nowrap;
   }
 }
   
