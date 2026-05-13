@@ -131,10 +131,12 @@
   }
 
   .featured-layout .login-card {
-    margin-top: 0;
-    position: sticky;
-    top: 90px;
-  }
+  margin-top: 0;
+  position: sticky;
+  top: 86px;
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+}
 
   .public-services-grid {
   display: grid;
@@ -1568,4 +1570,16 @@
   font-size: 13px;
 }
 
+.premium-access-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.premium-access-card::-webkit-scrollbar-thumb {
+  background: rgba(8, 37, 111, 0.22);
+  border-radius: 999px;
+}
+
+.premium-access-card::-webkit-scrollbar-track {
+  background: transparent;
+}
 
