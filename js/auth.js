@@ -176,9 +176,15 @@ async function registrarCliente() {
       return;
     }
 
-    mostrarAlerta('Cuenta creada correctamente. Ya puedes iniciar sesión.');
+    mostrarAlerta('Cuenta creada correctamente. Ahora puedes iniciar sesión con tu nombre de usuario.');
 
-    mostrarRegistroCliente();
+mostrarRegistroCliente();
+
+const userInput = document.getElementById('user');
+const passInput = document.getElementById('pass');
+
+if (userInput) userInput.value = username;
+if (passInput) passInput.value = '';
 
   } catch (error) {
     console.error('Error registrando cliente:', error);
