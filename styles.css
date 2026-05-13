@@ -1326,5 +1326,156 @@
   margin-bottom: 12px;
 }
 
+/* =====================================================
+   TURISMOGO - ACCESS PREMIUM
+===================================================== */
+
+.premium-access-card {
+  position: sticky;
+  top: 92px;
+  overflow: hidden;
+}
+
+.access-header {
+  margin-bottom: 24px;
+}
+
+.access-kicker {
+  display: inline-block;
+  background: rgba(255, 98, 54, 0.12);
+  color: #ff6236;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.access-header h2 {
+  margin: 0 0 14px;
+  font-size: 38px;
+  line-height: 1.05;
+  letter-spacing: -1px;
+  color: #08256f;
+}
+
+.access-header p {
+  color: #4966a3;
+  line-height: 1.6;
+}
+
+.access-role-grid {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 26px;
+}
+
+.access-role-card {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid #dbe4ff;
+  background: #ffffff;
+}
+
+.active-role {
+  border: 1px solid #ff6236;
+  background: rgba(255,98,54,0.04);
+}
+
+.access-role-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: #08256f;
+  color: white;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.access-role-card h3 {
+  margin: 0 0 6px;
+  color: #08256f;
+  font-size: 16px;
+}
+
+.access-role-card p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.login-divider {
+  position: relative;
+  text-align: center;
+  margin: 24px 0;
+}
+
+.login-divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #dbe4ff;
+}
+
+.login-divider span {
+  position: relative;
+  background: #f7f9ff;
+  padding: 0 14px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.access-login-btn {
+  margin-top: 6px;
+}
+
+.access-actions {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.owner-access-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #08256f, #0b6fa4);
+  color: white;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.owner-access-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(8,37,111,0.18);
+}
+
+.access-security {
+  margin-top: 18px;
+  text-align: center;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+@media (max-width: 760px) {
+  .access-header h2 {
+    font-size: 32px;
+  }
+}
 
 

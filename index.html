@@ -69,6 +69,69 @@
     </a>
   </div>
 </section>
+<div id="registro-cliente" class="modal-overlay">
+
+  <div class="modal-card">
+
+    <button
+      class="modal-close"
+      onclick="mostrarRegistroCliente()"
+    >
+      ×
+    </button>
+
+    <h2>Crear cuenta cliente</h2>
+
+    <p>
+      Regístrate para reservar alojamientos, tours y experiencias en TurismoGO.
+    </p>
+
+    <input id="cliente-nombre" placeholder="Nombre completo">
+
+    <input
+      id="cliente-email"
+      type="email"
+      placeholder="Correo electrónico"
+    >
+
+    <input
+      id="cliente-usuario"
+      placeholder="Nombre de usuario"
+    >
+
+    <input
+      id="cliente-password"
+      type="password"
+      placeholder="Contraseña"
+    >
+
+    <div class="legal-checkbox-container">
+      <label class="legal-checkbox">
+        <input type="checkbox" id="aceptaLegalCliente">
+
+        <span>
+          Acepto los
+          <a href="/terminos.html" target="_blank">
+            Términos y Condiciones
+          </a>
+          y la
+          <a href="/privacidad.html" target="_blank">
+            Política de Privacidad
+          </a>.
+        </span>
+      </label>
+    </div>
+
+    <button
+      class="primary-btn"
+      onclick="registrarCliente()"
+    >
+      Crear cuenta
+    </button>
+
+  </div>
+
+</div>
     <div id="registro-propietario" class="modal-overlay">
     <div class="modal-card">
     <button class="modal-close" onclick="mostrarRegistroPropietario()">×</button>
@@ -138,20 +201,76 @@
 </div>
   </div>
 
-  <aside class="login-card" id="login">
-    <h2>Iniciar sesión</h2>
-    <p>Accede para administrar tus servicios y publicaciones.</p>
+  <aside class="login-card premium-access-card" id="login">
 
-    <input id="user" placeholder="Usuario">
-    <input id="pass" type="password" placeholder="Contraseña">
+  <div class="access-header">
+    <span class="access-kicker">Acceso TurismoGO</span>
+    <h2>Explora, reserva y administra</h2>
 
-    <button class="primary-btn" onclick="login()">Ingresar</button>
-    <button class="secondary-register-btn" onclick="mostrarRegistroPropietario()">
-  Acceso propietarios
-</button>
+    <p>
+      Ingresa como cliente para gestionar tus reservas o como propietario
+      para publicar servicios turísticos en la Patagonia.
+    </p>
+  </div>
 
-    <p id="error"></p>
-  </aside>
+  <div class="access-role-grid">
+
+    <div class="access-role-card active-role">
+      <div class="access-role-icon">🧭</div>
+
+      <div>
+        <h3>Cliente / Turista</h3>
+        <p>Reserva alojamientos, tours y experiencias.</p>
+      </div>
+    </div>
+
+    <div class="access-role-card">
+      <div class="access-role-icon">🏨</div>
+
+      <div>
+        <h3>Propietario</h3>
+        <p>Publica y administra servicios turísticos.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="login-divider">
+    <span>Iniciar sesión</span>
+  </div>
+
+  <input id="user" placeholder="Usuario o correo">
+  <input id="pass" type="password" placeholder="Contraseña">
+
+  <button class="primary-btn access-login-btn" onclick="login()">
+    Ingresar a TurismoGO
+  </button>
+
+  <div class="access-actions">
+
+    <button
+      class="secondary-register-btn"
+      onclick="mostrarRegistroCliente()"
+    >
+      Crear cuenta cliente
+    </button>
+
+    <button
+      class="owner-access-btn"
+      onclick="mostrarRegistroPropietario()"
+    >
+      Registrar negocio turístico
+    </button>
+
+  </div>
+
+  <div class="access-security">
+    🔒 Plataforma protegida · Pagos seguros · Reservas verificadas
+  </div>
+
+  <p id="error"></p>
+
+</aside>
 </section>
 
     <section class="features">

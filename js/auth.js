@@ -120,3 +120,68 @@ function logout() {
   localStorage.removeItem('role');
   window.location.href = 'index.html';
 }
+function mostrarRegistroCliente() {
+  const modal = document.getElementById('registro-cliente');
+
+  if (!modal) return;
+
+  if (
+    modal.style.display === 'none' ||
+    modal.style.display === ''
+  ) {
+    modal.style.display = 'flex';
+  } else {
+    modal.style.display = 'none';
+  }
+}
+
+async function registrarCliente() {
+  try {
+
+    const nombre = document.getElementById('cliente-nombre')?.value.trim();
+    const email = document.getElementById('cliente-email')?.value.trim();
+    const username = document.getElementById('cliente-usuario')?.value.trim();
+    const password = document.getElementById('cliente-password')?.value.trim();
+
+    const aceptaLegal =
+      document.getElementById('aceptaLegalCliente')?.checked;
+
+    if (!nombre || !email || !username || !password) {
+      mostrarAlerta('Debes completar todos los campos.');
+      return;
+    }
+
+    if (!aceptaLegal) {
+      mostrarAlerta('Debes aceptar los términos y condiciones.');
+      return;
+    }
+
+    const res = await fetch(`${API_URL}/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username,
+        password,
+        email,
+        nombreCompleto: nombre
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      mostrarAlerta(data.error || 'No fue posible crear la cuenta.');
+      return;
+    }
+
+    mostrarAlerta('Cuenta creada correctamente. Ya puedes iniciar sesión.');
+
+    mostrarRegistroCliente();
+
+  } catch (error) {
+    console.error('Error registrando cliente:', error);
+    mostrarAlerta('Ocurrió un error al registrar la cuenta.');
+  }
+}
