@@ -4880,220 +4880,226 @@ z-index: 9;
   <main class="container">
 
 
-    <section id="panel-propietario" class="panel" style="display:none;">
-      
-      <div class="owner-mini-banner owner-operational-header">
-  <div class="owner-header-text">
-    <span>Panel operativo</span>
-    <h2 id="titulo-bienvenida-owner">Hola, propietario</h2>
-    <p>Gestiona tus publicaciones, reservas, calendario, mensajes e ingresos desde un solo lugar.</p>
-  </div>
+ <section id="panel-propietario" class="panel" style="display:none;">
 
-  <div class="owner-header-actions">
-    <div class="owner-header-chip">
-      <strong>Modelo comisión</strong>
-      <span>Publica gratis y paga solo por reserva confirmada</span>
+  <div class="owner-mini-banner owner-operational-header">
+    <div class="owner-header-text">
+      <span>Panel operativo</span>
+      <h2 id="titulo-bienvenida-owner">Hola, propietario</h2>
+      <p>Gestiona tus publicaciones, reservas, calendario, mensajes e ingresos desde un solo lugar.</p>
     </div>
 
-    <button
-      class="owner-header-btn"
-      type="button"
-      onclick="mostrarTabDashboard('owner-publicar', document.querySelector('.owner-tabs .dashboard-tab-btn:nth-child(2)'))"
-    >
-      + Nuevo servicio
-    </button>
-  </div>
-</div>
-
-<div class="dashboard-tabs owner-tabs">
-  <button class="dashboard-tab-btn active" onclick="mostrarTabDashboard('owner-resumen', this)">Resumen</button>
-  <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('owner-publicar', this)">Publicar servicio</button>
-  <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('owner-servicios', this)">Mis servicios</button>
-  <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('owner-reservas', this)">Reservas</button>
-  <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('owner-calendario', this)">Calendario</button>
-  <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('owner-mensajes', this)">Mensajes</button>
-</div>
-
-<div id="owner-resumen" class="dashboard-tab-content active">
-  <div class="owner-stats" id="owner-stats">
-
-    <div class="owner-stat-card">
-      <div class="stat-icon">🧭</div>
-      <div class="stat-info">
-        <span>Servicios publicados</span>
-        <h3 id="stat-servicios">0</h3>
-        <small>Publicaciones visibles actualmente</small>
+    <div class="owner-header-actions">
+      <div class="owner-header-chip">
+        <strong>Modelo comisión</strong>
+        <span>Publica gratis y paga solo por reserva confirmada</span>
       </div>
-    </div>
 
-    <div class="owner-stat-card">
-      <div class="stat-icon">📅</div>
-      <div class="stat-info">
-        <span>Reservas pendientes</span>
-        <h3 id="stat-pendientes">0</h3>
-        <small>Esperando confirmación</small>
-      </div>
-    </div>
-
-    <div class="owner-stat-card">
-      <div class="stat-icon">✅</div>
-      <div class="stat-info">
-        <span>Reservas confirmadas</span>
-        <h3 id="stat-confirmadas">0</h3>
-        <small>Operaciones exitosas</small>
-      </div>
-    </div>
-
-    <div class="owner-stat-card">
-      <div class="stat-icon">💰</div>
-      <div class="stat-info">
-        <span>Ingresos estimados</span>
-        <h3 id="stat-ingresos">$0</h3>
-        <small>Estimación mensual</small>
-      </div>
-    </div>
-
-  </div>
-</div>
-<div class="subscription-plans">
-  <div class="owner-section-header">
-    <div>
-      <span>Comisiones y visibilidad</span>
-      <h3>Planes de comisión por reserva</h3>
-    </div>
-    <p>Publica gratis y paga solo una comisión cuando recibas reservas confirmadas.</p>
-  </div>
-
-  <div class="plans-grid">
-
-    <div class="plan-card">
-      <h4>Básico</h4>
-      <p class="plan-price">10% comisión</p>
-      <p>Ideal para comenzar a publicar servicios turísticos.</p>
-<ul>
-  <li>Hasta 3 servicios publicados</li>
-  <li>Gestión básica de reservas</li>
-  <li>Visibilidad estándar</li>
-</ul>
-      <button onclick="simularPagoPlan('basico')">
-        Elegir Básico
+      <button
+        class="owner-header-btn"
+        type="button"
+        onclick="mostrarTabDashboard('owner-publicar', document.querySelector('.owner-tabs .dashboard-tab-btn:nth-child(2)'))"
+      >
+        + Nuevo servicio
       </button>
     </div>
-
-    <div class="plan-card featured-plan">
-      <h4>Pro</h4>
-      <p class="plan-price">8% comisión</p>
-      <p>Recomendado para negocios turísticos activos.</p>
-<ul>
-  <li>Hasta 10 servicios publicados</li>
-  <li>Mayor visibilidad en resultados</li>
-  <li>Estadísticas básicas</li>
-</ul>
-      <button onclick="simularPagoPlan('pro')">
-        Elegir Pro
-      </button>
-    </div>
-
-    <div class="plan-card">
-      <h4>Premium</h4>
-      <p class="plan-price">6% comisión</p>
-      <p>Para operadores turísticos que buscan máxima exposición.</p>
-<ul>
-  <li>Servicios ilimitados</li>
-  <li>Destacado en portada</li>
-  <li>Soporte preferente</li>
-</ul>
-      <button onclick="simularPagoPlan('premium')">
-        Elegir Premium
-      </button>
-    </div>
-
   </div>
-</div>
-<div id="owner-publicar" class="dashboard-tab-content"></div>
+
+  <div class="dashboard-tabs owner-tabs">
+    <button class="dashboard-tab-btn active" onclick="mostrarTabDashboard('owner-resumen', this)">Resumen</button>
+    <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('owner-publicar', this)">Publicar servicio</button>
+    <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('owner-servicios', this)">Mis servicios</button>
+    <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('owner-reservas', this)">Reservas</button>
+    <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('owner-calendario', this)">Calendario</button>
+    <button class="dashboard-tab-btn" onclick="mostrarTabDashboard('owner-mensajes', this)">Mensajes</button>
+  </div>
+
+  <div id="owner-resumen" class="dashboard-tab-content active">
+    <div class="owner-stats" id="owner-stats">
+
+      <div class="owner-stat-card">
+        <div class="stat-icon">🧭</div>
+        <div class="stat-info">
+          <span>Servicios publicados</span>
+          <h3 id="stat-servicios">0</h3>
+          <small>Publicaciones visibles actualmente</small>
+        </div>
+      </div>
+
+      <div class="owner-stat-card">
+        <div class="stat-icon">📅</div>
+        <div class="stat-info">
+          <span>Reservas pendientes</span>
+          <h3 id="stat-pendientes">0</h3>
+          <small>Esperando confirmación</small>
+        </div>
+      </div>
+
+      <div class="owner-stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-info">
+          <span>Reservas confirmadas</span>
+          <h3 id="stat-confirmadas">0</h3>
+          <small>Operaciones exitosas</small>
+        </div>
+      </div>
+
+      <div class="owner-stat-card">
+        <div class="stat-icon">💰</div>
+        <div class="stat-info">
+          <span>Ingresos estimados</span>
+          <h3 id="stat-ingresos">$0</h3>
+          <small>Estimación mensual</small>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="subscription-plans">
       <div class="owner-section-header">
-  <div>
-    <span>Publicación</span>
-    <h3>Publicar nuevo servicio</h3>
-  </div>
-  <p>Carga un servicio atractivo con nombre claro, descripción comercial, precio e imágenes de calidad.</p>
-</div>
-
-<div class="form-card owner-form-card">
-  <div class="form-grid">
-    <div>
-      <label>Nombre del servicio</label>
-      <input id="nuevo-nombre" placeholder="Ej: Tour full day Torres del Paine">
-    </div>
-
-    <div>
-      <label>Precio</label>
-      <input id="nuevo-precio" type="number" placeholder="Ej: 65000">
-    </div>
-
-    <div class="form-full">
-      <label>Descripción</label>
-      <input id="nuevo-descripcion" placeholder="Describe la experiencia, duración, beneficios e información relevante">
-    </div>
-
-    <div class="form-full">
-      <label>Imágenes del servicio</label>
-      <input id="nuevo-imagen" type="file" accept="image/*" multiple>
-      <small>Recomendado: imágenes horizontales, nítidas y bien iluminadas.</small>
-    </div>
-  </div>
-
-  <img id="preview-imagen" style="display:none; width:180px; border-radius:14px; margin:14px 0;">
-
-  <button class="owner-primary-btn" onclick="crearServicio()">Publicar servicio</button>
-</div>
-</div>
+        <div>
+          <span>Comisiones y visibilidad</span>
+          <h3>Planes de comisión por reserva</h3>
+        </div>
+        <p>Publica gratis y paga solo una comisión cuando recibas reservas confirmadas.</p>
       </div>
-      <div id="owner-servicios" class="dashboard-tab-content"></div>
 
-      <div class="owner-section-header">
-  <div>
-    <span>Marketplace</span>
-    <h3>Mis servicios publicados</h3>
-  </div>
-  <p>Visualiza cómo se muestran tus servicios y administra su contenido.</p>
-</div>
-      <div id="mis-servicios" class="grid"></div>
+      <div class="plans-grid">
+
+        <div class="plan-card">
+          <h4>Básico</h4>
+          <p class="plan-price">10% comisión</p>
+          <p>Ideal para comenzar a publicar servicios turísticos.</p>
+          <ul>
+            <li>Hasta 3 servicios publicados</li>
+            <li>Gestión básica de reservas</li>
+            <li>Visibilidad estándar</li>
+          </ul>
+          <button onclick="simularPagoPlan('basico')">
+            Elegir Básico
+          </button>
+        </div>
+
+        <div class="plan-card featured-plan">
+          <h4>Pro</h4>
+          <p class="plan-price">8% comisión</p>
+          <p>Recomendado para negocios turísticos activos.</p>
+          <ul>
+            <li>Hasta 10 servicios publicados</li>
+            <li>Mayor visibilidad en resultados</li>
+            <li>Estadísticas básicas</li>
+          </ul>
+          <button onclick="simularPagoPlan('pro')">
+            Elegir Pro
+          </button>
+        </div>
+
+        <div class="plan-card">
+          <h4>Premium</h4>
+          <p class="plan-price">6% comisión</p>
+          <p>Para operadores turísticos que buscan máxima exposición.</p>
+          <ul>
+            <li>Servicios ilimitados</li>
+            <li>Destacado en portada</li>
+            <li>Soporte preferente</li>
+          </ul>
+          <button onclick="simularPagoPlan('premium')">
+            Elegir Premium
+          </button>
+        </div>
+
       </div>
-      <div id="owner-calendario" class="dashboard-tab-content"></div>
-
-     <div class="owner-section-header">
-  <div>
-    <span>Disponibilidad</span>
-    <h3>Calendario de ocupación</h3>
+    </div>
   </div>
-  <p>Visualiza qué servicios están ocupados, pendientes o confirmados según sus fechas de reserva.</p>
-</div>
 
-<div id="calendario-propietario" class="owner-calendar"></div>
-</div>
-<div id="owner-reservas" class="dashboard-tab-content"></div>
-<div class="owner-section-header">
-  <div>
-    <span>Operación</span>
-    <h3>Reservas recibidas</h3>
-  </div>
-  <p>Revisa solicitudes, clientes, fechas y estado de cada reserva.</p>
-</div>
-<div id="reservas-propietario" class="grid"></div>
-</div>
-<div id="owner-mensajes" class="dashboard-tab-content"></div>
-<div class="owner-section-header">
-  <div>
-    <span>Mensajería</span>
-    <h3>Mensajes recibidos</h3>
-  </div>
-  <p>Consultas enviadas por clientes interesados en tus servicios.</p>
-</div>
+  <div id="owner-publicar" class="dashboard-tab-content">
+    <div class="owner-section-header">
+      <div>
+        <span>Publicación</span>
+        <h3>Publicar nuevo servicio</h3>
+      </div>
+      <p>Carga un servicio atractivo con nombre claro, descripción comercial, precio e imágenes de calidad.</p>
+    </div>
 
-<div id="mensajes-propietario" class="grid"></div>
-</div>
-    </section>
+    <div class="form-card owner-form-card">
+      <div class="form-grid">
+        <div>
+          <label>Nombre del servicio</label>
+          <input id="nuevo-nombre" placeholder="Ej: Tour full day Torres del Paine">
+        </div>
+
+        <div>
+          <label>Precio</label>
+          <input id="nuevo-precio" type="number" placeholder="Ej: 65000">
+        </div>
+
+        <div class="form-full">
+          <label>Descripción</label>
+          <input id="nuevo-descripcion" placeholder="Describe la experiencia, duración, beneficios e información relevante">
+        </div>
+
+        <div class="form-full">
+          <label>Imágenes del servicio</label>
+          <input id="nuevo-imagen" type="file" accept="image/*" multiple>
+          <small>Recomendado: imágenes horizontales, nítidas y bien iluminadas.</small>
+        </div>
+      </div>
+
+      <img id="preview-imagen" style="display:none; width:180px; border-radius:14px; margin:14px 0;">
+
+      <button class="owner-primary-btn" onclick="crearServicio()">Publicar servicio</button>
+    </div>
+  </div>
+
+  <div id="owner-servicios" class="dashboard-tab-content">
+    <div class="owner-section-header">
+      <div>
+        <span>Marketplace</span>
+        <h3>Mis servicios publicados</h3>
+      </div>
+      <p>Visualiza cómo se muestran tus servicios y administra su contenido.</p>
+    </div>
+
+    <div id="mis-servicios" class="grid"></div>
+  </div>
+
+  <div id="owner-reservas" class="dashboard-tab-content">
+    <div class="owner-section-header">
+      <div>
+        <span>Operación</span>
+        <h3>Reservas recibidas</h3>
+      </div>
+      <p>Revisa solicitudes, clientes, fechas y estado de cada reserva.</p>
+    </div>
+
+    <div id="reservas-propietario" class="grid"></div>
+  </div>
+
+  <div id="owner-calendario" class="dashboard-tab-content">
+    <div class="owner-section-header">
+      <div>
+        <span>Disponibilidad</span>
+        <h3>Calendario de ocupación</h3>
+      </div>
+      <p>Visualiza qué servicios están ocupados, pendientes o confirmados según sus fechas de reserva.</p>
+    </div>
+
+    <div id="calendario-propietario" class="owner-calendar"></div>
+  </div>
+
+  <div id="owner-mensajes" class="dashboard-tab-content">
+    <div class="owner-section-header">
+      <div>
+        <span>Mensajería</span>
+        <h3>Mensajes recibidos</h3>
+      </div>
+      <p>Consultas enviadas por clientes interesados en tus servicios.</p>
+    </div>
+
+    <div id="mensajes-propietario" class="grid"></div>
+  </div>
+
+</section>
 
    <section id="panel-admin" class="panel admin-panel" style="display:none;">
  <div class="admin-mini-banner">
