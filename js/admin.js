@@ -166,7 +166,18 @@ async function cargarReservasAdmin() {
       return;
     }
 
-    const reservas = Array.isArray(data) ? data : [];
+    const reservas = Array.isArray(data.reservas)
+  ? data.reservas
+  : Array.isArray(data)
+    ? data
+    : [];
+
+const pagination = data.pagination || {
+  total: reservas.length,
+  page: 1,
+  limit: reservas.length,
+  pages: 1
+};
     const filtroTexto = document.getElementById('filtroReservaTexto');
 const filtroEstado = document.getElementById('filtroReservaEstado');
 
@@ -202,6 +213,16 @@ const aplicarFiltros = () => {
   });
 
   renderReservasAdmin(reservasFiltradas);
+  const resumenPaginacion = document.getElementById('admin-reservas-pagination');
+
+if (resumenPaginacion) {
+  resumenPaginacion.innerHTML = `
+    <div class="admin-pagination-summary">
+      Mostrando ${reservasFiltradas.length} de ${pagination.total} reservas
+      · Página ${pagination.page} de ${pagination.pages}
+    </div>
+  `;
+}
 };
 
 if (filtroTexto) {
@@ -215,8 +236,8 @@ if (filtroEstado) {
 
 if (alertasAdmin) {
   const pendientesRevision = reservas.filter(
-    r => (r.estado || '').toLowerCase() === 'pendiente'
-  ).length;
+  r => ['pendiente', 'pendiente_pago', 'reembolso_pendiente'].includes((r.estado || '').toLowerCase())
+).length;
 
   if (pendientesRevision > 0) {
     alertasAdmin.innerHTML = `
@@ -235,9 +256,9 @@ if (alertasAdmin) {
     const tablaRecientes = document.getElementById('tabla-reservas-recientes');
 
 if (tablaRecientes) {
-  const recientes = [...reservas]
-    .reverse()
-    .slice(0, 5);
+ const recientes = [...reservas]
+  .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+  .slice(0, 5);
 
   tablaRecientes.innerHTML = recientes.map(r => {
     const cliente =
