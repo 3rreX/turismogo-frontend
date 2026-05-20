@@ -679,6 +679,10 @@ function renderReservasAdmin(reservas) {
       'reembolsada'
     ].includes(estado);
 
+    const mostrarReembolsar =
+  estado === 'reembolso_pendiente' &&
+  localStorage.getItem('role') === 'admin';
+
     const alertaReembolso = estado === 'reembolso_pendiente'
       ? `
         <div class="admin-reservation-alert">
@@ -761,6 +765,19 @@ function renderReservasAdmin(reservas) {
               `
               : ''
           }
+
+          ${
+  mostrarReembolsar
+    ? `
+      <button
+        onclick="actualizarEstadoReservaAdmin('${r._id}', 'reembolsada')"
+        class="btn-admin-reembolsar"
+      >
+        Marcar reembolsada
+      </button>
+    `
+    : ''
+}
 
         </div>
 
