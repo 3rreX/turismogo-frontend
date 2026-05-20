@@ -7,6 +7,9 @@ let adminReservasPagination = {
   limit: 50,
   pages: 1
 };
+let adminReservasEstado = '';
+let adminReservasPagoEstado = '';
+let adminReservasBusqueda = '';
 
 function mostrarPanelAdmin() {
   const role = localStorage.getItem('role');
@@ -163,7 +166,24 @@ async function cargarReservasAdmin() {
       return;
     }
 
-    const res = await fetch(`${API_URL}/admin/reservas?page=${adminReservasPage}&limit=${adminReservasLimit}`, {
+    const params = new URLSearchParams({
+  page: adminReservasPage,
+  limit: adminReservasLimit
+});
+
+if (adminReservasEstado) {
+  params.set('estado', adminReservasEstado);
+}
+
+if (adminReservasPagoEstado) {
+  params.set('pagoEstado', adminReservasPagoEstado);
+}
+
+if (adminReservasBusqueda) {
+  params.set('q', adminReservasBusqueda);
+}
+
+const res = await fetch(`${API_URL}/admin/reservas?${params.toString()}`, {
   headers: {
     'Authorization': `Bearer ${token}`
   }
@@ -700,6 +720,35 @@ function cambiarPaginaReservasAdmin(nuevaPagina) {
   adminReservasPage = nuevaPagina;
   cargarReservasAdmin();
 }
+function aplicarFiltrosReservasBackendAdmin() {
+  const inputBusqueda = document.getElementById('filtroReservaTexto');
+  const selectEstado = document.getElementById('filtroReservaEstado');
+  const selectPagoEstado = document.getElementById('filtroReservaPagoEstado');
+
+  adminReservasBusqueda = inputBusqueda ? inputBusqueda.value.trim() : '';
+  adminReservasEstado = selectEstado ? selectEstado.value : '';
+  adminReservasPagoEstado = selectPagoEstado ? selectPagoEstado.value : '';
+
+  adminReservasPage = 1;
+
+  cargarReservasAdmin();
+}
+function limpiarFiltrosReservasBackendAdmin() {
+  const inputBusqueda = document.getElementById('filtroReservaTexto');
+  const selectEstado = document.getElementById('filtroReservaEstado');
+  const selectPagoEstado = document.getElementById('filtroReservaPagoEstado');
+
+  if (inputBusqueda) inputBusqueda.value = '';
+  if (selectEstado) selectEstado.value = '';
+  if (selectPagoEstado) selectPagoEstado.value = '';
+
+  adminReservasBusqueda = '';
+  adminReservasEstado = '';
+  adminReservasPagoEstado = '';
+  adminReservasPage = 1;
+
+  cargarReservasAdmin();
+}
 
 async function cambiarRolUsuario(usuarioId, nuevoRole) {
   try {
@@ -979,3 +1028,6 @@ async function eliminarUsuarioAdmin(usuarioId, username) {
    mostrarAlerta('Error al eliminar usuario');
   }
 }
+window.cambiarPaginaReservasAdmin = cambiarPaginaReservasAdmin;
+window.aplicarFiltrosReservasBackendAdmin = aplicarFiltrosReservasBackendAdmin;
+window.limpiarFiltrosReservasBackendAdmin = limpiarFiltrosReservasBackendAdmin;

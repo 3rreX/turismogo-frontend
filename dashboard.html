@@ -472,20 +472,38 @@
     </div>
 
     <div class="admin-filtros">
-      <input
-        type="text"
-        id="filtroReservaTexto"
-        placeholder="Buscar por cliente o servicio..."
-      >
+  <input
+    type="text"
+    id="filtroReservaTexto"
+    placeholder="Buscar por código, cliente, correo o servicio..."
+  >
 
-      <select id="filtroReservaEstado">
-        <option value="">Todos los estados</option>
-        <option value="pendiente">Pendiente</option>
-        <option value="confirmada">Confirmada</option>
-        <option value="rechazada">Rechazada</option>
-        <option value="cancelada">Cancelada</option>
-      </select>
-    </div>
+  <select id="filtroReservaEstado">
+    <option value="">Todos los estados</option>
+    <option value="pendiente_pago">Pendiente de pago</option>
+    <option value="confirmada">Confirmada</option>
+    <option value="expirada">Expirada</option>
+    <option value="rechazada">Rechazada</option>
+    <option value="cancelada">Cancelada</option>
+    <option value="reembolso_pendiente">Reembolso pendiente</option>
+    <option value="reembolsada">Reembolsada</option>
+  </select>
+
+  <select id="filtroReservaPagoEstado">
+    <option value="">Todos los pagos</option>
+    <option value="pendiente">Pago pendiente</option>
+    <option value="pagado">Pagado</option>
+    <option value="fallido">Fallido</option>
+  </select>
+
+  <button onclick="aplicarFiltrosReservasBackendAdmin()" class="btn-primary">
+    Filtrar
+  </button>
+
+  <button onclick="limpiarFiltrosReservasBackendAdmin()" class="btn-secondary">
+    Limpiar
+  </button>
+</div>
 
     <div class="admin-export-actions">
       <button onclick="exportarReservasAdmin()" class="btn-secondary">
@@ -498,7 +516,7 @@
     </div>
 
     <div id="admin-reservas" class="grid"></div>
-    
+
     <div id="admin-reservas-pagination"></div>
 
   </div>
