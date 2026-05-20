@@ -7,7 +7,7 @@ let adminReservasPagination = {
   limit: 50,
   pages: 1
 };
-let adminReservasEstado = '';
+let adminReservasEstado = 'pendiente_pago';
 let adminReservasPagoEstado = '';
 let adminReservasBusqueda = '';
 
@@ -852,11 +852,11 @@ function limpiarFiltrosReservasBackendAdmin() {
   const selectPagoEstado = document.getElementById('filtroReservaPagoEstado');
 
   if (inputBusqueda) inputBusqueda.value = '';
-  if (selectEstado) selectEstado.value = '';
+  if (selectEstado) selectEstado.value = 'pendiente_pago';
   if (selectPagoEstado) selectPagoEstado.value = '';
 
   adminReservasBusqueda = '';
-  adminReservasEstado = '';
+  adminReservasEstado = 'pendiente_pago';
   adminReservasPagoEstado = '';
   adminReservasPage = 1;
 
