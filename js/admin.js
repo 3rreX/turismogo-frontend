@@ -581,9 +581,44 @@ function renderReservasAdmin(reservas) {
     return;
   }
 
-  cont.innerHTML = reservas.map((r) => {
+  const formatearMonto = (valor) => {
+    const numero = Number(valor) || 0;
+    return `$${numero.toLocaleString('es-CL')}`;
+  };
 
+  const formatearFecha = (fecha) => {
+    if (!fecha) return 'No disponible';
+    return new Date(fecha).toLocaleDateString('es-CL');
+  };
+
+  const normalizarTextoEstado = (valor) => {
+    const estados = {
+      pendiente: 'Pendiente',
+      pendiente_pago: 'Pendiente de pago',
+      confirmada: 'Confirmada',
+      rechazada: 'Rechazada',
+      cancelada: 'Cancelada',
+      expirada: 'Expirada',
+      reembolso_pendiente: 'Reembolso pendiente',
+      reembolsada: 'Reembolsada'
+    };
+
+    return estados[valor] || valor || 'Pendiente';
+  };
+
+  const normalizarPagoEstado = (valor) => {
+    const estados = {
+      pendiente: 'Pendiente',
+      pagado: 'Pagado',
+      fallido: 'Fallido'
+    };
+
+    return estados[valor] || valor || 'Pendiente';
+  };
+
+  cont.innerHTML = reservas.map((r) => {
     const estado = r.estado || 'pendiente';
+    const pagoEstado = r.pagoEstado || 'pendiente';
 
     const servicio =
       r.servicio ||
@@ -604,34 +639,70 @@ function renderReservasAdmin(reservas) {
       r.telefonoCliente ||
       'Teléfono no disponible';
 
-    const fechaInicio = r.fechaInicio
-      ? new Date(r.fechaInicio).toLocaleDateString('es-CL')
-      : 'No disponible';
+    const fechaInicio = formatearFecha(r.fechaInicio);
+    const fechaFin = formatearFecha(r.fechaFin);
 
-    const fechaFin = r.fechaFin
-      ? new Date(r.fechaFin).toLocaleDateString('es-CL')
-      : 'No disponible';
-
-    const precio =
+    const monto =
       Number(r.montoPagado) ||
       Number(r.montoTotal) ||
       Number(r.precio) ||
       Number(r.servicioId?.precio) ||
       0;
 
+    const codigoReserva =
+      r.codigoReserva ||
+      `TG-${String(r._id || '').slice(-6).toUpperCase()}`;
+
+    const comisionTurismoGO = Number(r.comisionTurismoGO) || 0;
+    const montoPropietario = Number(r.montoPropietario) || 0;
+    const voucherTexto = r.voucherEnviado ? 'Enviado' : 'Pendiente';
+
+    const mostrarConfirmar = ![
+      'confirmada',
+      'expirada',
+      'reembolso_pendiente',
+      'reembolsada'
+    ].includes(estado);
+
+    const mostrarRechazar = ![
+      'confirmada',
+      'rechazada',
+      'cancelada',
+      'expirada',
+      'reembolso_pendiente',
+      'reembolsada'
+    ].includes(estado);
+
+    const mostrarCancelar = ![
+      'cancelada',
+      'expirada',
+      'reembolsada'
+    ].includes(estado);
+
+    const alertaReembolso = estado === 'reembolso_pendiente'
+      ? `
+        <div class="admin-reservation-alert">
+          ⚠ Pago autorizado con conflicto de disponibilidad. Requiere revisión administrativa o gestión de reembolso.
+        </div>
+      `
+      : '';
+
     return `
       <article class="admin-reservation-card">
 
         <div class="admin-card-top">
           <div>
+            <span class="admin-reservation-code">${codigoReserva}</span>
             <h3>${servicio}</h3>
             <p>Reserva generada desde TurismoGO</p>
           </div>
 
           <span class="status-badge status-${estado}">
-            ${estado}
+            ${normalizarTextoEstado(estado)}
           </span>
         </div>
+
+        ${alertaReembolso}
 
         <div class="admin-user-info">
           <p><b>Cliente:</b> ${cliente}</p>
@@ -640,31 +711,56 @@ function renderReservasAdmin(reservas) {
           <p><b>Fecha inicio:</b> ${fechaInicio}</p>
           <p><b>Fecha fin:</b> ${fechaFin}</p>
           <p><b>Personas:</b> ${r.personas || 1}</p>
-          <p><b>Monto:</b> $${precio.toLocaleString('es-CL')}</p>
+        </div>
+
+        <div class="admin-reservation-finance">
+          <p><b>Estado pago:</b> ${normalizarPagoEstado(pagoEstado)}</p>
+          <p><b>Monto pagado:</b> ${formatearMonto(monto)}</p>
+          <p><b>Comisión TurismoGO:</b> ${formatearMonto(comisionTurismoGO)}</p>
+          <p><b>Monto propietario:</b> ${formatearMonto(montoPropietario)}</p>
+          <p><b>Voucher:</b> ${voucherTexto}</p>
         </div>
 
         <div class="admin-card-actions">
 
-          <button
-            onclick="actualizarEstadoReservaAdmin('${r._id}', 'confirmada')"
-            class="btn-admin-confirmar"
-          >
-            Confirmar
-          </button>
+          ${
+            mostrarConfirmar
+              ? `
+                <button
+                  onclick="actualizarEstadoReservaAdmin('${r._id}', 'confirmada')"
+                  class="btn-admin-confirmar"
+                >
+                  Confirmar
+                </button>
+              `
+              : ''
+          }
 
-          <button
-            onclick="actualizarEstadoReservaAdmin('${r._id}', 'rechazada')"
-            class="btn-admin-rechazar"
-          >
-            Rechazar
-          </button>
+          ${
+            mostrarRechazar
+              ? `
+                <button
+                  onclick="actualizarEstadoReservaAdmin('${r._id}', 'rechazada')"
+                  class="btn-admin-rechazar"
+                >
+                  Rechazar
+                </button>
+              `
+              : ''
+          }
 
-          <button
-            onclick="actualizarEstadoReservaAdmin('${r._id}', 'cancelada')"
-            class="btn-admin-cancelar"
-          >
-            Cancelar
-          </button>
+          ${
+            mostrarCancelar
+              ? `
+                <button
+                  onclick="actualizarEstadoReservaAdmin('${r._id}', 'cancelada')"
+                  class="btn-admin-cancelar"
+                >
+                  Cancelar
+                </button>
+              `
+              : ''
+          }
 
         </div>
 
