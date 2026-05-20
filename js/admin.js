@@ -1,15 +1,16 @@
-function mostrarPanelAdmin() {
-  const role = localStorage.getItem('role');
-  const panel = document.getElementById('panel-admin');
-
-  let adminReservasPage = 1;
+let adminReservasPage = 1;
 const adminReservasLimit = 50;
+
 let adminReservasPagination = {
   total: 0,
   page: 1,
   limit: 50,
   pages: 1
 };
+
+function mostrarPanelAdmin() {
+  const role = localStorage.getItem('role');
+  const panel = document.getElementById('panel-admin');
 
   if (!panel) return;
 
