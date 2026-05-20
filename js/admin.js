@@ -2,6 +2,15 @@ function mostrarPanelAdmin() {
   const role = localStorage.getItem('role');
   const panel = document.getElementById('panel-admin');
 
+  let adminReservasPage = 1;
+const adminReservasLimit = 50;
+let adminReservasPagination = {
+  total: 0,
+  page: 1,
+  limit: 50,
+  pages: 1
+};
+
   if (!panel) return;
 
   if (role === 'admin') {
@@ -153,11 +162,11 @@ async function cargarReservasAdmin() {
       return;
     }
 
-    const res = await fetch(`${API_URL}/admin/reservas`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
+    const res = await fetch(`${API_URL}/admin/reservas?page=${adminReservasPage}&limit=${adminReservasLimit}`, {
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+});
 
     const data = await res.json();
 
@@ -178,6 +187,9 @@ const pagination = data.pagination || {
   limit: reservas.length,
   pages: 1
 };
+
+adminReservasPagination = pagination;
+
     const filtroTexto = document.getElementById('filtroReservaTexto');
 const filtroEstado = document.getElementById('filtroReservaEstado');
 
@@ -213,6 +225,7 @@ const aplicarFiltros = () => {
   });
 
   renderReservasAdmin(reservasFiltradas);
+  renderAdminReservasPagination();
   const resumenPaginacion = document.getElementById('admin-reservas-pagination');
 
 if (resumenPaginacion) {
@@ -638,6 +651,55 @@ function renderReservasAdmin(reservas) {
     `;
   }).join('');
 }
+
+function renderAdminReservasPagination() {
+  const contenedor = document.getElementById('admin-reservas-pagination');
+
+  if (!contenedor) return;
+
+  const { total, page, pages, limit } = adminReservasPagination;
+
+  if (!total || pages <= 1) {
+    contenedor.innerHTML = `
+      <div class="admin-pagination-summary">
+        Mostrando ${total || 0} reservas
+      </div>
+    `;
+    return;
+  }
+
+  contenedor.innerHTML = `
+    <div class="admin-pagination-box">
+      <button 
+        class="btn-secondary"
+        onclick="cambiarPaginaReservasAdmin(${page - 1})"
+        ${page <= 1 ? 'disabled' : ''}
+      >
+        ← Anterior
+      </button>
+
+      <div class="admin-pagination-summary">
+        Página ${page} de ${pages} · ${total} reservas · ${limit} por página
+      </div>
+
+      <button 
+        class="btn-secondary"
+        onclick="cambiarPaginaReservasAdmin(${page + 1})"
+        ${page >= pages ? 'disabled' : ''}
+      >
+        Siguiente →
+      </button>
+    </div>
+  `;
+}
+
+function cambiarPaginaReservasAdmin(nuevaPagina) {
+  if (nuevaPagina < 1 || nuevaPagina > adminReservasPagination.pages) return;
+
+  adminReservasPage = nuevaPagina;
+  cargarReservasAdmin();
+}
+
 async function cambiarRolUsuario(usuarioId, nuevoRole) {
   try {
     const confirmar = await customConfirm(`¿Seguro que deseas cambiar este usuario a ${nuevoRole}?`);
