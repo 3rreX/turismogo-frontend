@@ -30,6 +30,15 @@ function mostrarPanelAdmin() {
 
   cargarUsuariosAdmin();
   cargarServiciosAdmin();
+  adminReservasEstado = 'pendiente_pago,reembolso_pendiente';
+
+setTimeout(() => {
+  const selectEstadoReservas = document.getElementById('filtroReservaEstado');
+
+  if (selectEstadoReservas) {
+    selectEstadoReservas.value = 'pendiente_pago,reembolso_pendiente';
+  }
+}, 100);
   cargarReservasAdmin();
   cargarReportesReservasAdmin();
 } else {
