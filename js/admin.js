@@ -18,12 +18,21 @@ function mostrarPanelAdmin() {
   if (!panel) return;
 
   if (role === 'admin') {
-    panel.style.display = 'block';
-    cargarUsuariosAdmin();
-    cargarServiciosAdmin();
-    cargarReservasAdmin();
-    cargarReportesReservasAdmin();
-  } else {
+  panel.style.display = 'block';
+
+  const selectEstadoReservas = document.getElementById('filtroReservaEstado');
+
+  if (selectEstadoReservas) {
+    selectEstadoReservas.value = 'pendiente_pago,reembolso_pendiente';
+  }
+
+  adminReservasEstado = 'pendiente_pago,reembolso_pendiente';
+
+  cargarUsuariosAdmin();
+  cargarServiciosAdmin();
+  cargarReservasAdmin();
+  cargarReportesReservasAdmin();
+} else {
     panel.style.display = 'none';
   }
 }
