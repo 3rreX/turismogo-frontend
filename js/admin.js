@@ -7,6 +7,7 @@ let adminReservasPagination = {
   limit: 50,
   pages: 1
 };
+
 let adminReservasEstado = 'pendiente_pago,reembolso_pendiente';
 let adminReservasPagoEstado = '';
 let adminReservasBusqueda = '';
@@ -173,40 +174,39 @@ async function cargarServiciosAdmin() {
 }
 async function cargarReservasAdmin() {
   const cont = document.getElementById('admin-reservas');
-  if (!cont) return;
 
   try {
-    cont.innerHTML = '<p>Cargando reservas...</p>';
+    if (!cont) return;
 
     const token = localStorage.getItem('token');
 
     if (!token) {
-      cont.innerHTML = '<p>No hay sesión activa. Inicia sesión nuevamente.</p>';
+      cont.innerHTML = '<p>Sesión expirada. Inicia sesión nuevamente.</p>';
       return;
     }
 
     const params = new URLSearchParams({
-  page: adminReservasPage,
-  limit: adminReservasLimit
-});
+      page: adminReservasPage,
+      limit: adminReservasLimit
+    });
 
-if (adminReservasEstado) {
-  params.set('estado', adminReservasEstado);
-}
+    if (adminReservasEstado) {
+      params.set('estado', adminReservasEstado);
+    }
 
-if (adminReservasPagoEstado) {
-  params.set('pagoEstado', adminReservasPagoEstado);
-}
+    if (adminReservasPagoEstado) {
+      params.set('pagoEstado', adminReservasPagoEstado);
+    }
 
-if (adminReservasBusqueda) {
-  params.set('q', adminReservasBusqueda);
-}
+    if (adminReservasBusqueda) {
+      params.set('q', adminReservasBusqueda);
+    }
 
-const res = await fetch(`${API_URL}/admin/reservas?${params.toString()}`, {
-  headers: {
-    'Authorization': `Bearer ${token}`
-  }
-});
+    const res = await fetch(`${API_URL}/admin/reservas?${params.toString()}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
 
     const data = await res.json();
 
@@ -216,378 +216,25 @@ const res = await fetch(`${API_URL}/admin/reservas?${params.toString()}`, {
     }
 
     const reservas = Array.isArray(data.reservas)
-  ? data.reservas
-  : Array.isArray(data)
-    ? data
-    : [];
-
-const pagination = data.pagination || {
-  total: reservas.length,
-  page: 1,
-  limit: reservas.length,
-  pages: 1
-};
-
-adminReservasPagination = pagination;
-
-    const filtroTexto = document.getElementById('filtroReservaTexto');
-const filtroEstado = document.getElementById('filtroReservaEstado');
-
-let reservasFiltradas = [...reservas];
-
-const aplicarFiltros = () => {
-  const texto = (filtroTexto?.value || '').toLowerCase();
-  const estadoFiltro = (filtroEstado?.value || '').toLowerCase();
-
-  reservasFiltradas = reservas.filter((r) => {
-    const cliente = (
-      r.nombreCliente ||
-      r.usuarioId?.username ||
-      ''
-    ).toLowerCase();
-
-    const servicio = (
-      r.servicio ||
-      r.servicioId?.nombre ||
-      ''
-    ).toLowerCase();
-
-    const estado = (r.estado || '').toLowerCase();
-
-    const coincideTexto =
-      cliente.includes(texto) ||
-      servicio.includes(texto);
-
-    const coincideEstado =
-      !estadoFiltro || estado === estadoFiltro;
-
-    return coincideTexto && coincideEstado;
-  });
-
-  renderReservasAdmin(reservasFiltradas);
-  renderAdminReservasPagination();
-  const resumenPaginacion = document.getElementById('admin-reservas-pagination');
-
-if (resumenPaginacion) {
-  resumenPaginacion.innerHTML = `
-    <div class="admin-pagination-summary">
-      Mostrando ${reservasFiltradas.length} de ${pagination.total} reservas
-      · Página ${pagination.page} de ${pagination.pages}
-    </div>
-  `;
-}
-};
-
-if (filtroTexto) {
-  filtroTexto.oninput = aplicarFiltros;
-}
-
-if (filtroEstado) {
-  filtroEstado.onchange = aplicarFiltros;
-}
-    const alertasAdmin = document.getElementById('admin-alertas');
-
-if (alertasAdmin) {
-  const pendientesRevision = reservas.filter(
-  r => ['pendiente', 'pendiente_pago', 'reembolso_pendiente'].includes((r.estado || '').toLowerCase())
-).length;
-
-  if (pendientesRevision > 0) {
-    alertasAdmin.innerHTML = `
-      <div class="admin-alert warning">
-        ⚠️ Tienes ${pendientesRevision} reserva${pendientesRevision > 1 ? 's' : ''} pendiente${pendientesRevision > 1 ? 's' : ''} por revisar.
-      </div>
-    `;
-  } else {
-    alertasAdmin.innerHTML = `
-      <div class="admin-alert success">
-        ✅ No existen reservas pendientes por revisar.
-      </div>
-    `;
-  }
-}
-    const tablaRecientes = document.getElementById('tabla-reservas-recientes');
-
-if (tablaRecientes) {
- const recientes = [...reservas]
-  .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
-  .slice(0, 5);
-
-  tablaRecientes.innerHTML = recientes.map(r => {
-    const cliente =
-      r.nombreCliente ||
-      r.usuarioId?.username ||
-      'Cliente no disponible';
-
-    const servicio =
-      r.servicio ||
-      r.servicioId?.nombre ||
-      'Servicio';
-
-    const estado = r.estado || 'pendiente';
-
-    return `
-      <div class="recent-row">
-        <div>
-          <strong>${cliente}</strong><br>
-          <small>${servicio}</small>
-        </div>
-
-        <div>
-          <span class="status-badge status-${estado}">
-            ${estado}
-          </span>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-const listaTopServicios = document.getElementById('lista-top-servicios');
-
-if (listaTopServicios) {
-  const conteoServicios = {};
-
-  reservas.forEach((r) => {
-    const servicio =
-      r.servicio ||
-      r.servicioId?.nombre ||
-      'Servicio no disponible';
-
-    conteoServicios[servicio] = (conteoServicios[servicio] || 0) + 1;
-  });
-
-  const topServicios = Object.entries(conteoServicios)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5);
-
-  if (topServicios.length === 0) {
-    listaTopServicios.innerHTML = '<p>No hay datos suficientes.</p>';
-  } else {
-    listaTopServicios.innerHTML = topServicios.map(([servicio, total], index) => `
-      <div class="top-service-row">
-        <div>
-          <strong>${index + 1}. ${servicio}</strong>
-          <p>${total} reserva${total !== 1 ? 's' : ''}</p>
-        </div>
-
-        <span>${total}</span>
-      </div>
-    `).join('');
-  }
-}
-const canvasIngresos = document.getElementById('graficoIngresosAdmin');
-
-if (canvasIngresos && typeof Chart !== 'undefined') {
-  const ingresosPorMes = {};
-
-  reservas.forEach((r) => {
-    const estado = (r.estado || '').toLowerCase();
-
-    if (estado !== 'confirmada') return;
-
-    const fechaBase = r.fechaInicio || r.createdAt;
-    if (!fechaBase) return;
-
-    const fecha = new Date(fechaBase);
-
-    if (isNaN(fecha.getTime())) return;
-
-    const mes = fecha.toLocaleDateString('es-CL', {
-      month: 'short',
-      year: 'numeric'
-    });
-
-    const monto =
-      Number(r.montoPagado) ||
-      Number(r.montoTotal) ||
-      Number(r.precio) ||
-      Number(r.servicioId?.precio) ||
-      0;
-
-    ingresosPorMes[mes] = (ingresosPorMes[mes] || 0) + monto;
-  });
-
-  const labels = Object.keys(ingresosPorMes);
-  const valores = Object.values(ingresosPorMes);
-
-  if (window.graficoIngresosAdminInstance) {
-    window.graficoIngresosAdminInstance.destroy();
-  }
-
-  window.graficoIngresosAdminInstance = new Chart(canvasIngresos, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [{
-        label: 'Ingresos confirmados',
-        data: valores
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          display: true
-        }
-      },
-      scales: {
-        y: {
-          ticks: {
-            callback: function(value) {
-              return '$' + value.toLocaleString('es-CL');
-            }
-          }
-        }
-      }
-    }
-  });
-}
-
-    const statReservas = document.getElementById('admin-stat-reservas');
-    const statIngresos = document.getElementById('admin-stat-ingresos');
-
-    if (statReservas) {
-      statReservas.textContent = reservas.length;
-    }
-
-    let ingresos = 0;
-    let confirmadas = 0;
-    let pendientes = 0;
-    let ticketPromedio = 0;
-    let pagosFallidos = 0;
-
-    reservas.forEach((r) => {
-  const estado = (r.estado || '').toLowerCase();
-
-  const precio =
-    Number(r.montoPagado) ||
-    Number(r.montoTotal) ||
-    Number(r.precio) ||
-    Number(r.servicioId?.precio) ||
-    0;
-
-  if (estado === 'confirmada') {
-    confirmadas++;
-    ingresos += precio;
-  }
-  if (confirmadas > 0) {
-  ticketPromedio = ingresos / confirmadas;
-}
-
-  if (estado === 'pendiente') {
-    pendientes++;
-  }
-  if ((r.pagoEstado || '').toLowerCase() === 'fallido') {
-  pagosFallidos++;
-}
-});
-
-    if (statIngresos) {
-      statIngresos.textContent = `$${ingresos.toLocaleString('es-CL')}`;
-    }
-    const statConfirmadas = document.getElementById('admin-stat-confirmadas');
-const statPendientes = document.getElementById('admin-stat-pendientes');
-const statTicket = document.getElementById('admin-stat-ticket');
-const statPagosFallidos = document.getElementById('admin-stat-pagos-fallidos');
-
-if (statConfirmadas) {
-  statConfirmadas.textContent = confirmadas;
-}
-
-if (statPendientes) {
-  statPendientes.textContent = pendientes;
-}
-if (statTicket) {
-  statTicket.textContent =
-    `$${Math.round(ticketPromedio).toLocaleString('es-CL')}`;
-}
-
-    if (reservas.length === 0) {
-      renderReservasAdmin(reservasFiltradas);
-      return;
-    }
-    if (statPagosFallidos) {
-  statPagosFallidos.textContent = pagosFallidos;
-}
-
-    cont.innerHTML = reservas.map((r) => {
-      const estado = r.estado || 'pendiente';
-
-      const servicio =
-        r.servicio ||
-        r.servicioId?.nombre ||
-        'Servicio no disponible';
-
-      const cliente =
-        r.nombreCliente ||
-        r.usuarioId?.username ||
-        'Cliente no disponible';
-
-      const email =
-        r.emailCliente ||
-        r.usuarioId?.email ||
-        'Correo no disponible';
-
-      const telefono =
-        r.telefonoCliente ||
-        'Teléfono no disponible';
-
-      const fechaInicio = r.fechaInicio
-        ? new Date(r.fechaInicio).toLocaleDateString('es-CL')
-        : 'No disponible';
-
-      const fechaFin = r.fechaFin
-        ? new Date(r.fechaFin).toLocaleDateString('es-CL')
-        : 'No disponible';
-
-      const precio =
-        Number(r.montoTotal) ||
-        Number(r.precio) ||
-        Number(r.servicioId?.precio) ||
-        0;
-
-      return `
-        <article class="admin-reservation-card">
-          <div class="admin-card-top">
-            <div>
-              <h3>${servicio}</h3>
-              <p>Reserva generada desde TurismoGO</p>
-            </div>
-
-            <span class="status-badge status-${estado}">
-              ${estado}
-            </span>
-          </div>
-
-          <div class="admin-user-info">
-            <p><b>Cliente:</b> ${cliente}</p>
-            <p><b>Correo:</b> ${email}</p>
-            <p><b>Teléfono:</b> ${telefono}</p>
-            <p><b>Fecha inicio:</b> ${fechaInicio}</p>
-            <p><b>Fecha fin:</b> ${fechaFin}</p>
-            <p><b>Personas:</b> ${r.personas || 1}</p>
-            <p><b>Monto:</b> $${precio.toLocaleString('es-CL')}</p>
-          </div>
-          <div class="admin-card-actions">
-  <button onclick="actualizarEstadoReservaAdmin('${r._id}', 'confirmada')" class="btn-admin-confirmar">
-    Confirmar
-  </button>
-
-  <button onclick="actualizarEstadoReservaAdmin('${r._id}', 'rechazada')" class="btn-admin-rechazar">
-    Rechazar
-  </button>
-
-  <button onclick="actualizarEstadoReservaAdmin('${r._id}', 'cancelada')" class="btn-admin-cancelar">
-    Cancelar
-  </button>
-</div>
-        </article>
-      `;
-    }).join('');
+      ? data.reservas
+      : [];
+
+    adminReservasPagination = data.pagination || {
+      total: reservas.length,
+      page: 1,
+      limit: adminReservasLimit,
+      pages: 1
+    };
+
+    renderReservasAdmin(reservas);
+    renderAdminReservasPagination();
 
   } catch (error) {
     console.error('Error admin reservas:', error);
-    cont.innerHTML = '<p>Error al cargar las reservas del administrador.</p>';
+
+    if (cont) {
+      cont.innerHTML = '<p>Error al cargar las reservas del administrador.</p>';
+    }
   }
 }
 async function cargarReportesReservasAdmin() {
