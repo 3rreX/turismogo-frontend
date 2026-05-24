@@ -22,6 +22,7 @@ function mostrarPanelAdmin() {
     cargarUsuariosAdmin();
     cargarServiciosAdmin();
     cargarReservasAdmin();
+    cargarReportesReservasAdmin();
   } else {
     panel.style.display = 'none';
   }
@@ -571,6 +572,132 @@ if (statTicket) {
     cont.innerHTML = '<p>Error al cargar las reservas del administrador.</p>';
   }
 }
+async function cargarReportesReservasAdmin() {
+  try {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      mostrarAlerta('Sesión expirada. Inicia sesión nuevamente.');
+      return;
+    }
+
+    const estadosProcesados = [
+      'confirmada',
+      'rechazada',
+      'cancelada',
+      'expirada',
+      'reembolsada'
+    ].join(',');
+
+    const res = await fetch(
+      `${API_URL}/admin/reservas?estado=${estadosProcesados}&page=1&limit=50`,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      mostrarAlerta(data.error || 'No se pudieron cargar los reportes de reservas.');
+      return;
+    }
+
+    const reservas = Array.isArray(data.reservas)
+      ? data.reservas
+      : [];
+
+    renderReportesReservasAdmin(reservas, data.pagination);
+
+  } catch (error) {
+    console.error('Error reportes reservas admin:', error);
+    mostrarAlerta('Error al cargar reportes de reservas.');
+  }
+}
+
+function renderReportesReservasAdmin(reservas, pagination = {}) {
+  const cont = document.getElementById('admin-reportes-reservas');
+
+  if (!cont) return;
+
+  if (!Array.isArray(reservas) || reservas.length === 0) {
+    cont.innerHTML = `
+      <div class="admin-empty-state">
+        No hay reservas procesadas para mostrar.
+      </div>
+    `;
+    return;
+  }
+
+  const formatearMonto = (valor) => {
+    const numero = Number(valor) || 0;
+    return `$${numero.toLocaleString('es-CL')}`;
+  };
+
+  const formatearFecha = (fecha) => {
+    if (!fecha) return 'No disponible';
+    return new Date(fecha).toLocaleDateString('es-CL');
+  };
+
+  const totalVentas = reservas.reduce((acc, r) => acc + (Number(r.montoPagado) || 0), 0);
+  const totalComision = reservas.reduce((acc, r) => acc + (Number(r.comisionTurismoGO) || 0), 0);
+  const totalPropietario = reservas.reduce((acc, r) => acc + (Number(r.montoPropietario) || 0), 0);
+
+  cont.innerHTML = `
+    <div class="admin-report-summary">
+      <div>
+        <span>Total reservas procesadas</span>
+        <strong>${pagination.total || reservas.length}</strong>
+      </div>
+
+      <div>
+        <span>Ventas cargadas</span>
+        <strong>${formatearMonto(totalVentas)}</strong>
+      </div>
+
+      <div>
+        <span>Comisión TurismoGO</span>
+        <strong>${formatearMonto(totalComision)}</strong>
+      </div>
+
+      <div>
+        <span>Monto propietarios</span>
+        <strong>${formatearMonto(totalPropietario)}</strong>
+      </div>
+    </div>
+
+    <div class="admin-report-list">
+      ${reservas.map((r) => {
+        const codigoReserva =
+          r.codigoReserva ||
+          `TG-${String(r._id || '').slice(-6).toUpperCase()}`;
+
+        return `
+          <article class="admin-report-card">
+            <div>
+              <span class="admin-reservation-code">${codigoReserva}</span>
+              <h4>${r.servicio || r.servicioId?.nombre || 'Servicio no disponible'}</h4>
+              <p>${r.nombreCliente || r.usuarioId?.username || 'Cliente no disponible'} · ${r.emailCliente || 'Correo no disponible'}</p>
+            </div>
+
+            <div class="admin-report-meta">
+              <span class="status-badge status-${r.estado || 'pendiente'}">
+                ${r.estado || 'pendiente'}
+              </span>
+              <p><b>Pago:</b> ${r.pagoEstado || 'pendiente'}</p>
+              <p><b>Fechas:</b> ${formatearFecha(r.fechaInicio)} al ${formatearFecha(r.fechaFin)}</p>
+              <p><b>Monto:</b> ${formatearMonto(r.montoPagado)}</p>
+              <p><b>Comisión:</b> ${formatearMonto(r.comisionTurismoGO)}</p>
+            </div>
+          </article>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
 function renderReservasAdmin(reservas) {
   const cont = document.getElementById('admin-reservas');
 
