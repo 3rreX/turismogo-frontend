@@ -31,6 +31,7 @@ function mostrarPanelAdmin() {
 
   cargarUsuariosAdmin();
   cargarServiciosAdmin();
+  cargarStatsReservasAdmin();
   adminReservasEstado = 'pendiente_pago,reembolso_pendiente';
 
 setTimeout(() => {
@@ -42,6 +43,7 @@ setTimeout(() => {
 }, 100);
   cargarReservasAdmin();
   cargarReportesReservasAdmin();
+  cargarStatsReservasAdmin();
 } else {
     panel.style.display = 'none';
   }
@@ -235,6 +237,99 @@ async function cargarReservasAdmin() {
     if (cont) {
       cont.innerHTML = '<p>Error al cargar las reservas del administrador.</p>';
     }
+  }
+}
+
+async function cargarStatsReservasAdmin() {
+  try {
+    const cont = document.getElementById('admin-reservas-stats');
+
+    if (!cont) return;
+
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      cont.innerHTML = '';
+      return;
+    }
+
+    const headers = {
+      'Authorization': `Bearer ${token}`
+    };
+
+    const urls = {
+      pendientes: `${API_URL}/admin/reservas?estado=pendiente_pago&page=1&limit=1`,
+      reembolso: `${API_URL}/admin/reservas?estado=reembolso_pendiente&page=1&limit=1`,
+      confirmadas: `${API_URL}/admin/reservas?estado=confirmada&page=1&limit=1`,
+      cerradas: `${API_URL}/admin/reservas?estado=rechazada,cancelada,expirada,reembolsada&page=1&limit=1`,
+      total: `${API_URL}/admin/reservas?page=1&limit=1`
+    };
+
+    const [
+      pendientesRes,
+      reembolsoRes,
+      confirmadasRes,
+      cerradasRes,
+      totalRes
+    ] = await Promise.all([
+      fetch(urls.pendientes, { headers }),
+      fetch(urls.reembolso, { headers }),
+      fetch(urls.confirmadas, { headers }),
+      fetch(urls.cerradas, { headers }),
+      fetch(urls.total, { headers })
+    ]);
+
+    const [
+      pendientesData,
+      reembolsoData,
+      confirmadasData,
+      cerradasData,
+      totalData
+    ] = await Promise.all([
+      pendientesRes.json(),
+      reembolsoRes.json(),
+      confirmadasRes.json(),
+      cerradasRes.json(),
+      totalRes.json()
+    ]);
+
+    const stats = {
+      pendientes: pendientesData.pagination?.total || 0,
+      reembolso: reembolsoData.pagination?.total || 0,
+      confirmadas: confirmadasData.pagination?.total || 0,
+      cerradas: cerradasData.pagination?.total || 0,
+      total: totalData.pagination?.total || 0
+    };
+
+    cont.innerHTML = `
+      <div class="admin-stat-card">
+        <span>Pendientes de pago</span>
+        <strong>${stats.pendientes}</strong>
+      </div>
+
+      <div class="admin-stat-card warning">
+        <span>Reembolso pendiente</span>
+        <strong>${stats.reembolso}</strong>
+      </div>
+
+      <div class="admin-stat-card success">
+        <span>Confirmadas</span>
+        <strong>${stats.confirmadas}</strong>
+      </div>
+
+      <div class="admin-stat-card muted">
+        <span>Cerradas</span>
+        <strong>${stats.cerradas}</strong>
+      </div>
+
+      <div class="admin-stat-card total">
+        <span>Total reservas</span>
+        <strong>${stats.total}</strong>
+      </div>
+    `;
+
+  } catch (error) {
+    console.error('Error stats reservas admin:', error);
   }
 }
 async function cargarReportesReservasAdmin() {
@@ -927,6 +1022,8 @@ async function eliminarUsuarioAdmin(usuarioId, username) {
     cargarUsuariosAdmin();
     cargarServiciosAdmin();
     cargarReservasAdmin();
+    cargarStatsReservasAdmin();
+    cargarReportesReservasAdmin();
 
   } catch (error) {
     console.error('Error eliminando usuario:', error);
