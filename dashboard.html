@@ -535,40 +535,37 @@
   </div>
   <p>Historial de reservas confirmadas, rechazadas, canceladas, expiradas y reembolsadas.</p>
 </div>
-<div class="admin-report-filters">
-  <div class="admin-report-periods">
-    <button type="button" onclick="aplicarPeriodoReportesAdmin('hoy')" class="btn-secondary">
-      Hoy
-    </button>
+<div class="admin-report-tools">
+  <div class="admin-report-tools-header">
+    <div>
+      <span>Filtros de reporte</span>
+      <h4>Periodo de análisis</h4>
+    </div>
 
-    <button type="button" onclick="aplicarPeriodoReportesAdmin('7dias')" class="btn-secondary">
-      Últimos 7 días
-    </button>
-
-    <button type="button" onclick="aplicarPeriodoReportesAdmin('mes')" class="btn-secondary">
-      Mes actual
-    </button>
-
-    <button type="button" onclick="limpiarFiltrosReportesAdmin()" class="btn-secondary">
-      Todo
+    <button
+      type="button"
+      id="btn-toggle-reportes-reservas"
+      class="btn-primary"
+      onclick="toggleReportesReservasAdmin()"
+    >
+      Ver reservas procesadas
     </button>
   </div>
 
-  <div class="admin-report-filters">
   <div class="admin-report-periods">
-    <button type="button" onclick="aplicarPeriodoReportesAdmin('hoy')" class="btn-secondary">
+    <button type="button" onclick="aplicarPeriodoReportesAdmin('hoy')" class="report-filter-btn">
       Hoy
     </button>
 
-    <button type="button" onclick="aplicarPeriodoReportesAdmin('7dias')" class="btn-secondary">
+    <button type="button" onclick="aplicarPeriodoReportesAdmin('7dias')" class="report-filter-btn">
       Últimos 7 días
     </button>
 
-    <button type="button" onclick="aplicarPeriodoReportesAdmin('mes')" class="btn-secondary">
+    <button type="button" onclick="aplicarPeriodoReportesAdmin('mes')" class="report-filter-btn">
       Mes actual
     </button>
 
-    <button type="button" onclick="limpiarFiltrosReportesAdmin()" class="btn-secondary">
+    <button type="button" onclick="limpiarFiltrosReportesAdmin()" class="report-filter-btn">
       Todo
     </button>
   </div>
@@ -588,17 +585,6 @@
       Aplicar rango
     </button>
   </div>
-</div>
-
-<div class="admin-report-toggle">
-  <button
-    type="button"
-    id="btn-toggle-reportes-reservas"
-    class="btn-primary"
-    onclick="toggleReportesReservasAdmin()"
-  >
-    Ver reservas procesadas
-  </button>
 </div>
 
 <div id="admin-reportes-reservas" style="display: none;"></div>
