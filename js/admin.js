@@ -883,35 +883,69 @@ async function exportarReservasAdmin() {
       return;
     }
 
-    const res = await fetch(`${API_URL}/admin/reservas`, {
+    const estadosProcesados = [
+      'confirmada',
+      'rechazada',
+      'cancelada',
+      'expirada',
+      'reembolsada'
+    ].join(',');
+
+    const params = new URLSearchParams({
+      estado: estadosProcesados,
+      page: 1,
+      limit: 100
+    });
+
+    if (adminReportesFechaDesde) {
+      params.set('fechaDesde', adminReportesFechaDesde);
+    }
+
+    if (adminReportesFechaHasta) {
+      params.set('fechaHasta', adminReportesFechaHasta);
+    }
+
+    const res = await fetch(`${API_URL}/admin/reservas?${params.toString()}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
 
-    const reservas = await res.json();
+    const data = await res.json();
 
     if (!res.ok) {
-      mostrarAlerta(reservas.error || 'No se pudieron exportar las reservas.');
+      mostrarAlerta(data.error || 'No se pudieron exportar las reservas.');
       return;
     }
 
-    if (!Array.isArray(reservas) || reservas.length === 0) {
-     mostrarAlerta('No hay reservas para exportar.');
+    const reservas = Array.isArray(data.reservas) ? data.reservas : [];
+
+    if (reservas.length === 0) {
+      mostrarAlerta('No hay reservas procesadas para exportar.');
       return;
     }
+
+    const formatearFecha = (fecha) => {
+      if (!fecha) return 'No disponible';
+      return new Date(fecha).toLocaleDateString('es-CL');
+    };
 
     const filas = reservas.map((r) => ({
+      CodigoReserva: r.codigoReserva || `TG-${String(r._id || '').slice(-6).toUpperCase()}`,
+      Servicio: r.servicio || r.servicioId?.nombre || 'No disponible',
       Cliente: r.nombreCliente || r.usuarioId?.username || 'No disponible',
       Email: r.emailCliente || r.usuarioId?.email || 'No disponible',
       Telefono: r.telefonoCliente || 'No disponible',
-      Servicio: r.servicio || r.servicioId?.nombre || 'No disponible',
-      FechaInicio: r.fechaInicio || 'No disponible',
-      FechaFin: r.fechaFin || 'No disponible',
+      FechaInicio: formatearFecha(r.fechaInicio),
+      FechaFin: formatearFecha(r.fechaFin),
       Personas: r.personas || 'No informado',
       EstadoReserva: r.estado || 'pendiente',
       EstadoPago: r.pagoEstado || 'pendiente',
-      Monto: r.montoPagado || r.servicioId?.precio || 0
+      MontoPagado: Number(r.montoPagado || 0),
+      ComisionTurismoGO: Number(r.comisionTurismoGO || 0),
+      MontoPropietario: Number(r.montoPropietario || 0),
+      VoucherEnviado: r.voucherEnviado ? 'Sí' : 'No',
+      FechaCreacion: formatearFecha(r.createdAt)
     }));
 
     const encabezados = Object.keys(filas[0]);
@@ -931,14 +965,14 @@ async function exportarReservasAdmin() {
     const link = document.createElement('a');
 
     link.href = url;
-    link.download = `reservas-turismogo-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.download = `reporte-reservas-turismogo-${new Date().toISOString().slice(0, 10)}.csv`;
     link.click();
 
     URL.revokeObjectURL(url);
 
   } catch (error) {
     console.error('Error exportando reservas:', error);
-   mostrarAlerta('Error al exportar reservas.');
+    mostrarAlerta('Error al exportar reservas.');
   }
 }
 async function exportarReservasPDFAdmin() {
@@ -946,69 +980,123 @@ async function exportarReservasPDFAdmin() {
     const token = localStorage.getItem('token');
 
     if (!token) {
-     mostrarAlerta('Sesión expirada. Inicia sesión nuevamente.');
+      mostrarAlerta('Sesión expirada. Inicia sesión nuevamente.');
       return;
     }
 
-    const res = await fetch(`${API_URL}/admin/reservas`, {
+    const estadosProcesados = [
+      'confirmada',
+      'rechazada',
+      'cancelada',
+      'expirada',
+      'reembolsada'
+    ].join(',');
+
+    const params = new URLSearchParams({
+      estado: estadosProcesados,
+      page: 1,
+      limit: 100
+    });
+
+    if (adminReportesFechaDesde) {
+      params.set('fechaDesde', adminReportesFechaDesde);
+    }
+
+    if (adminReportesFechaHasta) {
+      params.set('fechaHasta', adminReportesFechaHasta);
+    }
+
+    const res = await fetch(`${API_URL}/admin/reservas?${params.toString()}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
 
-    const reservas = await res.json();
+    const data = await res.json();
 
     if (!res.ok) {
-     mostrarAlerta(reservas.error || 'No se pudieron exportar las reservas.');
+      mostrarAlerta(data.error || 'No se pudieron exportar las reservas.');
       return;
     }
 
-    if (!Array.isArray(reservas) || reservas.length === 0) {
-      mostrarAlerta('No hay reservas para exportar.');
+    const reservas = Array.isArray(data.reservas) ? data.reservas : [];
+
+    if (reservas.length === 0) {
+      mostrarAlerta('No hay reservas procesadas para exportar.');
       return;
     }
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
+    const formatearMonto = (valor) => {
+      return `$${Number(valor || 0).toLocaleString('es-CL')}`;
+    };
+
+    const formatearFecha = (fecha) => {
+      if (!fecha) return 'No disponible';
+      return new Date(fecha).toLocaleDateString('es-CL');
+    };
+
+    const totalVentas = reservas.reduce((acc, r) => acc + (Number(r.montoPagado) || 0), 0);
+    const totalComision = reservas.reduce((acc, r) => acc + (Number(r.comisionTurismoGO) || 0), 0);
+    const totalPropietarios = reservas.reduce((acc, r) => acc + (Number(r.montoPropietario) || 0), 0);
+
     doc.setFontSize(18);
-    doc.text('TurismoGO - Reporte de Reservas', 14, 20);
+    doc.text('TurismoGO - Reporte de Reservas Procesadas', 14, 20);
 
     doc.setFontSize(10);
     doc.text(`Fecha de emisión: ${new Date().toLocaleDateString('es-CL')}`, 14, 28);
 
-    let y = 40;
+    if (adminReportesFechaDesde || adminReportesFechaHasta) {
+      doc.text(
+        `Periodo: ${adminReportesFechaDesde || 'Inicio'} al ${adminReportesFechaHasta || 'Actual'}`,
+        14,
+        35
+      );
+    }
+
+    doc.setFontSize(11);
+    doc.text(`Total ventas: ${formatearMonto(totalVentas)}`, 14, 45);
+    doc.text(`Comisión TurismoGO: ${formatearMonto(totalComision)}`, 14, 52);
+    doc.text(`Monto propietarios: ${formatearMonto(totalPropietarios)}`, 14, 59);
+
+    let y = 72;
 
     reservas.forEach((r, index) => {
+      const codigoReserva = r.codigoReserva || `TG-${String(r._id || '').slice(-6).toUpperCase()}`;
       const cliente = r.nombreCliente || r.usuarioId?.username || 'No disponible';
       const servicio = r.servicio || r.servicioId?.nombre || 'No disponible';
       const estado = r.estado || 'pendiente';
       const pago = r.pagoEstado || 'pendiente';
-      const monto = Number(r.montoPagado || r.servicioId?.precio || 0);
+      const monto = Number(r.montoPagado || 0);
+      const comision = Number(r.comisionTurismoGO || 0);
+      const propietario = Number(r.montoPropietario || 0);
 
-      if (y > 260) {
+      if (y > 250) {
         doc.addPage();
         y = 20;
       }
 
       doc.setFontSize(12);
-      doc.text(`${index + 1}. ${servicio}`, 14, y);
+      doc.text(`${index + 1}. ${codigoReserva} - ${servicio}`, 14, y);
 
-      doc.setFontSize(10);
+      doc.setFontSize(9);
       doc.text(`Cliente: ${cliente}`, 14, y + 7);
-      doc.text(`Estado reserva: ${estado}`, 14, y + 14);
-      doc.text(`Estado pago: ${pago}`, 14, y + 21);
-      doc.text(`Monto: $${monto.toLocaleString('es-CL')}`, 14, y + 28);
-      doc.text(`Fechas: ${r.fechaInicio || 'N/D'} al ${r.fechaFin || 'N/D'}`, 14, y + 35);
+      doc.text(`Email: ${r.emailCliente || 'No disponible'}`, 14, y + 13);
+      doc.text(`Estado: ${estado} | Pago: ${pago}`, 14, y + 19);
+      doc.text(`Fechas: ${formatearFecha(r.fechaInicio)} al ${formatearFecha(r.fechaFin)}`, 14, y + 25);
+      doc.text(`Monto: ${formatearMonto(monto)} | Comisión: ${formatearMonto(comision)} | Propietario: ${formatearMonto(propietario)}`, 14, y + 31);
+      doc.text(`Voucher enviado: ${r.voucherEnviado ? 'Sí' : 'No'}`, 14, y + 37);
 
       y += 48;
     });
 
-    doc.save(`reservas-turismogo-${new Date().toISOString().slice(0, 10)}.pdf`);
+    doc.save(`reporte-reservas-turismogo-${new Date().toISOString().slice(0, 10)}.pdf`);
 
   } catch (error) {
     console.error('Error exportando PDF:', error);
-   mostrarAlerta('Error al exportar PDF.');
+    mostrarAlerta('Error al exportar PDF.');
   }
 }
 async function actualizarEstadoReservaAdmin(idReserva, nuevoEstado) {
