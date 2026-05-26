@@ -11,6 +11,9 @@ let adminReservasPagination = {
 let adminReservasEstado = 'pendiente_pago,reembolso_pendiente';
 let adminReservasPagoEstado = '';
 let adminReservasBusqueda = '';
+let adminReportesFechaDesde = '';
+let adminReportesFechaHasta = '';
+let adminReportesPeriodo = '';
 
 function mostrarPanelAdmin() {
   const role = localStorage.getItem('role');
@@ -330,14 +333,28 @@ async function cargarReportesReservasAdmin() {
       'reembolsada'
     ].join(',');
 
-    const res = await fetch(
-      `${API_URL}/admin/reservas?estado=${estadosProcesados}&page=1&limit=50`,
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }
-    );
+   const params = new URLSearchParams({
+  estado: estadosProcesados,
+  page: 1,
+  limit: 50
+});
+
+if (adminReportesFechaDesde) {
+  params.set('fechaDesde', adminReportesFechaDesde);
+}
+
+if (adminReportesFechaHasta) {
+  params.set('fechaHasta', adminReportesFechaHasta);
+}
+
+const res = await fetch(
+  `${API_URL}/admin/reservas?${params.toString()}`,
+  {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+);
 
     const data = await res.json();
 
@@ -356,6 +373,65 @@ async function cargarReportesReservasAdmin() {
     console.error('Error reportes reservas admin:', error);
     mostrarAlerta('Error al cargar reportes de reservas.');
   }
+}
+function aplicarPeriodoReportesAdmin(periodo) {
+  const hoy = new Date();
+
+  adminReportesPeriodo = periodo;
+  adminReportesFechaDesde = '';
+  adminReportesFechaHasta = '';
+
+  if (periodo === 'hoy') {
+    const fecha = hoy.toISOString().slice(0, 10);
+    adminReportesFechaDesde = fecha;
+    adminReportesFechaHasta = fecha;
+  }
+
+  if (periodo === '7dias') {
+    const desde = new Date();
+    desde.setDate(hoy.getDate() - 7);
+
+    adminReportesFechaDesde = desde.toISOString().slice(0, 10);
+    adminReportesFechaHasta = hoy.toISOString().slice(0, 10);
+  }
+
+  if (periodo === 'mes') {
+    const desde = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+
+    adminReportesFechaDesde = desde.toISOString().slice(0, 10);
+    adminReportesFechaHasta = hoy.toISOString().slice(0, 10);
+  }
+
+  const inputDesde = document.getElementById('reporteFechaDesde');
+  const inputHasta = document.getElementById('reporteFechaHasta');
+
+  if (inputDesde) inputDesde.value = adminReportesFechaDesde;
+  if (inputHasta) inputHasta.value = adminReportesFechaHasta;
+
+  cargarReportesReservasAdmin();
+}
+function aplicarRangoReportesAdmin() {
+  const inputDesde = document.getElementById('reporteFechaDesde');
+  const inputHasta = document.getElementById('reporteFechaHasta');
+
+  adminReportesFechaDesde = inputDesde ? inputDesde.value : '';
+  adminReportesFechaHasta = inputHasta ? inputHasta.value : '';
+  adminReportesPeriodo = 'personalizado';
+
+  cargarReportesReservasAdmin();
+}
+function limpiarFiltrosReportesAdmin() {
+  adminReportesFechaDesde = '';
+  adminReportesFechaHasta = '';
+  adminReportesPeriodo = '';
+
+  const inputDesde = document.getElementById('reporteFechaDesde');
+  const inputHasta = document.getElementById('reporteFechaHasta');
+
+  if (inputDesde) inputDesde.value = '';
+  if (inputHasta) inputHasta.value = '';
+
+  cargarReportesReservasAdmin();
 }
 
 function renderReportesReservasAdmin(reservas, pagination = {}) {
@@ -1014,3 +1090,6 @@ async function eliminarUsuarioAdmin(usuarioId, username) {
 window.cambiarPaginaReservasAdmin = cambiarPaginaReservasAdmin;
 window.aplicarFiltrosReservasBackendAdmin = aplicarFiltrosReservasBackendAdmin;
 window.limpiarFiltrosReservasBackendAdmin = limpiarFiltrosReservasBackendAdmin;
+window.aplicarPeriodoReportesAdmin = aplicarPeriodoReportesAdmin;
+window.aplicarRangoReportesAdmin = aplicarRangoReportesAdmin;
+window.limpiarFiltrosReportesAdmin = limpiarFiltrosReportesAdmin;

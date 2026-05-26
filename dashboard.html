@@ -535,6 +535,34 @@
   </div>
   <p>Historial de reservas confirmadas, rechazadas, canceladas, expiradas y reembolsadas.</p>
 </div>
+<div class="admin-report-filters">
+  <div class="admin-report-periods">
+    <button type="button" onclick="aplicarPeriodoReportesAdmin('hoy')" class="btn-secondary">
+      Hoy
+    </button>
+
+    <button type="button" onclick="aplicarPeriodoReportesAdmin('7dias')" class="btn-secondary">
+      Últimos 7 días
+    </button>
+
+    <button type="button" onclick="aplicarPeriodoReportesAdmin('mes')" class="btn-secondary">
+      Mes actual
+    </button>
+
+    <button type="button" onclick="limpiarFiltrosReportesAdmin()" class="btn-secondary">
+      Todo
+    </button>
+  </div>
+
+  <div class="admin-report-range">
+    <input type="date" id="reporteFechaDesde">
+    <input type="date" id="reporteFechaHasta">
+
+    <button type="button" onclick="aplicarRangoReportesAdmin()" class="btn-primary">
+      Aplicar rango
+    </button>
+  </div>
+</div>
 
 <div id="admin-reportes-reservas"></div>
 
