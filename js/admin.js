@@ -1197,3 +1197,4 @@ window.limpiarFiltrosReservasBackendAdmin = limpiarFiltrosReservasBackendAdmin;
 window.aplicarPeriodoReportesAdmin = aplicarPeriodoReportesAdmin;
 window.aplicarRangoReportesAdmin = aplicarRangoReportesAdmin;
 window.limpiarFiltrosReportesAdmin = limpiarFiltrosReportesAdmin;
+window.toggleReportesReservasAdmin = toggleReportesReservasAdmin;
