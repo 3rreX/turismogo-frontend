@@ -433,6 +433,22 @@ function limpiarFiltrosReportesAdmin() {
 
   cargarReportesReservasAdmin();
 }
+function toggleReportesReservasAdmin() {
+  const cont = document.getElementById('admin-reportes-reservas');
+  const btn = document.getElementById('btn-toggle-reportes-reservas');
+
+  if (!cont || !btn) return;
+
+  const estaOculto = cont.style.display === 'none' || !cont.style.display;
+
+  if (estaOculto) {
+    cont.style.display = 'block';
+    btn.textContent = 'Ocultar reservas procesadas';
+  } else {
+    cont.style.display = 'none';
+    btn.textContent = 'Ver reservas procesadas';
+  }
+}
 
 function renderReportesReservasAdmin(reservas, pagination = {}) {
   const cont = document.getElementById('admin-reportes-reservas');

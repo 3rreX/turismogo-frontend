@@ -5432,4 +5432,33 @@ z-index: 9;
   }
 }
 
+.admin-report-toggle {
+  display: flex;
+  justify-content: flex-end;
+  margin: 16px 0 20px;
+}
+
+.admin-report-range label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #334155;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.admin-report-range label input {
+  margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+  .admin-report-toggle {
+    justify-content: stretch;
+  }
+
+  .admin-report-toggle button {
+    width: 100%;
+  }
+}
+
   

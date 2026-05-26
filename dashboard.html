@@ -554,9 +554,35 @@
     </button>
   </div>
 
+  <div class="admin-report-filters">
+  <div class="admin-report-periods">
+    <button type="button" onclick="aplicarPeriodoReportesAdmin('hoy')" class="btn-secondary">
+      Hoy
+    </button>
+
+    <button type="button" onclick="aplicarPeriodoReportesAdmin('7dias')" class="btn-secondary">
+      Últimos 7 días
+    </button>
+
+    <button type="button" onclick="aplicarPeriodoReportesAdmin('mes')" class="btn-secondary">
+      Mes actual
+    </button>
+
+    <button type="button" onclick="limpiarFiltrosReportesAdmin()" class="btn-secondary">
+      Todo
+    </button>
+  </div>
+
   <div class="admin-report-range">
-    <input type="date" id="reporteFechaDesde">
-    <input type="date" id="reporteFechaHasta">
+    <label>
+      Fecha desde
+      <input type="date" id="reporteFechaDesde">
+    </label>
+
+    <label>
+      Fecha hasta
+      <input type="date" id="reporteFechaHasta">
+    </label>
 
     <button type="button" onclick="aplicarRangoReportesAdmin()" class="btn-primary">
       Aplicar rango
@@ -564,7 +590,18 @@
   </div>
 </div>
 
-<div id="admin-reportes-reservas"></div>
+<div class="admin-report-toggle">
+  <button
+    type="button"
+    id="btn-toggle-reportes-reservas"
+    class="btn-primary"
+    onclick="toggleReportesReservasAdmin()"
+  >
+    Ver reservas procesadas
+  </button>
+</div>
+
+<div id="admin-reportes-reservas" style="display: none;"></div>
 
     <div id="admin-reservas-recientes" class="panel" style="margin-bottom: 20px;">
       <h3>Últimas reservas recientes</h3>
