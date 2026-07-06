@@ -10,6 +10,7 @@ function mostrarPanelPropietario() {
     cargarReservasPropietario();
     cargarCalendarioPropietario();
     cargarMensajesPropietario();
+    cargarStatsPropietario();
   } else {
     panel.style.display = 'none';
   }
@@ -383,12 +384,10 @@ async function cargarReservasPropietario() {
           <p>Las reservas confirmadas aparecerán en el calendario de ocupación.</p>
         </div>
       `;
-      actualizarStatsPropietario([]);
       return;
     }
 
-    actualizarStatsPropietario(reservas);
-
+  
     reservas.forEach((r) => {
       const estado = r.estado || 'pendiente_pago';
       const pagoEstado = r.pagoEstado || 'pendiente';
@@ -584,7 +583,47 @@ function actualizarStatsPropietario(reservas = []) {
   if (statConfirmadas) statConfirmadas.textContent = confirmadas;
   if (statIngresos) statIngresos.textContent = `$${ingresos.toLocaleString('es-CL')}`;
 }
+async function cargarStatsPropietario() {
+  try {
+    const token = localStorage.getItem('token');
 
+    if (!token) return;
+
+    const res = await fetch(`${API_URL}/propietario/reservas/stats`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const stats = await res.json();
+
+    if (!res.ok) {
+      console.error('Error stats propietario:', stats.error);
+      return;
+    }
+
+    const statPendientes = document.getElementById('stat-pendientes');
+    const statConfirmadas = document.getElementById('stat-confirmadas');
+    const statIngresos = document.getElementById('stat-ingresos');
+
+    if (statPendientes) {
+      statPendientes.textContent =
+        Number(stats.pendientesPago || 0) + Number(stats.reembolsoPendiente || 0);
+    }
+
+    if (statConfirmadas) {
+      statConfirmadas.textContent = Number(stats.confirmadas || 0);
+    }
+
+    if (statIngresos) {
+      statIngresos.textContent =
+        `$${Number(stats.montoPropietario || 0).toLocaleString('es-CL')}`;
+    }
+
+  } catch (error) {
+    console.error('Error al cargar estadísticas del propietario:', error);
+  }
+}
 async function cambiarEstadoReserva(reservaId, estado) {
   try {
     const token = localStorage.getItem('token');
@@ -610,6 +649,7 @@ async function cambiarEstadoReserva(reservaId, estado) {
     cargarReservasPropietario();
     cargarCalendarioPropietario();
     cargarNotificacionesPropietario();
+    cargarStatsPropietario();
   } catch (error) {
     console.error('Error al cambiar estado de reserva:', error);
    mostrarAlerta('Error al actualizar reserva');
