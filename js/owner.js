@@ -350,6 +350,12 @@ async function eliminarImagenServicio(servicioId, imagenUrl) {
    mostrarAlerta('Error al eliminar imagen');
   }
 }
+let propietarioReservasPage = 1;
+const propietarioReservasLimit = 50;
+
+let propietarioReservasEstado = 'pendiente_pago,reembolso_pendiente';
+let propietarioReservasPagoEstado = '';
+let propietarioReservasBusqueda = '';
 async function cargarReservasPropietario() {
   try {
     const cont = document.getElementById('reservas-propietario');
@@ -357,11 +363,28 @@ async function cargarReservasPropietario() {
 
     const token = localStorage.getItem('token');
 
-    const res = await fetch(`${API_URL}/reservas-propietario?estado=pendiente_pago,reembolso_pendiente&page=1&limit=50`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
+    const params = new URLSearchParams({
+  page: propietarioReservasPage,
+  limit: propietarioReservasLimit
+});
+
+if (propietarioReservasEstado) {
+  params.set('estado', propietarioReservasEstado);
+}
+
+if (propietarioReservasPagoEstado) {
+  params.set('pagoEstado', propietarioReservasPagoEstado);
+}
+
+if (propietarioReservasBusqueda) {
+  params.set('q', propietarioReservasBusqueda);
+}
+
+const res = await fetch(`${API_URL}/reservas-propietario?${params.toString()}`, {
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+});
 
     const data = await res.json();
 
@@ -562,6 +585,35 @@ async function cargarReservasPropietario() {
   } catch (error) {
     console.error('Error al cargar reservas del propietario:', error);
   }
+}
+function aplicarFiltrosReservasPropietario() {
+  const inputBusqueda = document.getElementById('filtroReservaPropietarioTexto');
+  const selectEstado = document.getElementById('filtroReservaPropietarioEstado');
+  const selectPago = document.getElementById('filtroReservaPropietarioPago');
+
+  propietarioReservasBusqueda = inputBusqueda ? inputBusqueda.value.trim() : '';
+  propietarioReservasEstado = selectEstado ? selectEstado.value : '';
+  propietarioReservasPagoEstado = selectPago ? selectPago.value : '';
+
+  propietarioReservasPage = 1;
+
+  cargarReservasPropietario();
+}
+function limpiarFiltrosReservasPropietario() {
+  const inputBusqueda = document.getElementById('filtroReservaPropietarioTexto');
+  const selectEstado = document.getElementById('filtroReservaPropietarioEstado');
+  const selectPago = document.getElementById('filtroReservaPropietarioPago');
+
+  if (inputBusqueda) inputBusqueda.value = '';
+  if (selectEstado) selectEstado.value = 'pendiente_pago,reembolso_pendiente';
+  if (selectPago) selectPago.value = '';
+
+  propietarioReservasBusqueda = '';
+  propietarioReservasEstado = 'pendiente_pago,reembolso_pendiente';
+  propietarioReservasPagoEstado = '';
+  propietarioReservasPage = 1;
+
+  cargarReservasPropietario();
 }
 async function cargarHistorialReservasPropietario() {
   try {
@@ -976,4 +1028,8 @@ async function cargarMensajesPropietario() {
   } catch (error) {
     console.error('Error cargando mensajes:', error);
   }
+  
 }
+window.toggleHistorialReservasPropietario = toggleHistorialReservasPropietario;
+window.aplicarFiltrosReservasPropietario = aplicarFiltrosReservasPropietario;
+window.limpiarFiltrosReservasPropietario = limpiarFiltrosReservasPropietario;

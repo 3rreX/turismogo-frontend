@@ -5650,5 +5650,50 @@ z-index: 9;
     min-width: 0;
   }
 }
+.owner-reservation-filters {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto auto;
+  gap: 12px;
+  margin: 22px 0;
+  padding: 18px;
+  border-radius: 22px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.06);
+}
+
+.owner-reservation-filters input,
+.owner-reservation-filters select {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  background: #f8fafc;
+  color: #0f172a;
+  font-weight: 700;
+  outline: none;
+}
+
+.owner-reservation-filters input:focus,
+.owner-reservation-filters select:focus {
+  border-color: #0f78a8;
+  box-shadow: 0 0 0 4px rgba(15, 120, 168, 0.12);
+}
+
+@media (max-width: 980px) {
+  .owner-reservation-filters {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .owner-reservation-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .owner-reservation-filters button {
+    width: 100%;
+  }
+}
 
   

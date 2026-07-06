@@ -250,6 +250,40 @@
       </div>
       <p>Revisa solicitudes, clientes, fechas y estado de cada reserva.</p>
     </div>
+    <div class="owner-reservation-filters">
+  <input
+    type="text"
+    id="filtroReservaPropietarioTexto"
+    placeholder="Buscar por código, cliente, correo o servicio..."
+  >
+
+  <select id="filtroReservaPropietarioEstado">
+    <option value="pendiente_pago,reembolso_pendiente" selected>Pendientes operativas</option>
+    <option value="pendiente_pago">Pendientes de pago</option>
+    <option value="reembolso_pendiente">Reembolso pendiente</option>
+    <option value="confirmada">Confirmadas</option>
+    <option value="rechazada">Rechazadas</option>
+    <option value="cancelada">Canceladas</option>
+    <option value="expirada">Expiradas</option>
+    <option value="reembolsada">Reembolsadas</option>
+    <option value="">Todas</option>
+  </select>
+
+  <select id="filtroReservaPropietarioPago">
+    <option value="">Todos los pagos</option>
+    <option value="pendiente">Pago pendiente</option>
+    <option value="pagado">Pagado</option>
+    <option value="fallido">Fallido</option>
+  </select>
+
+  <button type="button" class="btn-primary" onclick="aplicarFiltrosReservasPropietario()">
+    Filtrar
+  </button>
+
+  <button type="button" class="btn-secondary" onclick="limpiarFiltrosReservasPropietario()">
+    Limpiar
+  </button>
+</div>
 
     <div id="reservas-propietario" class="grid"></div>
     <div class="owner-history-header">
