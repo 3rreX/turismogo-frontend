@@ -351,7 +351,14 @@ async function eliminarImagenServicio(servicioId, imagenUrl) {
   }
 }
 let propietarioReservasPage = 1;
-const propietarioReservasLimit = 50;
+const propietarioReservasLimit = 20;
+
+let propietarioReservasPagination = {
+  total: 0,
+  page: 1,
+  limit: 20,
+  pages: 1
+};
 
 let propietarioReservasEstado = 'pendiente_pago,reembolso_pendiente';
 let propietarioReservasPagoEstado = '';
@@ -398,6 +405,70 @@ const res = await fetch(`${API_URL}/reservas-propietario?${params.toString()}`, 
       : Array.isArray(data)
         ? data
         : [];
+        propietarioReservasPagination = data.pagination || {
+  total: reservas.length,
+  page: propietarioReservasPage,
+  limit: propietarioReservasLimit,
+  pages: 1
+};
+function renderPaginacionReservasPropietario() {
+  const cont = document.getElementById('reservas-propietario-pagination');
+  if (!cont) return;
+
+  const total = Number(propietarioReservasPagination.total || 0);
+  const page = Number(propietarioReservasPagination.page || propietarioReservasPage);
+  const pages = Number(propietarioReservasPagination.pages || 1);
+
+  if (total === 0 || pages <= 1) {
+    cont.innerHTML = '';
+    return;
+  }
+
+  cont.innerHTML = `
+    <div class="owner-pagination-box">
+      <button
+        type="button"
+        class="btn-secondary"
+        ${page <= 1 ? 'disabled' : ''}
+        onclick="cambiarPaginaReservasPropietario(${page - 1})"
+      >
+        Anterior
+      </button>
+
+      <span>
+        Página <strong>${page}</strong> de <strong>${pages}</strong>
+        · ${total} reservas
+      </span>
+
+      <button
+        type="button"
+        class="btn-secondary"
+        ${page >= pages ? 'disabled' : ''}
+        onclick="cambiarPaginaReservasPropietario(${page + 1})"
+      >
+        Siguiente
+      </button>
+    </div>
+  `;
+}
+function cambiarPaginaReservasPropietario(nuevaPagina) {
+  const pages = Number(propietarioReservasPagination.pages || 1);
+
+  if (nuevaPagina < 1 || nuevaPagina > pages) return;
+
+  propietarioReservasPage = nuevaPagina;
+
+  cargarReservasPropietario();
+
+  const cont = document.getElementById('reservas-propietario');
+  if (cont) {
+    cont.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
+}
+renderPaginacionReservasPropietario();
 
     cont.innerHTML = '';
 
@@ -1033,3 +1104,4 @@ async function cargarMensajesPropietario() {
 window.toggleHistorialReservasPropietario = toggleHistorialReservasPropietario;
 window.aplicarFiltrosReservasPropietario = aplicarFiltrosReservasPropietario;
 window.limpiarFiltrosReservasPropietario = limpiarFiltrosReservasPropietario;
+window.cambiarPaginaReservasPropietario = cambiarPaginaReservasPropietario;

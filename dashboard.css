@@ -5695,5 +5695,42 @@ z-index: 9;
     width: 100%;
   }
 }
+.owner-pagination-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin: 24px 0 10px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.06);
+}
+
+.owner-pagination-box span {
+  color: #334155;
+  font-weight: 800;
+}
+
+.owner-pagination-box button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .owner-pagination-box {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .owner-pagination-box button {
+    width: 100%;
+  }
+
+  .owner-pagination-box span {
+    text-align: center;
+  }
+}
 
   
