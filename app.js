@@ -615,7 +615,11 @@ if (btnVerMas) {
     });
 
   } catch (error) {
-    console.error('Error al cargar servicios públicos:', error);
+    if (error.name === 'AbortError') {
+  return;
+}
+
+console.error('Error al cargar servicios públicos:', error);
   }
 }
 document.addEventListener('DOMContentLoaded', () => {
