@@ -355,72 +355,49 @@ async function cargarReservasPropietario() {
 
     const token = localStorage.getItem('token');
 
-    const res = await fetch(`${API_URL}/reservas-propietario`, {
+    const res = await fetch(`${API_URL}/reservas-propietario?estado=pendiente_pago,reembolso_pendiente&page=1&limit=50`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
 
-    const reservas = await res.json();
+    const data = await res.json();
 
     if (!res.ok) {
-      cont.innerHTML = `<p>${reservas.error || 'No se pudieron cargar las reservas.'}</p>`;
+      cont.innerHTML = `<p>${data.error || 'No se pudieron cargar las reservas.'}</p>`;
       return;
     }
 
+    const reservas = Array.isArray(data.reservas)
+      ? data.reservas
+      : Array.isArray(data)
+        ? data
+        : [];
+
     cont.innerHTML = '';
 
-    if (!Array.isArray(reservas) || reservas.length === 0) {
-  cont.innerHTML = `
-    <div class="empty-owner-state">
-      <h3>No tienes reservas recibidas</h3>
-      <p>Cuando un cliente solicite una reserva, aparecerá en esta sección.</p>
-    </div>
-  `;
-  return;
-}
+    if (reservas.length === 0) {
+      cont.innerHTML = `
+        <div class="empty-owner-state">
+          <h3>No tienes reservas pendientes de gestión</h3>
+          <p>Las reservas confirmadas aparecerán en el calendario de ocupación.</p>
+        </div>
+      `;
+      actualizarStatsPropietario([]);
+      return;
+    }
 
-const reservasPendientes = reservas.filter(
-  r => (r.estado || '').toLowerCase() === 'pendiente'
-);
+    actualizarStatsPropietario(reservas);
 
-if (reservasPendientes.length === 0) {
-  cont.innerHTML = `
-    <div class="empty-owner-state">
-      <h3>No tienes solicitudes pendientes</h3>
-      <p>Las reservas confirmadas se muestran en el calendario de ocupación.</p>
-    </div>
-  `;
-  return;
-}
-
-    const pendientes = reservas.filter(r => r.estado === 'pendiente').length;
-    const confirmadas = reservas.filter(r => r.estado === 'confirmada').length;
-
-    let ingresos = 0;
-
-    reservasPendientes.forEach((r) => {
-      if (r.estado === 'confirmada') {
-        ingresos +=
-          Number(r.montoPagado) ||
-          Number(r.montoTotal) ||
-          Number(r.precio) ||
-          Number(r.servicioId?.precio) ||
-          0;
-      }
-    });
-
-    const statPendientes = document.getElementById('stat-pendientes');
-    const statConfirmadas = document.getElementById('stat-confirmadas');
-    const statIngresos = document.getElementById('stat-ingresos');
-
-    if (statPendientes) statPendientes.textContent = pendientes;
-    if (statConfirmadas) statConfirmadas.textContent = confirmadas;
-    if (statIngresos) statIngresos.textContent = `$${ingresos.toLocaleString('es-CL')}`;
-
-    reservasPendientes.forEach((r) => {
-      const estado = r.estado || 'pendiente';
+    reservas.forEach((r) => {
+      const estado = r.estado || 'pendiente_pago';
       const pagoEstado = r.pagoEstado || 'pendiente';
+
+      const servicio = r.servicio || r.servicioId?.nombre || 'Servicio no disponible';
+
+      const codigoReserva =
+        r.codigoReserva ||
+        `TG-${String(r._id || '').slice(-6).toUpperCase()}`;
 
       const nombreCliente =
         r.usuarioId?.username ||
@@ -439,6 +416,14 @@ if (reservasPendientes.length === 0) {
       const mensajeCliente =
         r.mensajeCliente || 'Sin mensaje adicional';
 
+      const fechaInicio = r.fechaInicio
+        ? new Date(r.fechaInicio).toLocaleDateString('es-CL')
+        : 'No disponible';
+
+      const fechaFin = r.fechaFin
+        ? new Date(r.fechaFin).toLocaleDateString('es-CL')
+        : 'No disponible';
+
       const monto =
         Number(r.montoPagado) ||
         Number(r.montoTotal) ||
@@ -446,129 +431,160 @@ if (reservasPendientes.length === 0) {
         Number(r.servicioId?.precio) ||
         0;
 
+      const puedeGestionar = ['pendiente', 'pendiente_pago', 'reembolso_pendiente'].includes(estado);
+
       cont.innerHTML += `
-  <article class="owner-reservation-card compact-reservation-card">
-    <div class="owner-reservation-header">
-      <div>
-        <span class="reservation-label">Reserva recibida</span>
-        <h3>${r.servicio}</h3>
-        <p>Solicitud generada desde TurismoGO</p>
-      </div>
+        <article class="owner-reservation-card compact-reservation-card">
+          <div class="owner-reservation-header">
+            <div>
+              <span class="reservation-label">${codigoReserva}</span>
+              <h3>${servicio}</h3>
+              <p>Reserva recibida desde TurismoGO</p>
+            </div>
 
-      <div class="reservation-badges">
-        <span class="status-badge status-${estado}">
-          ${estado}
-        </span>
+            <div class="reservation-badges">
+              <span class="status-badge status-${estado}">
+                ${estado}
+              </span>
 
-        <span class="payment-badge payment-${pagoEstado}">
-          Pago: ${pagoEstado}
-        </span>
-      </div>
-    </div>
+              <span class="payment-badge payment-${pagoEstado}">
+                Pago: ${pagoEstado}
+              </span>
+            </div>
+          </div>
 
-    <div class="reservation-main-actions">
-  <button
-    class="approve-btn"
-    onclick="cambiarEstadoReserva('${r._id}', 'confirmada')"
-  >
-    Confirmar
-  </button>
+          <div class="reservation-main-actions">
+            ${
+              puedeGestionar && pagoEstado === 'pagado'
+                ? `
+                  <button
+                    class="approve-btn"
+                    onclick="cambiarEstadoReserva('${r._id}', 'confirmada')"
+                  >
+                    Confirmar
+                  </button>
+                `
+                : ''
+            }
 
-  <button
-    class="reject-btn"
-    onclick="cambiarEstadoReserva('${r._id}', 'rechazada')"
-  >
-    Rechazar
-  </button>
+            ${
+              puedeGestionar
+                ? `
+                  <button
+                    class="reject-btn"
+                    onclick="cambiarEstadoReserva('${r._id}', 'rechazada')"
+                  >
+                    Rechazar
+                  </button>
+                `
+                : ''
+            }
 
-  <button
-    class="details-btn"
-    onclick="toggleDetalleReserva('${r._id}')"
-  >
-    Ver detalles
-  </button>
-</div>
+            <button
+              class="details-btn"
+              onclick="toggleDetalleReserva('${r._id}')"
+            >
+              Ver detalles
+            </button>
+          </div>
 
-    <div id="detalle-reserva-${r._id}" class="reservation-details-hidden">
-      <div class="owner-client-box">
-        <div>
-          <span>Cliente</span>
-          <strong>${nombreCliente}</strong>
-        </div>
+          <div id="detalle-reserva-${r._id}" class="reservation-details-hidden">
+            <div class="owner-client-box">
+              <div>
+                <span>Cliente</span>
+                <strong>${nombreCliente}</strong>
+              </div>
 
-        <div>
-          <span>Correo</span>
-          <strong>${emailCliente}</strong>
-        </div>
+              <div>
+                <span>Correo</span>
+                <strong>${emailCliente}</strong>
+              </div>
 
-        <div>
-          <span>Teléfono</span>
-          <strong>${telefonoCliente}</strong>
-        </div>
+              <div>
+                <span>Teléfono</span>
+                <strong>${telefonoCliente}</strong>
+              </div>
 
-        <div>
-          <span>Personas</span>
-          <strong>${personasReserva}</strong>
-        </div>
-      </div>
+              <div>
+                <span>Personas</span>
+                <strong>${personasReserva}</strong>
+              </div>
+            </div>
 
-      <div class="owner-reservation-dates">
-        <div>
-          <span>Fecha inicio</span>
-          <strong>${r.fechaInicio}</strong>
-        </div>
+            <div class="owner-reservation-dates">
+              <div>
+                <span>Fecha inicio</span>
+                <strong>${fechaInicio}</strong>
+              </div>
 
-        <div>
-          <span>Fecha fin</span>
-          <strong>${r.fechaFin}</strong>
-        </div>
+              <div>
+                <span>Fecha fin</span>
+                <strong>${fechaFin}</strong>
+              </div>
 
-        <div>
-          <span>Monto estimado</span>
-          <strong>$${monto.toLocaleString('es-CL')}</strong>
-        </div>
-      </div>
+              <div>
+                <span>Voucher</span>
+                <strong>${r.voucherEnviado ? 'Enviado' : 'Pendiente'}</strong>
+              </div>
+            </div>
 
-      <div class="owner-message-box">
-        <span>Mensaje del cliente</span>
-        <p>${mensajeCliente}</p>
-      </div>
-      <div class="reservation-money-box">
+            <div class="reservation-money-box">
+              <div class="money-item">
+                <span>Valor reserva</span>
+                <strong>$${Number(monto || 0).toLocaleString('es-CL')}</strong>
+              </div>
 
-  <div class="money-item">
-    <span>Valor reserva</span>
-    <strong>
-      $${Number(monto || 0).toLocaleString('es-CL')}
-    </strong>
-  </div>
+              <div class="money-item">
+                <span>Comisión TurismoGO</span>
+                <strong class="money-commission">
+                  ${r.comisionPorcentaje || 0}% ≈
+                  $${Number(r.comisionTurismoGO || 0).toLocaleString('es-CL')}
+                </strong>
+              </div>
 
-  <div class="money-item">
-    <span>Comisión TurismoGO</span>
+              <div class="money-item">
+                <span>Monto líquido propietario</span>
+                <strong class="money-owner">
+                  $${Number(r.montoPropietario || 0).toLocaleString('es-CL')}
+                </strong>
+              </div>
+            </div>
 
-    <strong class="money-commission">
-      ${r.comisionPorcentaje || 8}% ≈
-      $${Number(r.comisionTurismoGO || 0).toLocaleString('es-CL')}
-    </strong>
-  </div>
-
-  <div class="money-item">
-    <span>Monto líquido propietario</span>
-
-    <strong class="money-owner">
-      $${Number(r.montoPropietario || 0).toLocaleString('es-CL')}
-    </strong>
-  </div>
-
-</div>
-    </div>
-  </article>
-`;
+            <div class="owner-message-box">
+              <span>Mensaje del cliente</span>
+              <p>${mensajeCliente}</p>
+            </div>
+          </div>
+        </article>
+      `;
     });
 
   } catch (error) {
     console.error('Error al cargar reservas del propietario:', error);
   }
 }
+function actualizarStatsPropietario(reservas = []) {
+  const pendientes = reservas.filter(
+    r => ['pendiente', 'pendiente_pago', 'reembolso_pendiente'].includes((r.estado || '').toLowerCase())
+  ).length;
+
+  const confirmadas = reservas.filter(
+    r => (r.estado || '').toLowerCase() === 'confirmada'
+  ).length;
+
+  const ingresos = reservas
+    .filter(r => (r.estado || '').toLowerCase() === 'confirmada')
+    .reduce((acc, r) => acc + (Number(r.montoPropietario) || 0), 0);
+
+  const statPendientes = document.getElementById('stat-pendientes');
+  const statConfirmadas = document.getElementById('stat-confirmadas');
+  const statIngresos = document.getElementById('stat-ingresos');
+
+  if (statPendientes) statPendientes.textContent = pendientes;
+  if (statConfirmadas) statConfirmadas.textContent = confirmadas;
+  if (statIngresos) statIngresos.textContent = `$${ingresos.toLocaleString('es-CL')}`;
+}
+
 async function cambiarEstadoReserva(reservaId, estado) {
   try {
     const token = localStorage.getItem('token');
@@ -606,22 +622,24 @@ async function cargarCalendarioPropietario() {
 
     const token = localStorage.getItem('token');
 
-    const res = await fetch(`${API_URL}/reservas-propietario`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
+  const res = await fetch(`${API_URL}/reservas-propietario?estado=confirmada&page=1&limit=100`, {
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+});
 
-    const reservas = await res.json();
+const data = await res.json();
 
-    if (!res.ok) {
-      cont.innerHTML = `<p>${reservas.error || 'No se pudo cargar el calendario.'}</p>`;
-      return;
-    }
+if (!res.ok) {
+  cont.innerHTML = `<p>${data.error || 'No se pudo cargar el calendario.'}</p>`;
+  return;
+}
 
-    const reservasConfirmadas = Array.isArray(reservas)
-      ? reservas.filter(r => (r.estado || '').toLowerCase() === 'confirmada')
-      : [];
+const reservasConfirmadas = Array.isArray(data.reservas)
+  ? data.reservas
+  : Array.isArray(data)
+    ? data.filter(r => (r.estado || '').toLowerCase() === 'confirmada')
+    : [];
 
     if (reservasConfirmadas.length === 0) {
       cont.innerHTML = `

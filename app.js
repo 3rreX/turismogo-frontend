@@ -155,22 +155,28 @@ async function cargarNotificacionesPropietario() {
       }
     });
 
-    const reservas = await resReservas.json();
+  const dataReservas = await resReservas.json();
 
-    if (Array.isArray(reservas)) {
-      const pendientes = reservas.filter(
-        r => (r.estado || '').toLowerCase() === 'pendiente'
-      );
+const reservas = Array.isArray(dataReservas.reservas)
+  ? dataReservas.reservas
+  : Array.isArray(dataReservas)
+    ? dataReservas
+    : [];
 
-      const confirmadas = reservas.filter(
-        r => (r.estado || '').toLowerCase() === 'confirmada'
-      );
+if (Array.isArray(reservas)) {
+  const pendientes = reservas.filter(
+    r => ['pendiente', 'pendiente_pago', 'reembolso_pendiente'].includes((r.estado || '').toLowerCase())
+  );
+
+  const confirmadas = reservas.filter(
+    r => (r.estado || '').toLowerCase() === 'confirmada'
+  );
 
       if (pendientes.length > 0) {
   notificaciones.push({
   icono: '📅',
   titulo: `${pendientes.length} reserva${pendientes.length > 1 ? 's' : ''} pendiente${pendientes.length > 1 ? 's' : ''}`,
-  descripcion: 'Tienes solicitudes esperando confirmación o rechazo.',
+  descripcion: 'Tienes reservas pendientes de pago, revisión o gestión operativa.',
   tab: 'owner-reservas',
   boton: 4
 });
