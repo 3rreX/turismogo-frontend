@@ -11,6 +11,7 @@ function mostrarPanelPropietario() {
     cargarCalendarioPropietario();
     cargarMensajesPropietario();
     cargarStatsPropietario();
+    cargarHistorialReservasPropietario();
   } else {
     panel.style.display = 'none';
   }
@@ -562,6 +563,132 @@ async function cargarReservasPropietario() {
     console.error('Error al cargar reservas del propietario:', error);
   }
 }
+async function cargarHistorialReservasPropietario() {
+  try {
+    const cont = document.getElementById('historial-reservas-propietario');
+    if (!cont) return;
+
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      cont.innerHTML = '<p>Sesión expirada. Inicia sesión nuevamente.</p>';
+      return;
+    }
+
+    const estadosProcesados = [
+      'confirmada',
+      'rechazada',
+      'cancelada',
+      'expirada',
+      'reembolsada'
+    ].join(',');
+
+    const res = await fetch(
+      `${API_URL}/reservas-propietario?estado=${estadosProcesados}&page=1&limit=50`,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      cont.innerHTML = `<p>${data.error || 'No se pudo cargar el historial.'}</p>`;
+      return;
+    }
+
+    const reservas = Array.isArray(data.reservas)
+      ? data.reservas
+      : Array.isArray(data)
+        ? data
+        : [];
+
+    if (reservas.length === 0) {
+      cont.innerHTML = `
+        <div class="empty-owner-state">
+          <h3>No hay reservas procesadas todavía</h3>
+          <p>Cuando confirmes, rechaces o canceles reservas, aparecerán aquí.</p>
+        </div>
+      `;
+      return;
+    }
+
+    cont.innerHTML = reservas.map((r) => {
+      const codigoReserva =
+        r.codigoReserva ||
+        `TG-${String(r._id || '').slice(-6).toUpperCase()}`;
+
+      const servicio =
+        r.servicio ||
+        r.servicioId?.nombre ||
+        'Servicio no disponible';
+
+      const cliente =
+        r.nombreCliente ||
+        r.usuarioId?.username ||
+        'Cliente externo';
+
+      const email =
+        r.emailCliente ||
+        'Correo no informado';
+
+      const fechaInicio = r.fechaInicio
+        ? new Date(r.fechaInicio).toLocaleDateString('es-CL')
+        : 'No disponible';
+
+      const fechaFin = r.fechaFin
+        ? new Date(r.fechaFin).toLocaleDateString('es-CL')
+        : 'No disponible';
+
+      const montoPropietario = Number(r.montoPropietario || 0);
+      const comision = Number(r.comisionTurismoGO || 0);
+      const montoPagado = Number(r.montoPagado || 0);
+
+      return `
+        <article class="owner-history-card">
+          <div>
+            <span class="reservation-label">${codigoReserva}</span>
+            <h4>${servicio}</h4>
+            <p>${cliente} · ${email}</p>
+          </div>
+
+          <div class="owner-history-meta">
+            <span class="status-badge status-${r.estado || 'pendiente'}">
+              ${r.estado || 'pendiente'}
+            </span>
+
+            <p><b>Pago:</b> ${r.pagoEstado || 'pendiente'}</p>
+            <p><b>Fechas:</b> ${fechaInicio} al ${fechaFin}</p>
+            <p><b>Monto pagado:</b> $${montoPagado.toLocaleString('es-CL')}</p>
+            <p><b>Comisión TurismoGO:</b> $${comision.toLocaleString('es-CL')}</p>
+            <p><b>Monto propietario:</b> $${montoPropietario.toLocaleString('es-CL')}</p>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+  } catch (error) {
+    console.error('Error historial reservas propietario:', error);
+  }
+}
+function toggleHistorialReservasPropietario() {
+  const cont = document.getElementById('historial-reservas-propietario');
+  const btn = document.getElementById('btn-toggle-historial-propietario');
+
+  if (!cont || !btn) return;
+
+  const estaOculto = cont.style.display === 'none' || !cont.style.display;
+
+  if (estaOculto) {
+    cont.style.display = 'block';
+    btn.textContent = 'Ocultar historial';
+  } else {
+    cont.style.display = 'none';
+    btn.textContent = 'Ver historial';
+  }
+}
 function actualizarStatsPropietario(reservas = []) {
   const pendientes = reservas.filter(
     r => ['pendiente', 'pendiente_pago', 'reembolso_pendiente'].includes((r.estado || '').toLowerCase())
@@ -650,6 +777,7 @@ async function cambiarEstadoReserva(reservaId, estado) {
     cargarCalendarioPropietario();
     cargarNotificacionesPropietario();
     cargarStatsPropietario();
+    cargarHistorialReservasPropietario();
   } catch (error) {
     console.error('Error al cambiar estado de reserva:', error);
    mostrarAlerta('Error al actualizar reserva');

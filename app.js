@@ -774,6 +774,7 @@ document.addEventListener('click', async (e) => {
     const id = e.target.dataset.id;
     abrirModalServicio(id);
   }
+  window.toggleHistorialReservasPropietario = toggleHistorialReservasPropietario;
 });
 
 
